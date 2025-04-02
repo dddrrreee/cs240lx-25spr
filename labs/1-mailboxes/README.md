@@ -239,3 +239,13 @@ Fancier:
   - Also: rewrite the interface so it's no so awkward.
 
 Look through the doc and figure some stuff out.
+
+-------------------------------------------------------------------
+#### increase memory size
+
+There was an old 140e lab where we bumped the memory size available
+to the CPU:
+   - [memory size change](https://github.com/dddrrreee/cs140e-22win/blob/main/labs/10-low-level/code-mbox/README.md)
+
+I haven't looked at this in a couple of years, so  some of the 
+steps may not be required but it's a good place to start.
