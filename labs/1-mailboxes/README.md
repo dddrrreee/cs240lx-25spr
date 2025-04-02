@@ -249,3 +249,7 @@ to the CPU:
 
 I haven't looked at this in a couple of years, so  some of the 
 steps may not be required but it's a good place to start.
+
+To save time: the firmware for the large memory is in `firmware-increase-mem`.
+
+
