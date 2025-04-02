@@ -1,5 +1,22 @@
 ## mailboxes.
 
+
+### errata
+
+  - In code/Makefile: change `my-install` to `pi-install` if
+    you didn't take 140e.
+
+        # old
+        BOOTLOADER = my-install
+
+        # new
+        BOOTLOADER = pi-install
+
+
+-------------------------------------------------------------
+### intro
+
+
 Since some people are getting setup with hardware, we'll just do a quick,
 fun lab on using the GPU mailbox to overclock the pi (and other things).
 
