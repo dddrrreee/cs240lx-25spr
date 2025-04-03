@@ -116,9 +116,6 @@ All the instruction encodings are in the ARMv6 architecture manual
 (`cs240lx-25/docs/armv6.pdf`).  We excerpt that chapter for simplicity
 as `docs/armv6-inst-full.pdf`
 
-#### A3-2: ARM instruction encodings
-
-Page A3-2  (third chapter, second page) gives the instruction encodings.
 
 <figure>
   <img src="images/armv6-encodings.png" width="600" />
@@ -127,16 +124,12 @@ Page A3-2  (third chapter, second page) gives the instruction encodings.
 </p>
 
 
-#### A4-20: bx instruction
-
 <figure>
   <img src="images/bx-a4-20.png" width="600" />
   <figcaption><strong>A4-20: bx encoding</strong></figcaption>
 </figure>
 </p>
 
-
-#### A4-10: bl instruction
 
 <figure>
   <img src="images/bl-a4-10.png" width="600" />
