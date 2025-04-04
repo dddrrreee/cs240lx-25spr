@@ -420,6 +420,22 @@ decades  --- you can build a simple version.  The paper is in
 This isn't useless:  Linux uses a more limited, mundane version of this
 approach (eBPF) by extending the BPF packet filter language.
 
+####  Make a small back-end jitter
+
+Web assembly JIT: There are C compilers that spit out web assembly ---
+a stack-based low-level "portable assembly language".  You can write
+an interpreter for a small subset pretty easily.  And once you do this,
+you can write a JIT for this subset.  You should be able to easily get
+10x speedup --- more if you do clever tricks to get rid of the stack
+operations.  Very useful!
+
+eBPF/BPF jit: the BPF (or extended BPF) language is pretty small and
+widely used.  BPF for packet filtering (deciding for a given packet,
+which flow gets it), eBPF for linux performance monitoring.  Like web
+assembly BPF is stack based and slow to interpret.  You can make a JIT
+for without heroic effort that should give 10x or more.  
+Widely used, good to know, neat to do.
+
 ####  Compile a neural net to code
 
 #### Alot more!
