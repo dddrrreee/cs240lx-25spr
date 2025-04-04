@@ -59,7 +59,6 @@ If you did this lab as an extension in 140e:
   - Do at least two of the extensions at the end.
   - Do something interesting over the weekend.
 
-
 ----------------------------------------------------------------------------
 ### Part 0: Getting started.
 
@@ -154,11 +153,14 @@ have a header for (say) 64 bytes then:
 
 More detailed:
    1. Write a new linker script that modifies `./memmap`  to have a header
-      etc.  You should store the string `hello` with a 0 as the first
-      6 bytes of the after the jump instruction.
+      etc.  
+        - You should store the string `hello` along with a 0 terminator
+          in the header right after the jump instruction.
+        - You should also define a label (e.g., `__hello_string__`)
+          in the header right before the string that the C code can reference.
 
-   2. Modify `2-jump/hello.c` to set a pointer to where this string will
-      be in memory.  The code should run and print it.
+   2. Modify `2-jump/hello.c` to set a pointer to the label from (1).
+      The code should run and print it.
 
    3. For some quick examples of things you can do in these scripts
       you may want to look at the `2-jump/memmap.header` or
@@ -242,25 +244,35 @@ It's fun.
       instruction stream, skipping zeros.  
 
 ----------------------------------------------------------------------------
-### Part 5: Runtime inlining.
+### Part 5: Runtime inlining `5-runtime-line`
 
 Modern C compilers generally only inline routines that are in the same
 file (or included header file).  And even then they may only do it if it
 the definition appears before the use.
 
-Because of heavy use of seperate compilation, many routines that could be usefully
-inlined cannot, because their implementations are not known until all the 
-`.o` files are linked together.  When I was a kid, there were
-various link-time optimizers (OM from David Wall was great) but now, they are
-rare.
+Because of heavy use of seperate compilation, many routines that could
+be usefully inlined cannot, because their implementations are not known
+until all the `.o` files are linked together.  When I was a kid, there
+were various link-time optimizers (OM from David Wall was great) but now,
+they are rare.
 
-If you know machine code, you can write your own inliner.  We'll do so
-by changing GET32 and PUT32 to reach back into their caller and rewrite
-the callsite.  The `1-getput` has a its own GET32 and PUT32 implementations.
-These have two parts:
-  1. Assembly level that calls the C code with the address of the caller.
-  2. C-code that uses this address to reach back into the caller (this isn't
-     needed: you can everything in assembly.)
+If you know machine code, you can write your own runtime inliner.
+We'll build a simple proof of concept that works by providing special
+versions of GET32 and PUT32 that can reach back into their caller and
+rewrite the callsite (the branch and link instruction that calls them).
+
+These code has two parts:
+
+  1. `runtime-inline-asm.S`: Assembly code for special versions of PUT32
+     and GET32 (`PUT32_inline` and `GET32_inline`) that get inlined if
+     the client calls them.  We initially only inline these routines so
+     that its easier to debug.
+
+     These routines call a corresponding C code handler
+     (`PUT32_inline_helper` and `GET32_inline_helper`) with the return
+     address of the caller.  
+
+  2. `runtime-inline.c`: C-code handlers that do the actual rewriting.
 
 What you need for PUT32:
   1. Machine code to do a store.  From the original machine code:
@@ -277,6 +289,7 @@ What you need for PUT32:
 Why this works:
   1. The store instruction takes as much space as the call instruction
      so we can replace it without expanding or contracting the program binary.
+     The fact we don't dilate the binary is a *huge* simplification!
   2. We know `r0` and `r1` hold the right values at this program address, because 
      otherwise the call wouldn't work.
   3. We don't have the icache or dcache on, so we don't need to manually 
@@ -314,7 +327,6 @@ There are a ton of extensions.  You're more than welcome to think of your
 own, ideally where you make something fast for another class or personal
 project.
 
-
 #### Redo the lab to generate the code on your laptop.  
 
 You'll learn alot.  On Mac that can run ARM it's not too hard.
@@ -330,8 +342,9 @@ Even better: make a fake little RISC language (you can look at the
 vcode paper) and have two backends: one that JITs to your laptop,
 one that JITs to the pi.
 
-
 #### Redo our 140e "full-except" code to be fast.
+
+This is the most immediately useful extension.
 
 If you recall our 140e exception code let the client override
 exception handlers at runtime by using function pointers.  This 
@@ -353,8 +366,7 @@ Implement a veneer for the performance monitoring unit on the
 arm1176 (this is 3-133 to 3-138) and use this to determine 
 why exactly you are getting speedups.
 
-
-#### Use the armv6 performance counters.
+#### Add caching and cache coherence
 
 Right now we assume the data and instruction cache aren't on, so 
 we don't do any coherence.  Adding dumb coherence where
@@ -382,10 +394,11 @@ if you do this.
 
 ####  Make a hot patch utility
 
-For long running programs (telephony exchanges, crucial servers,
-satellites hurtling through space) you always bring them down to fix
-but instead may need to dynamically patch them.   Live patching is fun
-and exposes a bunch of low level details that can be interesting.  
+For many long running programs (telephony exchanges, crucial servers,
+satellites hurtling through space) you can't bring them down / reboot
+to fix but instead may need to dynamically patch them.   Live patching
+is fun and exposes a bunch of low level details that can be interesting,
+so make a simple version!
 
 As a trivial version, you can include a simple machine code patch in your
 program (e.g., as an array), and when something triggers it (e.g., an
@@ -395,10 +408,11 @@ You can probably figure out a more cute approach :)
 
 ####  Make a hot measurement system
 
-Peter Deustch and C.A Grant made an outragously fun tool in 1971 that let
-users attach machine code monitors to a running kernel.   I don't know
-anyone that has done this in decades  --- you can build a simple version.
-The paper is in [docs/deutsch-measurement.pdf](docs/deutsch-measurement.pdf).
+Peter Deustch and C.A Grant made an outragously fun tool in
+1971 that let users *safely* attach machine code monitors to
+a running kernel.   I don't know anyone that has done this in
+decades  --- you can build a simple version.  The paper is in
+[docs/deutsch-measurement.pdf](docs/deutsch-measurement.pdf).
 
 This isn't useless:  Linux uses a more limited, mundane version of this
 approach (eBPF) by extending the BPF packet filter language.
