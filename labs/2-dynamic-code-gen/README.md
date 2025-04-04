@@ -233,7 +233,7 @@ declare success, at least for this lab.
 
 
 ----------------------------------------------------------------------------
-### Part 5: Runtime inlining `4-runtime-inline`
+### Part 4: Runtime inlining `4-runtime-inline`
 
 Modern C compilers generally only inline routines that are in the same
 file (or included header file).  And even then they may only do it if it
