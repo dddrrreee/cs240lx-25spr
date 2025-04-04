@@ -2,12 +2,19 @@
 
 // example of how arm loads large values.
 //  - sticks the constant at the end of the code
-//  - does an ldr off the pc.
+//  - does an ldr off the pc.  
 //
 // so the C code becomes:
 //   e59f0000    ldr r0, [pc] 
 //   e12fff1e    bx  lr
 //   12345678    .word   0x12345678
+//
+// NOTE: 
+//    - the pc will usually have an additional constant 
+//      added to the pc.
+//    - when you read the pc register it *is not* the 
+//      address of the current instruction, but actually
+//      beyond it. (see 4-derive-pc-reg.c)
 uint32_t ret_large(void) {
     return 0x12345678;
 }
