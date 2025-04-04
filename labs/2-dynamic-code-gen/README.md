@@ -52,12 +52,14 @@ expressivity.
 ### Checkoff
 
 If you've never done this lab before:
-  - Do 1-3.
-  - Do something interesting over the weekend.
+  - Do 1-4.
+  - Do something interesting over the weekend.  It can be an extension
+    or just something cute you think of.
 
 If you did this lab as an extension in 140e:
   - Do at least two of the extensions at the end.
-  - Do something interesting over the weekend.
+  - Do something interesting over the weekend.  It can be an extension
+    or just something cute you think of.
 
 ----------------------------------------------------------------------------
 ### Part 0: Getting started.
@@ -229,22 +231,9 @@ Now, some issues:
 There are hacks to get around (1) and (2) but for expediency we just
 declare success, at least for this lab.
 
---------------------------------------------------------------------------
-### Part 4: make a jitter for dot-product.
-
-Given a sparse vector, generate custom dot product code that hard-codes
-the given vectors non-zero values in the instruction stream.
-
-This was the first piece of code I ever wrote that led to publication.
-It's fun.  
-   1. For each unit test in `armv6-encodings` implement the needed
-      instruction.
-
-   2. Write the code in `4-jit-dot` to encode a dot product in the 
-      instruction stream, skipping zeros.  
 
 ----------------------------------------------------------------------------
-### Part 5: Runtime inlining `5-runtime-line`
+### Part 5: Runtime inlining `4-runtime-inline`
 
 Modern C compilers generally only inline routines that are in the same
 file (or included header file).  And even then they may only do it if it
@@ -319,6 +308,20 @@ Extension: specialize GPIO routines
   4. There are extra three co-processor register registers you can store 
      large constants in to eliminate the cache hit from loading them from
      memory (gcc's preferred method).
+
+--------------------------------------------------------------------------
+### Part 5: make a jitter for dot-product.
+
+Given a sparse vector, generate custom dot product code that hard-codes
+the given vectors non-zero values in the instruction stream.
+
+This was the first piece of code I ever wrote that led to publication.
+It's fun.  
+   1. For each unit test in `armv6-encodings` implement the needed
+      instruction.
+
+   2. Write the code in `5-jit-dot` to encode a dot product in the 
+      instruction stream, skipping zeros.  
 
 ----------------------------------------------------------------------------
 ### Extensions
