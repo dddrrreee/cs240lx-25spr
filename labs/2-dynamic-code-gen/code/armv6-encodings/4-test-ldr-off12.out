@@ -1,0 +1,2 @@
+TRACE:simple_boot: sending 5448 bytes, crc32=2df08ffb
+TRACE:notmain:SUCCESS: trials=512: ldr_off12 seems to work

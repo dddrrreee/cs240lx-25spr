@@ -1,0 +1,2 @@
+TRACE:simple_boot: sending 4992 bytes, crc32=976dbec
+TRACE:notmain:SUCCESS: trials=10: mov_imm8 seems to work

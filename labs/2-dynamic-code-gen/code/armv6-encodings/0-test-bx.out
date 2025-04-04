@@ -1,0 +1,2 @@
+TRACE:simple_boot: sending 4860 bytes, crc32=e0524e8b
+TRACE:notmain:SUCCESS: trials=10: bx(lr) seems to work

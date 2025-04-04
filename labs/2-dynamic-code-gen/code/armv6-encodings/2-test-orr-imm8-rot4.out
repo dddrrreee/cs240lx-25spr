@@ -1,0 +1,2 @@
+TRACE:simple_boot: sending 3364 bytes, crc32=a12a62c8
+TRACE:notmain:SUCCESS: trials=1020: orr_imm8_rot4 seems to work

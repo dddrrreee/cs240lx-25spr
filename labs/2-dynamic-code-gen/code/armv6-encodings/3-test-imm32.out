@@ -1,0 +1,2 @@
+TRACE:simple_boot: sending 5480 bytes, crc32=1de80aa
+TRACE:notmain:SUCCESS: trials=4096: load_imm32 seems to work

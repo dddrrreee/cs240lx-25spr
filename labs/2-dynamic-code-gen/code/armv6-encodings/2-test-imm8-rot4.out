@@ -1,0 +1,2 @@
+TRACE:simple_boot: sending 3344 bytes, crc32=91a9c0f5
+TRACE:notmain:SUCCESS: trials=1020: mov_imm8_rot4 seems to work
