@@ -52,7 +52,7 @@ expressivity.
 ### Checkoff
 
 If you've never done this lab before:
-  - Do 1-4.
+  - Do 1-3.
   - Do something interesting over the weekend.  It can be an extension
     or just something cute you think of.
 
