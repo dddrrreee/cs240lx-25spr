@@ -49,31 +49,16 @@ We'll do a bunch of simple examples that show how to exploit both
 runtime machine code generation or self-modifying to get speed or 
 expressivity.
 
+### Checkoff
 
-### 140e student extensions
+If you've never done this lab before:
+  - Do 1-3.
+  - Do something interesting over the weekend.
 
-Some of you have done some of the below as extensions.  There's
-a bunch of other stuff to do instead:
-  1. Redo the lab to generate the code on your laptop.  This will likely
-     require defeating exploit-proofing the OS has put in place
-     (e.g., disallowing executing heap memory).
+If you did this lab as an extension in 140e:
+  - Do at least two of the extensions at the end.
+  - Do something interesting over the weekend.
 
-     Even better: make a fake little RISC language (you can look at the
-     vcode paper) and have two backends: one that JITs to your laptop,
-     one that JITs to the pi.
-
-  2. Change the "full-except" code in 140E to use jitting to jump 
-     right to the user handler.  Tune your interrupt handler to 
-     be as fast as possible and make sure you get the same results.
-
-  3. Implement a veneer for the performance monitoring unit on the
-     arm1176 (this is 3-133 to 3-138) and use this to determine 
-     why exactly you are getting speedups.
-
-  4. Add support to flush the data cache and instruction cache 
-     on the exact regions that were modified.
-
-There's various other hacks you can do; let us know if you need them!
 
 ----------------------------------------------------------------------------
 ### Part 0: Getting started.
@@ -116,28 +101,28 @@ All the instruction encodings are in the ARMv6 architecture manual
 (`cs240lx-25/docs/armv6.pdf`).  We excerpt that chapter for simplicity
 as `docs/armv6-inst-full.pdf`
 
+#### A3-2: ARM instruction encodings
 
-<figure>
+Chapter 3, page 2 of the armv manual has all the encodings.
+
+
+<p align="center">
   <img src="images/armv6-encodings.png" width="600" />
-  <figcaption><strong>A3-2: instruction encodings.</strong></figcaption>
-</figure>
 </p>
 
 
-<figure>
+#### A4-20: bx instruction
+
+<p align="center">
   <img src="images/bx-a4-20.png" width="600" />
-  <figcaption><strong>A4-20: bx encoding</strong></figcaption>
-</figure>
 </p>
 
 
-<figure>
+#### A4-10: bl instruction
+
+<p align="center">
   <img src="images/bl-a4-10.png" width="600" />
-  <figcaption><strong>A4-10: bl encoding</strong></figcaption>
-</figure>
 </p>
-
-
 
 --------------------------------------------------------------------------
 ### Part 2: add executable headers in a backwards compatible way.
@@ -172,12 +157,12 @@ More detailed:
       etc.  You should store the string `hello` with a 0 as the first
       6 bytes of the after the jump instruction.
 
-   2. Modify `3-jump/hello.c` to set a pointer to where this string will
+   2. Modify `2-jump/hello.c` to set a pointer to where this string will
       be in memory.  The code should run and print it.
 
    3. For some quick examples of things you can do in these scripts
-      you may want to look at the `3-jump/memmap.header` or
-      `3-jump/memmap.header` linker scripts from old labs.  The linker
+      you may want to look at the `2-jump/memmap.header` or
+      `2-jump/memmap.header` linker scripts from old labs.  The linker
       script language is pretty bad, so if you get confused, it's their
       fault, not yours --- keep going, try google, etc.     We don't
       need much for this lab's script, so it shouldn't be too bad.
@@ -205,7 +190,9 @@ in turn.  This will involve:
   1. Saving and restoring the `lr` and doing `bl` as you did in the 
      `hello` example.
   2. As a hack, you pop the `lr` before the last call and do a
-     `b` to the last routine rather than a `bl`.
+     raw branch `b` to the last routine rather than a branch and 
+     link `bl`.  That way the last routine will return all the way
+     back to the caller (saving one jump).
 
 #### Advanced: jump threading 
 
@@ -226,13 +213,14 @@ We:
       in the code to `int1`.
    3. Overwrite `int0``s `bx lr` with that value.
    4. Do a similar process for `int1`.
-   5. Leave `int2` as-is.   
+   5. Leave `int2` as-is so it turns back to the original caller.   
 
 Now, some issues:
   1. We can no longer call `int0`, `int1` and `int2`  because we've modified
      the executable and they now behave differently.
   2. The code might have have multiple `bx lr` calls or might have data
-     in it that looked like it when it should not have.
+     in it that looked like it when it should not have.  For today
+     we just hope and pray, but that's not a acceptable strategy in general.
   3. If we use the instruction cache, we better make sure to flush it or at 
      least the address range of the code.
 
@@ -250,7 +238,7 @@ It's fun.
    1. For each unit test in `armv6-encodings` implement the needed
       instruction.
 
-   2. Write the code in `5-jit-dot` to encode a dot product in the 
+   2. Write the code in `4-jit-dot` to encode a dot product in the 
       instruction stream, skipping zeros.  
 
 ----------------------------------------------------------------------------
@@ -318,3 +306,106 @@ Extension: specialize GPIO routines
   4. There are extra three co-processor register registers you can store 
      large constants in to eliminate the cache hit from loading them from
      memory (gcc's preferred method).
+
+----------------------------------------------------------------------------
+### Extensions
+
+There are a ton of extensions.  You're more than welcome to think of your
+own, ideally where you make something fast for another class or personal
+project.
+
+
+#### Redo the lab to generate the code on your laptop.  
+
+You'll learn alot.  On Mac that can run ARM it's not too hard.
+For x86 it can be painful, but eye opening --- x86 is why
+I built a reverse engineering approach that figured out 
+instruction encodings from the assembler (we'll build this next lab).
+
+You will likely require defeating exploit-proofing the OS has put in place
+(e.g., disallowing executing heap memory).  The `prelab-code-unix` 
+has an exmaple of how to do so on Linux.
+
+Even better: make a fake little RISC language (you can look at the
+vcode paper) and have two backends: one that JITs to your laptop,
+one that JITs to the pi.
+
+
+#### Redo our 140e "full-except" code to be fast.
+
+If you recall our 140e exception code let the client override
+exception handlers at runtime by using function pointers.  This 
+approach is slow, requiring several loads and an indirect jump
+that likely gets mispredicted.  You can use your jit knowledge
+to generate code that jumps directly to the client routine without
+this intermediate code.
+
+For this, I would make a copy of one of the single step  equivalance
+labs and use this approach --- their hashing should detect if 
+there was a bug.  You can then just start tuning the exception
+handling like crazy.  We did it in a pretty dumb way: I wouldn't
+be suprised if you could get at least 5x speedup.
+
+
+#### Use the armv6 performance counters.
+
+Implement a veneer for the performance monitoring unit on the
+arm1176 (this is 3-133 to 3-138) and use this to determine 
+why exactly you are getting speedups.
+
+
+#### Use the armv6 performance counters.
+
+Right now we assume the data and instruction cache aren't on, so 
+we don't do any coherence.  Adding dumb coherence where
+we invalidate both after modifying code is pretty simple --- you 
+can use routines from the 140e ("vm coherence") lab 15.  However,
+it is slow: you can also use the more precise instructions to just
+invalidate a range of addresses to be more efficient.
+
+####  Make a precise profiler using dynamic inlining
+
+In 140e we built a gprof profiler.  While easy, it was statistical 
+(so not exact) and also didn't give any indication of who was calling
+the expensive routines.  You can use the hacks from 
+dynamic inlining to build an exact, callstack preserving profiler
+as follows:
+   1. Get the list of routines in the executable (using nm) and append
+      it to the binary.
+   2. Go through this list and rewrite the first instruction of each
+      routine to call a rewriting trampoline that will fabricate
+      a call to the original as well as updating a data structure
+      with the current caller and cycle count.
+
+It should be pretty cool, but there are some details, so let us know
+if you do this.
+
+####  Make a hot patch utility
+
+For long running programs (telephony exchanges, crucial servers,
+satellites hurtling through space) you always bring them down to fix
+but instead may need to dynamically patch them.   Live patching is fun
+and exposes a bunch of low level details that can be interesting.  
+
+As a trivial version, you can include a simple machine code patch in your
+program (e.g., as an array), and when something triggers it (e.g., an
+input, timer interrupt, bug) smash the original code to call your patch.
+
+You can probably figure out a more cute approach :)
+
+####  Make a hot measurement system
+
+Peter Deustch and C.A Grant made an outragously fun tool in 1971 that let
+users attach machine code monitors to a running kernel.   I don't know
+anyone that has done this in decades  --- you can build a simple version.
+The paper is in [docs/deutsch-measurement.pdf](docs/deutsch-measurement.pdf).
+
+This isn't useless:  Linux uses a more limited, mundane version of this
+approach (eBPF) by extending the BPF packet filter language.
+
+####  Compile a neural net to code
+
+#### Alot more!
+
+There's various other hacks you can do; let us know if you need them!
+
