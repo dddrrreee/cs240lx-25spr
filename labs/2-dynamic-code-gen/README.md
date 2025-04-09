@@ -468,6 +468,27 @@ Widely used, good to know, neat to do.
 
 ####  Compile a hash table or neural net to code
 
+The packet filter paper in
+[docs/dpf-sigcomm96.pdf](docs/dpf-sigcomm96.pdf) describes how you can
+compile hash tables to code at runtime --- e.g., hashing using different
+routines until you get no collisions, then eliding collision checks,
+hard-coding constants in the instruction stream etc.
+
+You can do a similar thing for neural nets: e.g., instead of iterating
+through four successor nodes, hard-code the four links, hard-code
+constants, etc.  You can allocate memory so the links are reached by
+small addition, etc.  If you start doing this, write a simple version
+of the NN in C and then let us know so we can offer ideas.
+
+####  Use gcc -O3 to compile the code and link it back in.
+
+If your code runs for days, you don't really care much about the code
+generation cost.  In this case, you can avoid dealing with machine code
+and tricky optimizations and just emit C code at runtime (or, Rust if
+Max), compile it, and then run the result either by dynamic linking (talk
+to Stuart for how to dynamic link!)  or by bootloading a new program.
+This can be a huge win.  Worth doing for neural networks and such things.
+
 #### Alot more!
 
 There's various other hacks you can do; let us know if you need them!
