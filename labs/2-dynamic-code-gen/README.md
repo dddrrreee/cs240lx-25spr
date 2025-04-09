@@ -52,12 +52,13 @@ expressivity.
 ### Checkoff
 
 If you've never done this lab before:
-  - Do 1-3.
+  - Do 1-5.
   - Do something interesting over the weekend.  It can be an extension
     or just something cute you think of.
 
 If you did this lab as an extension in 140e:
-  - Do at least two of the extensions at the end.
+  - Show that your 1-5 still works.
+  - Do at least one of the extensions at the end.
   - Do something interesting over the weekend.  It can be an extension
     or just something cute you think of.
 
