@@ -104,12 +104,12 @@ So given this information you should be able to reverse engineer the
 value for each key.
 
 A simple-minded algorithm:
-  1. Loop until you read 0 from the IR (IR=0 implies there 
-     was a signal).
-  2. If we get a header (IR=0 for 9000, IR=1 for 4500)
-       - then read bits until we timeout (set this longer than 
-         any legal value -- I used 20000).
-     Else iff the readings don't match a header, goto (1).
+
+  1. Loop until you read 0 from the IR (IR=0 implies there was a signal).
+  2. If we get a header (IR=0 for 9000, IR=1 for 4500) then read bits 
+     until we timeout (set this longer than any legal value -- I used 20000).
+
+     Else if the readings don't match a header, goto (1).
   3. Reconstruct the signal by converting IR readings to a 1 or 0
      as follows:
        - 0 = IR=0 for 600us, IR=1 for 600usec.
