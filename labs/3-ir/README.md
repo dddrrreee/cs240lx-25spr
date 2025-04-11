@@ -1,7 +1,7 @@
 ### Overview: reverse engineering a infrared remote control.
 
 <p align="center">
-  <img src="images/ir.png" width="350" />
+  <img src="images/ir.jpg" width="350" />
 </p>
 
 
