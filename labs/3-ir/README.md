@@ -91,14 +91,14 @@ Notes:
     by pressing quickly and slowly.
 
 So to send "01" a transmitter would:
-    0. Send a header: transmit (so: IR=0) for 9000 usec, then 
-       nothing (IR=1) for 4500 usec.
-    1. Send a "0": Transmit (IR=0) for 600 usec, then don't transmit 
-       (IR=1) for 600 usec.
-    2. Send a "1": Transmit (IR=0) for 600 usec, then don't transmit 
-       (IR=1) for 1600usec.
-    3. Send STOP: Transmit (IR=0) for 600usec, then don't transmit (IR=1) 
-       for a "long" time as compared to "0" and "1".
+  1. Send a header: transmit (so: IR=0) for 9000 usec, then 
+     nothing (IR=1) for 4500 usec.
+  2. Send a "0": Transmit (IR=0) for 600 usec, then don't transmit 
+     (IR=1) for 600 usec.
+  3. Send a "1": Transmit (IR=0) for 600 usec, then don't transmit 
+     (IR=1) for 1600usec.
+  4. Send STOP: Transmit (IR=0) for 600usec, then don't transmit (IR=1) 
+     for a "long" time as compared to "0" and "1".
 
 So given this information you should be able to reverse engineer the
 value for each key.
@@ -127,10 +127,8 @@ uncertainty it introduces.
   1. I accepted readings as a valid header if they
      were within 10% of the expected value.  So: a first reading IR=0
      for 9000 +/- 900usec, followed by IR=1 for 4500 +/- 450usec.
-
   2. When deciding if a value is a skip, return true if it's within
      a given number of usec (e.g., if its between 400 to 800usec).
-
   3. When deciding if transmission was a "1" or a "0", pick the value by
      deciding if its above or below the halfway point between the two
      values 600 and 1600.  I.e., if the timing is above (1600+600)/2 then 
@@ -139,7 +137,6 @@ uncertainty it introduces.
      Midpoint is fairly robust and though sleazy (since it won't reject
      anything) is close to what alot of hardware does (according to
      Mark H).
-
   4. If you are more clever than this somewhat brain-dead approach,
      be more clever!
 
