@@ -121,8 +121,8 @@ A simple-minded algorithm:
      since it's just an internal integer.
 
 This process should remind you of UART read.  And, as with UART, there
-will always be timing error, so your code has to handle with 
-uncertainty it introduces.
+will always be timing error, so your code has to handle with uncertainty
+it introduces.
 
   1. I accepted readings as a valid header if they
      were within 10% of the expected value.  So: a first reading IR=0
@@ -146,7 +146,7 @@ To repeat some common problems:
     You'll have to experiment.
 
 --------------------------------------------------------------------
-### Crucial
+### Some important notes
 
   - I cheaped out and bought some low quality remotes on amazon that came
     with IR sensors.  These are the HX1838 rather than the Visha TSOP4838
