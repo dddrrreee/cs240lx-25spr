@@ -8,19 +8,8 @@
 Today is a fun reverse engineering lab.   
   1. Using an IR sensor --- [the Vishay TSOP4838](https://www.newark.com/webapp/wcs/stores/servlet/ProductDisplay?catalogId=15003&productSeoURL=vishay&partNumber=60K6999) --- you'll reverse engineer the key presses from a remote.  It's a fun puzzle that doesn't need much infrastructure.  Many projects you do get better if you can add remote control, so it's also useful.
 
-  2. You'll then use an LED to transmit values the IR receiver can read.
-     You'll use this to make a simple network that implements the UART
-     protocol to send bytes.  Open ended, illuminating puzzles: (1)
-     how fast can you send UART characters, (2) make a network bootloader.
-    
-     Loop-back is an interesting example: it's extremely sensitive to mistakes,
-     which keeps you honest, and can be used as a simple "hello world" to 
-     show the tradeoffs of the different ways to structure systems: interrupt
-     based, threads, events.  We will likely do this on thursday.
-
 As with the last lab, it should be easy to ignore all of our code if
 you want, and just do everything from scratch ("Daniel mode").
-
 
 Where stuff is:
 
