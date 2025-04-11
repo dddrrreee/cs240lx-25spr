@@ -1,4 +1,6 @@
-SUBDIRS= code
+SUBDIRS := code
+SUBDIRS += 0-circular-example
+SUBDIRS += 0-gpio-interrupts-example
 
 .PHONY: all clean
 all check clean: $(SUBDIRS)
