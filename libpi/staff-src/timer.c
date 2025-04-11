@@ -21,6 +21,8 @@ void delay_us(uint32_t us) {
         uint32_t e = timer_get_usec();
         if ((e - s) >= us)
             return;
+        else
+            rpi_wait();
     }
 }
 
