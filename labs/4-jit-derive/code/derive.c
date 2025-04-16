@@ -7,11 +7,13 @@
 #include "armv6-insts.h"
 
 /*
- *  1. emits <insts> into a temporary file (use create_file
- *     and write_exact).
- *  2. compiles it.
- *  3. reads back in.
- *  4. returns pointer to it.
+ *  1. emits <insts> into a temporary file: (use create_file
+ *     write_exact, and then close the fd (otherwise).
+ *  2. compiles it: 
+ *      - look in examples/make.sh or the normal pi compilation 
+ *         commands to see what commands to run.
+ *      - use <run_system> to run them.
+ *  3. read the results back in using <read_file> and return the pointer
  */
 uint32_t *insts_emit(unsigned *nbytes, char *insts) {
     // check libunix.h --- create_file, write_exact, run_system, read_file.
