@@ -201,36 +201,36 @@ To keep it simple:
        routine.
 
 
-    int foo(int x);
-    int print_msg(const char *msg) {
-        printk("%s\n", msg);
-    }
+            int foo(int x);
+            int print_msg(const char *msg) {
+                printk("%s\n", msg);
+            }
 
-    typedef (*curry_fn)(void);
+            typedef (*curry_fn)(void);
+        
+            curry_fn curry(const char *type, ...) {
+                p = alloc_mem();
+                p[0] = arg;
+                code = &p[1];
 
-    curry_fn curry(const char *type, ...) {
-        p = alloc_mem();
-        p[0] = arg;
-        code = &p[1];
-
-        va_list args;
-        va_start(args, fmt);
-        switch(*type) {
-        case 'p':
-                code[0] = load_uimm32(va_arg(args, void *);
-                break;
-
-        case 'i':
-                code[0] = load_uimm32(va_arg(args, int);
-                break;
-        default:
-                panic("bad type: <%s>\n", type);
-        }
-        code[1] = gen_jal(fp);
-        code[2] = gen_bx(reg_lr);
-        return &code[0];
-    }
+                va_list args;
+                va_start(args, fmt);
+                switch(*type) {
+                case 'p':
+                        code[0] = load_uimm32(va_arg(args, void *);
+                        break;
+        
+                case 'i':
+                        code[0] = load_uimm32(va_arg(args, int);
+                        break;
+                default:
+                        panic("bad type: <%s>\n", type);
+                }
+                code[1] = gen_jal(fp);
+                code[2] = gen_bx(reg_lr);
+                return &code[0];
+            }
 
 
-    curry_fn foo5 = curry("i", foo, 5);
-    curry_fn hello = curry("i", bar, 5);
+            curry_fn foo5 = curry("i", foo, 5);
+            curry_fn hello = curry("i", bar, 5);
