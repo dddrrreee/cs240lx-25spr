@@ -105,12 +105,15 @@ links them together into an executable.
 #### Extension: reverse engineer for your laptop
 
 Instead of just reverse engineering for the pi, you can do the same for
-your laptop.  Which arguably is more useful.  The workflow is the same.
+your laptop.  Which might actually be more useful over the course
+of your life.  In any case: The workflow is the same, only the
+names of the commands change (you'll use your native `gcc` and
+`objdump` rather than the cross compilation ones for the ARM).
 
-Note, that modern OSes try to make the security exploits more difficult
-by  using various ways to prevent running dynamically code.  If you're
-on linux the code in `2-dynamic-code-gen/prelab-code-unix` shows
-how defeat these measures by compiling as follows:
+Note, that some modern OSes prevent running dynamically code as an attempt
+to make the security exploits more difficult.  If you're on linux the
+code in `2-dynamic-code-gen/prelab-code-unix` shows how defeat these
+measures by compiling as follows:
 
 	    gcc -O2 -z execstack dcg.c -o dcg
 
