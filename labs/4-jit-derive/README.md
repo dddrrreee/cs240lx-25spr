@@ -99,12 +99,11 @@ your laptop.  Which arguably is more useful.  The workflow is the same.
 Note, that modern OSes try to make the security exploits more difficult
 by  using various ways to prevent running dynamically code.  If you're
 on linux the code in `2-dynamic-code-gen/prelab-code-unix` shows
-how to compile to defeat these by compiling as follows:
+how defeat these measures by compiling as follows:
 
 	    gcc -O2 -z execstack dcg.c -o dcg
 
-Macos will likely need a different
-approach.
+Macos will likely need a different approach.
 
 I would first get the dcg example to work on your laptop and then start
 deriving.  You'll have to reverse engineer how to pass parameters.  You
