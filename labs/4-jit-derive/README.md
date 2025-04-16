@@ -8,7 +8,13 @@ encodings in the first machine code
 lab:
   - [2-dynamic-code-gen/prelab-code-pi/5-derive-add.c](2-dynamic-code-gen/prelab-code-pi/5-derive-add.c)
 
-Today we will generalize this a bit more.
+Today we will generalize this a bit more.  This approach is based
+on the papers "Reverse engineering instruction encodings"
+I wrote with Wilson Hsieh and Godmar Back way back in the day:
+
+  - [2-dynamic-code-gen/docs/derive-short.pdf](2-dynamic-code-gen/docs/derive-short.pdf)
+  - [2-dynamic-code-gen/docs/derive-usenix.pdf](2-dynamic-code-gen/docs/derive-usenix.pdf)
+
 ----------------------------------------------------------------------------
 ### Part 1: reverse engineer instructions (`code/derive.c`)
 
