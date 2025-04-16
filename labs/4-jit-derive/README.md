@@ -45,6 +45,11 @@ simple, but it gives you a feel for how the more general tricks are played:
      arm-none-eabi-as test.s -o temp1 && arm-none-eabi-objcopy -O binary temp1 temp2
      ```
      and now a file named `temp2` will contain the encoding
+
+     NOTE: I emitted special sentinals at the beginning
+     and end of the emitted code so I could find the emitted
+     instructions reliably.
+
   2. Use (1) to implement a simple cross-checker that takes a
      machine code value and cross checks it against what is produced
      by the assembler.
@@ -132,8 +137,7 @@ you can:
   3. Automatically generate routines (or macros) to encode them.
   4. Automatically generate routines (or macros) to decode them).
 
-
-
+The two derive papers might help.
 
 ----------------------------------------------------------------------------
 #### Extension: making a `curry` routine
