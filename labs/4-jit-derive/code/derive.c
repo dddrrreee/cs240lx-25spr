@@ -93,6 +93,7 @@ void derive_op_rrr(const char *name, const char *opcode,
         uint32_t u = emit_rrr(opcode, dst[i], s1, s2);
 
         // if a bit is always 0 then it will be 1 in always_0
+        // NOTE the unary complement.
         always_0 &= ~u;
 
         // if a bit is always 1 it will be 1 in always_1, otherwise 0
@@ -116,7 +117,8 @@ void derive_op_rrr(const char *name, const char *opcode,
     // check that bits are contig and at most 4 bits are set.
     if(((changed >> d_off) & ~0xf) != 0)
         panic("weird instruction!  expecting at most 4 contig bits: %x\n", changed);
-    // refine the opcode.
+    // refine the opcode: note until you solve for the other registers
+    // this includes s1 and s2 bits
     op &= never_changed;
     output("opcode is in =%x\n", op);
 
@@ -197,10 +199,15 @@ int main(void) {
                 "r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15",
                 0 
     };
+
     // XXX: should probably pass a bitmask in instead.
     derive_op_rrr("arm_add", "add", all_regs,all_regs,all_regs);
     output("did something: now use the generated code in the checks above!\n");
 
-    // get encodings for other instructions, loads, stores, branches, etc.
+    // NOW:
+    //   1. get the encodings for other instructions you used.
+    //   2. write a routine that will check all the register
+    //      permutations.
+    //   3. write code to automatically emit the instruction encoder.
     return 0;
 }

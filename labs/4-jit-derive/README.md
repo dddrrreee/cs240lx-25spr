@@ -1,36 +1,21 @@
 ## Lab: dynamic code generation
 
-***Make sure you read the [PRELAB](./PRELAB.md) for context.***
+Since we do systems, of course we will build a tool to generate
+instruction encodings rather than do by hand.
 
-Generating machine code is fun, kind of sleazy, and most people have
-no idea how to do it.  So it makes sense as a lab for our class.
+We already saw a trivial example of reverse engineering instruction
+encodings in the first machine code
+lab:
+  - [2-dynamic-code-gen/prelab-code-pi/5-derive-add.c](2-dynamic-code-gen/prelab-code-pi/5-derive-add.c)
 
-As discussed in the `PRELAB` its used for many things, from the original
-VMware, machine simulators (closely related!), JIT compilers you may
-well use everyday, and even nested functions in gcc.
-
-A second nice thing about generating machine code is that it really
-gives you a feel for how the machine actually operates.  When you do
-today's lab you will realize that --- surprisingly --- assembly code is
-actually high-level in many ways(!) since the assembler and linker do many
-tricky things for you.  (E.g., linking jumps to their destinations.)
-You will implement a bunch of these things (next lab).
-
-The theory behind today's lab is that we'll do concrete examples of 
-a bunch of different things so that it removes a bunch of the mystery.
-Subsequent lab(s?) will go more in depth, where you can build out the things
-you do today.
-
-As a quick review, you should look at
-`1-dynamic-code-gen/prelab-code-pi/5-derive-add.c` to see a simple
-example of how to solve for an instruction encoding.
-
+Today we will generalize this a bit more.
 ----------------------------------------------------------------------------
-### Part 1: reverse engineer instructions
+### Part 1: reverse engineer instructions (`code/derive.c`)
 
-The code you'll hack on today is in `code/`.  Feel free to
-refactor it to make it more clean and elegant.    I ran out of time to
-iterate over it, unfortunately.
+The code you'll hack on today is in `code/`.  Feel free to refactor it
+to make it more clean and elegant.    I ran out of time to iterate over
+it, unfortunately.
+
 The key files:
   - `check-encodings.c` this has the code you'll write and modify
     for today's lab.  Just start in `main` and build anything it
@@ -68,10 +53,10 @@ Congratulations, you have the `hello world` version of a bunch of neat
 tricks.  We will build these out more next lab and use them.
 
 ----------------------------------------------------------------------------
-### Part 2: use to implement `1-dynamic-code-gen`
+### Part 2: use to implement `2-dynamic-code-gen`
 
-For the first lab, you hand-wrote the encodings.  Use your 
-derive code to automatically generate the encoders.
+For the first lab machine code lab, you hand-wrote the encodings.
+Use your derive code to automatically generate the encoders.
 
 You probably want to check your code using something like:
 
@@ -89,7 +74,36 @@ Where my routines are:
     // to go.
     inline uint32_t arm_b(uint32_t src_addr, uint32_t target_addr);
     inline uint32_t arm_bl(uint32_t src_addr, uint32_t target_addr);
+----------------------------------------------------------------------------
+#### Extension: write a simple linker
 
+When we emit branches, we often always know where the branch target will
+be in memory.  This means you'll need to make a note that the branch
+uses a label, and when you know where that label resides, go back
+and patch the code.
+
+  1. use this to do if-statements.
+  2. then do loops.
+  3. then do recursive functions
+  4. then do functions you haven't emit yet.
+
+The same principles here are how the linker takes all your .o's and 
+links them together into an executable.
+
+----------------------------------------------------------------------------
+#### Extension: write a more general deriver
+
+The current approach hard-codes a ton of things that should be variables.
+It's an interesting puzzle to make something more general where
+you can:
+  1. specify the instruction format expected by the compiler using
+     special variable names for different types of operatands (registers
+     8-bit immediates, 12 bit immediates, privileged registers etc).
+  2. have the deriver automatically solve for instructions that
+     take 0, 1, 2, 3 operands where the operands can be registers,
+     immediates,  labels.
+  3. Automatically generate routines (or macros) to encode them.
+  4. Automatically generate routines (or macros) to decode them).
 
 ----------------------------------------------------------------------------
 #### Extension: making a `curry` routine
