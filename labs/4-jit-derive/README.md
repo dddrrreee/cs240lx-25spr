@@ -110,8 +110,7 @@ I would first get the dcg example to work on your laptop and then start
 deriving.  You'll have to reverse engineer how to pass parameters.  You
 can do this by writing different C routines and looking at how they
 get compiled.  The 140E note discusses this:
-[https://github.com/dddrrreee/cs140e-25win/tree/main/notes/using-gcc-for-asm]
-(https://github.com/dddrrreee/cs140e-25win/tree/main/notes/using-gcc-for-asm).
+[https://github.com/dddrrreee/cs140e-25win/tree/main/notes/using-gcc-for-asm](https://github.com/dddrrreee/cs140e-25win/tree/main/notes/using-gcc-for-asm).
 
 ----------------------------------------------------------------------------
 #### Extension: write a more general deriver
