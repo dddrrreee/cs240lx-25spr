@@ -91,6 +91,29 @@ The same principles here are how the linker takes all your .o's and
 links them together into an executable.
 
 ----------------------------------------------------------------------------
+#### Extension: reverse engineer for your laptop
+
+Instead of just reverse engineering for the pi, you can do the same for
+your laptop.  Which arguably is more useful.  The workflow is the same.
+
+Note, that modern OSes try to make the security exploits more difficult
+by  using various ways to prevent running dynamically code.  If you're
+on linux the code in `2-dynamic-code-gen/prelab-code-unix` shows
+how to compile to defeat these by compiling as follows:
+
+	    gcc -O2 -z execstack dcg.c -o dcg
+
+Macos will likely need a different
+approach.
+
+I would first get the dcg example to work on your laptop and then start
+deriving.  You'll have to reverse engineer how to pass parameters.  You
+can do this by writing different C routines and looking at how they
+get compiled.  The 140E note discusses this:
+[https://github.com/dddrrreee/cs140e-25win/tree/main/notes/using-gcc-for-asm]
+(https://github.com/dddrrreee/cs140e-25win/tree/main/notes/using-gcc-for-asm).
+
+----------------------------------------------------------------------------
 #### Extension: write a more general deriver
 
 The current approach hard-codes a ton of things that should be variables.
@@ -104,6 +127,9 @@ you can:
      immediates,  labels.
   3. Automatically generate routines (or macros) to encode them.
   4. Automatically generate routines (or macros) to decode them).
+
+
+
 
 ----------------------------------------------------------------------------
 #### Extension: making a `curry` routine
