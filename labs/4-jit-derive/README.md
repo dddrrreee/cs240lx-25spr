@@ -196,10 +196,9 @@ makes it all more generic.
 
 To keep it simple:
 
-    1. allocate memory for code and to store the argument.
-    2. generate code to load the argument and call the original
-       routine.
-
+ 1. allocate memory for code and to store the argument.
+ 2. generate code to load the argument and call the original
+    routine.
 
             int foo(int x);
             int print_msg(const char *msg) {
