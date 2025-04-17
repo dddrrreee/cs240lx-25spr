@@ -1,0 +1,11 @@
+TRACE:notmain:iter=0: trivial free/alloc worked as expected
+TRACE:notmain:iter=1: trivial free/alloc worked as expected
+TRACE:notmain:iter=2: trivial free/alloc worked as expected
+TRACE:notmain:iter=3: trivial free/alloc worked as expected
+TRACE:notmain:iter=4: trivial free/alloc worked as expected
+TRACE:notmain:iter=5: trivial free/alloc worked as expected
+TRACE:notmain:iter=6: trivial free/alloc worked as expected
+TRACE:notmain:iter=7: trivial free/alloc worked as expected
+TRACE:notmain:iter=8: trivial free/alloc worked as expected
+TRACE:notmain:iter=9: trivial free/alloc worked as expected
+TRACE:notmain:success: malloc/free appear to work on 10 tests!

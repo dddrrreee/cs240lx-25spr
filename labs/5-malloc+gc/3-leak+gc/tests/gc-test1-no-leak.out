@@ -1,0 +1,4 @@
+TRACE:test1:alloc returned block id=1 
+TRACE:sweep_leak:	GC:Checked 0 blocks.
+TRACE:sweep_leak:		GC:SUCCESS: No leaks found!
+TRACE:notmain:SUCCESS: no leaks!

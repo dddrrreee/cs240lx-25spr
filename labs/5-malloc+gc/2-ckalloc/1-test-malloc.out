@@ -1,0 +1,1 @@
+1-test-malloc.c:notmain:31:DEBUG:ERROR: Assertion `p0<p1` failed.

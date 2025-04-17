@@ -1,0 +1,11 @@
+TRACE:notmain:test iter 0 passed
+TRACE:notmain:test iter 1 passed
+TRACE:notmain:test iter 2 passed
+TRACE:notmain:test iter 3 passed
+TRACE:notmain:test iter 4 passed
+TRACE:notmain:test iter 5 passed
+TRACE:notmain:test iter 6 passed
+TRACE:notmain:test iter 7 passed
+TRACE:notmain:test iter 8 passed
+TRACE:notmain:test iter 9 passed
+TRACE:notmain:success: malloc/free appear to work!
