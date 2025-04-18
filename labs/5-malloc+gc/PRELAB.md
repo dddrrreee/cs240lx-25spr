@@ -19,6 +19,7 @@ Some common special cases:
 Some details:
    - [Arena](./docs/arenas.pdf) --- perhaps the first paper on arena allocation?  Fast read.
    - [Slab](./docs/191.pdf) --- basis of linux "slab" allocator.
+   - [Slab past present future](./docs/slabs.pdf) --- talk on different slab versions.
    - [actual slab](./docs/bonwick_slab.pdf) --- initial paper on linux "slab" allocator.
    - [high level slab writeup](https://www.kernel.org/doc/gorman/html/understand/understand011.html)
 
