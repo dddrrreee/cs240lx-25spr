@@ -84,7 +84,7 @@ Invariants:
       be `ALLOCED`.
 
 ---------------------------------------------------------------------------
-### Part 2: leak detection (`3-leak+gc`)
+### Part 2: leak detection (`code-leak+gc`)
 
 We will build a simple leak detector based on the approaches described in
 the Purify paper and Boehm's GC paper.  The tool will attempt to detect
@@ -221,7 +221,7 @@ For the pi, we implement the pseudo-code above as follows:
      leak runs do not obscure additional errors by repeatedly reporting
      old ones.)
 
-  5. The tests are in `3-leak+gc/tests` --- you should just work through
+  5. The tests are in `code-leak+gc/tests` --- you should just work through
      them one at a time like last time.  The tests are pretty simplistic,
      so please also write some of your own!  Any test that does not
      call `ck_gc()` (test5) should pass.
