@@ -1,7 +1,12 @@
 ## Lab: Leak detection, garbage collection
 
 -------------------------------------------------------------------------
-### tl;dr
+### tl;dr: BUGS and clarifications.
+  
+  - BUG: you do not need to implement `dump_regs` --- we used to use this
+    until 10 minutes before class when I realized the approach was
+    fundamentally broken.  You just need to do the two trampolines in
+    `gc-asm.S`.
 
   - If you get an error "not handling that" in `staff-ck-gc.c` just
     have your kr_malloc allocate more memory on each call (for
