@@ -1,5 +1,13 @@
 ## Lab: Leak detection, garbage collection
 
+-------------------------------------------------------------------------
+### tl;dr
+
+  - If you get an error "not handling that" in `staff-ck-gc.c` just
+    have your kr_malloc allocate more memory on each call (for
+    the tests 64k should be enough, but can do 512k).
+
+-------------------------------------------------------------------------
 In this lab you'll:
   1. Adapt the K&R `malloc/free` implementation to the rpi so we have
      a correct (albeit slow) `free` implementation.
