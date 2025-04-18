@@ -194,6 +194,9 @@ collector.
 
 #### Implementation notes: `gc-asm.S`
 
+NOTE: 
+  - you can initially use staff.
+
 Since our mark-and-sweep has no integration with the compiler
 it is extremely vulnerable to the old values of points that
 the compiler leaves laying around after use.  To attempt to 
@@ -219,7 +222,7 @@ trampolines (that you will write):
   - `gc-asm.S:ck_find_leaks`: do the same, except pass the stack
     pointe ras the second argument to `ck_find_leaks_fn`.
 
-#### Other Implementation notes
+#### Implementation notes for `ck-gc.c`
 
 For the pi, we implement the pseudo-code above as follows:
 
@@ -295,14 +298,9 @@ Some code mistakes:
      are careful: recompute it, or just don't checksum these fields.
      Kinda gross, sorry.
 
-
-  4. Implement the two iterators for allocated blocks:
-
-            // returns pointer to the first header block.
-            hdr_t *kr_first_hdr(void);
-
-            // returns pointer to next hdr or 0 if none.
-            hdr_t *kr_next_hdr(hdr_t *p);
+  3. By far the most common mistake:
+     Freeing a block and then getting its next pointer in the sweep
+     routine.  Everyone did this (me, too).
 
 ---------------------------------------------------------------------------
 ### Part 2: Garbage collection (30 minutes)
@@ -390,19 +388,3 @@ space optimization is even worse than speed.
 But: if you need `free()`, you need it.  And the use of arenas and object
 allocators are a reasonable way to get much of the benefits of a general
 free without much of the complexity.
-
-
-
---------------------------------------------------------------------
-### NOTES:
-
-We falsely think blocks are still claimed because we only get the stack
-pointer several calls deep into our code.  There can be many spurious
-values on the stack from previous activations.  The right thing is
-to grab the stack pointer before calling into the GC system.
-
-Common mistake: freeing a block and then getting its next pointer in
-the sweep routine.  Everyone did this (me, too).
-
-Need to write a bunch more tests and have a gcov like tool to track
-what got executed.
