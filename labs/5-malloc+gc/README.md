@@ -29,14 +29,24 @@ You'll import the K&R `malloc` into libpi:
      on the pi by calling `kmalloc`.
 
 ---------------------------------------------------------------------------
-### Part 1: write a `ckalloc` wrapper on `kr_malloc`
+### Part 1: write a `ckalloc` wrapper on `kr_malloc`: 
 
-For GC and leak detection we need a way to determine what allocated
-block a pointer `p` points to (so that we can mark that block).
+tl;dr:
+  - Code is in: `code-leak+gc/ckalloc.c`
+  - Currently need to add tests (sorry).
 
-For this part you'll do simple veneer on `kr_malloc` to add a header that
-lets us determine this information.  We are going to do it in a stupid
-way so that we're more sure it's correct.
+For GC and leak detection we need a way to determine:
+  1. The set of allegedly allocated blocks (so we know what to free
+     if it's not reachable).
+  2. That allocated block a pointer `p` points to (so that we can 
+     mark that block as reachable).
+
+For this part you'll do simple veneer on `kr_malloc` to:
+  1. Put all allocated blocks on a list.
+  2. Add a header that lets us determine block size and other information.
+
+We are going to do it in a stupid way so that we're more sure it's
+correct.  A great extension is doing it more intelligently.
 
 What we are doing is:
   1. For each allocation call to `ckalloc`: allocate enough to prepend
@@ -48,10 +58,9 @@ What we are doing is:
      on it.
 
 What to write:
-  1. The interface is in `2-ckalloc/ckalloc.h` the starter code in 
-     `2-ckalloc/ckalloc.c`.
+  1. The interface is in `code-leak+gc/ckalloc.h` the starter code in 
+     `ckalloc.c`.
   2. There are some simple accessors you should implement.
-
 
 Here's a dumb linked list removal to save you time if that's an issue:
 
@@ -77,14 +86,13 @@ Here's a dumb linked list removal to save you time if that's an issue:
 
 Invariants:
   1. `ckalloc`: before you add it to the allocated list `ck_ptr_is_alloced`
-      should fail, after you add it it should succeed.
-  2. `ckfree`: before you free it, 
-      `ck_ptr_is_alloced(ptr)` should return 1; after you remove it
-      from the allocated list, it should return 0.  The state should    
-      be `ALLOCED`.
+     should fail, after you add it `ck_ptr_is_alloced` should succeed.
+  2. `ckfree`: before you free it, `ck_ptr_is_alloced(ptr)` should
+     return 1; after you remove it from the allocated list, it should
+     return 0.  The state should be `ALLOCED`.
 
 ---------------------------------------------------------------------------
-### Part 2: leak detection (`code-leak+gc`)
+### Part 2: leak detection `ck-gc.c` and `gc-asm.S`
 
 We will build a simple leak detector based on the approaches described in
 the Purify paper and Boehm's GC paper.  The tool will attempt to detect
@@ -100,7 +108,8 @@ looks like in practice.)
 The classic mark-and-sweep algorithm:
 
   1. Scan through the set of objects pointed-to by the "root set" ---
-     pointers contained in the data segment, stack locations, and
+     pointers contained in the data segment (bss and data: 
+     see `libpi/include/memmap.h`), stack locations, and
      registers.
 
   2. When you see an object for the first time you mark it (the
@@ -183,11 +192,38 @@ since after compacting we update pointers to refer to the new location.
 For this reason, without additional tricks, we can't do a compacting
 collector.
 
-#### Implementation notes
+#### Implementation notes: `gc-asm.S`
+
+Since our mark-and-sweep has no integration with the compiler
+it is extremely vulnerable to the old values of points that
+the compiler leaves laying around after use.  To attempt to 
+minimize this we want to be as accurate as possible about
+ignoring garbage registers and stack entries before doing the sweep.
+In particular:
+  - If we grab the stack pointer inside the GC code, the compiler
+    will have already decremented it, including stack entries we
+    don't need.
+  - We only want to consider the callee-saved registers: the 
+    caller only hold garbage.
+
+After a couple of years of false starts, we do this using two 
+trampolines (that you will write):
+  - `gc-asm.S:ck_gc`: push all the callee saved registers and then
+     pass the resultant stack pointer as the first argument to 
+     `ck_gc_fn`.
+
+     When it returns make sure you pop everything you saved.  You will
+     want to save and restore the link register `lr` but not consider
+     it when doing gc.
+
+  - `gc-asm.S:ck_find_leaks`: do the same, except pass the stack
+    pointe ras the second argument to `ck_find_leaks_fn`.
+
+#### Other Implementation notes
 
 For the pi, we implement the pseudo-code above as follows:
 
-  1. `ckalloc-internal.h`: Each block header has a `mark` bit and counters
+  1. `ckalloc.h`: Each block header has a `mark` bit and counters
      recording how many pointers are to the start of the block (`refs_start`)
      and to the middle of the block (`refs_middle`).  As the Purify
      paper describes, blocks that only have a single pointer to the
