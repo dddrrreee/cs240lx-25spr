@@ -3,12 +3,12 @@
 
 Some quick-read lectures:
 
-   - [CMU lecture](docs/lecture-mem-alloc.pdf) on both allocation and Boehm GC.
-   - [Stanford cs140](docs/cs140.malloc-free.pdf) main on allocation and 
+   - [CMU lecture](./docs/lecture-mem-alloc.pdf) on both allocation and Boehm GC.
+   - [Stanford cs140](./docs/cs140.malloc-free.pdf) main on allocation and 
      fragmentation.
 
 A more thorough writeup by Boehm on today's hack:
-   - [Boehm GC](docs/boehm.pdf).
+   - [Boehm GC](./docs/boehm.pdf).
 
 Some common special cases:
    1. "object-caching" where you have per-size freelists that you can quickly add-to, take-from.
@@ -17,9 +17,9 @@ Some common special cases:
       at the same time.  
 
 Some details:
-   - [Arena](docs/arena.pdf) --- perhaps the first paper on arena allocation?  Fast read.
-   - [Slab](docs/191.pdf) --- basis of linux "slab" allocator.
-   - [actual slab](docs/bonswick_slab.pdf) --- initial paper on linux "slab" allocator.
+   - [Arena](./docs/arena.pdf) --- perhaps the first paper on arena allocation?  Fast read.
+   - [Slab](./docs/191.pdf) --- basis of linux "slab" allocator.
+   - [actual slab](./docs/bonswick_slab.pdf) --- initial paper on linux "slab" allocator.
    - [high level slab writeup](https://www.kernel.org/doc/gorman/html/understand/understand011.html)
 
 Some code:
