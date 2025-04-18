@@ -5,8 +5,9 @@
   
   - BUG: you do not need to implement `dump_regs` --- we used to use this
     until 10 minutes before class when I realized the approach was
-    fundamentally broken.  You just need to do the two trampolines in
-    `gc-asm.S`.
+    fundamentally broken.  Unfortunately there are still a couple old
+    comments that mention it.  You just need to do the two trampolines in
+    `gc-asm.S` (`ck_gc` and `ck_find_leaks`).
 
   - If you get an error "not handling that" in `staff-ck-gc.c` just
     have your kr_malloc allocate more memory on each call (for
