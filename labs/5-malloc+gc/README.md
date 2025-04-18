@@ -310,6 +310,9 @@ Some code mistakes:
 ---------------------------------------------------------------------------
 ### Part 2: Garbage collection (30 minutes)
 
+Currently just one test:
+  - `tests/gc-test5-gc.c`
+
 We can fairly easily flip our leak detector into a leap corrector
 ("garbage collector") that will free unreachable blocks.
 
@@ -334,6 +337,12 @@ all necessary internal allocation pointers.
 For this part: 
   1. Finish implementing `sweep_free` which will look alot like `sweep_leak` without
      some of the error checking.
+
+----------------------------------------------------------------------------
+### Simple useful extensions
+
+Write more tests!  Make sure they give the same results with -O0, -O1, -O2.
+TY TY.
 
 ----------------------------------------------------------------------------
 ### General limitations.
