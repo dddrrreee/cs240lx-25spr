@@ -20,12 +20,14 @@
 #include "ckalloc.h"
 #include "kr-malloc.h"
 #include "libc/helper-macros.h"
+#include "memmap.h" 
+
 
 // implement these five routines below.
 
 // these four are at the end of this file.
 static void mark(const char *where, uint32_t *p, uint32_t *e);
-static void mark_all(void);
+static void mark_all(uint32_t *sp);
 static unsigned sweep_leak(int warn_no_start_ref_p);
 static unsigned sweep_free(void);
 
@@ -93,8 +95,8 @@ static hdr_t *is_ptr(uint32_t addr) {
 
 // return number of bytes allocated?  freed?  leaked?
 // how do we check people?
-unsigned ck_find_leaks(int warn_no_start_ref_p) {
-    mark_all();
+unsigned ck_find_leaks_fn(int warn_no_start_ref_p, uint32_t *sp) {
+    mark_all(sp);
     return sweep_leak(warn_no_start_ref_p);
 }
 
@@ -148,6 +150,10 @@ static void mark(const char *where, uint32_t *p, uint32_t *e) {
     assert(aligned(p,4));
     assert(aligned(e,4));
 
+    // sweep through each integer in [p,e] and mark all allocated
+    // blocks the integer could point to (start, or internal)
+    //
+    // for each marked block: sweep through that too.
     todo("implement the rest\n");
 }
 
@@ -161,6 +167,14 @@ static unsigned sweep_leak(int warn_no_start_ref_p) {
     //  1. if there are no pointers to a block at all: give an error.
     //  2. if there are only refs to the middle and <warn_no_start_ref_p>
     //     is true, give a maybe leak.
+    //
+    // for definite leaks use:
+    //        ck_error(h, "GC:DEFINITE LEAK of block=%u [addr=%p]\n",
+    //                  h->block_id, ptr);
+
+    // for maybe leaks use:
+    //      ck_error(h, "GC:MAYBE LEAK of block %u [addr=%p] (no pointer to the start)\n", h->block_id, ptr);
+    //
     for(hdr_t *h = ck_first_alloc(); h; h = ck_next_hdr(h), nblocks++)
         todo("implement the rest\n");
 
@@ -174,37 +188,33 @@ static unsigned sweep_leak(int warn_no_start_ref_p) {
 	return errors + maybe_errors;
 }
 
-// a very slow leak checker.
-static void mark_all(void) {
 
+// a very slow leak checker.
+static void mark_all(uint32_t *sp) {
     // slow: should not need this: remove after your code
     // works.
     for(hdr_t *h = ck_first_alloc(); h; h = ck_next_hdr(h)) {
         h->mark = h->refs_start = h->refs_middle = 0;
     }
-	// pointers can be on the stack, in registers, or in the heap itself.
 
-    // get all the registers.
-    uint32_t regs[16];
-    dump_regs(regs);
-    todo("kill caller-saved registers so we don't falsely suppress errors.\n");
-
-    mark("regs", regs, &regs[14]);
-
-    // get the start of the stack (see libpi/staff-start.S)
-    // and sweep up from the current stack pointer (from <regs>)
+    // the start of the stack (see libpi/staff-start.S)
     uint32_t *stack_top = (void*)STACK_ADDR;
-    todo("get sp and mark stack\n");
+    if(ck_verbose_p)
+        debug("stack has %d words\n", stack_top - sp);
 
 
-    // sweep zero-initialized data <bss> and non-zero 
-    // initialized <data>
-    // these symbols are defined in our memmap
-	extern uint32_t __bss_start__, __bss_end__;
-	mark("bss", &__bss_start__, &__bss_end__);
-
-	extern uint32_t __data_start__, __data_end__;
-	mark("data segment", &__data_start__, &__data_end__);
+    // pointers can be on the stack, in registers, or in the heap itself.
+    // we dumped all callee-saved before calling <mark_all>, so 
+    // sweep:
+    //   1. stack
+    //   2. zero initialized data <bss> 
+    //   3. non-zero initialized data
+    // 
+    // for 2&3: see:
+    //  - <libpi/include/memmap.h>
+    //  -:<libpi/memmap>
+    mark("stack", sp, stack_top);
+    todo("sweep bss and data");
 }
 
 
@@ -216,6 +226,9 @@ static unsigned sweep_free(void) {
 	output("---------------------------------------------------------\n");
 	output("compacting:\n");
 
+    // for each free that you do print it:
+    //      trace("GC:FREEing block id=%u [addr=%p]\n", h->block_id, ptr);
+
     todo("sweep through allocated list: free any block that has no pointers\n");
 
 	trace("\tGC:Checked %d blocks, freed %d, %d bytes\n", nblocks, nfreed, nbytes_freed);
@@ -223,11 +236,12 @@ static unsigned sweep_free(void) {
     return nbytes_freed;
 }
 
-unsigned ck_gc(void) {
-    mark_all();
+unsigned ck_gc_fn(uint32_t *sp) {
+    mark_all(sp);
     unsigned nbytes = sweep_free();
 
     // perhaps coalesce these and give back to heap.  will have to modify last.
 
     return nbytes;
 }
+

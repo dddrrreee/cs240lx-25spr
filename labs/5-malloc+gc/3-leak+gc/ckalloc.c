@@ -6,15 +6,12 @@
 
 unsigned ck_verbose_p = 0;
 
-static hdr_t *alloc_list, *free_list;
+// should hold all allocated blocks
+static hdr_t *alloc_list; 
 
 // returns pointer to the first allocated header block.
 hdr_t *ck_first_alloc(void) {
     return alloc_list;
-}
-// returns pointer to the first freed header block.
-hdr_t *ck_first_free(void) {
-    return free_list;
 }
 
 // return header associated with <ptr> if one exists.
@@ -24,6 +21,7 @@ hdr_t *ck_ptr_is_alloced(void *ptr) {
             return h;
     return 0;
 }
+
 
 /***********************************************************************
  * implement the rest
@@ -35,14 +33,24 @@ unsigned ck_ptr_in_block(hdr_t *h, void *ptr) {
         panic("should only have allocated blocks: sdtate=%d\n", h->state);
         return 0;
     }
-    todo("implement this [simple]\n");
+
+    // use ck_data_start/_end 
+    todo("check that <ptr> is in data for <h>\n");
 }
 
 
 // free a block allocated with <ckalloc>
 void (ckfree)(void *addr, src_loc_t l) {
-    hdr_t *h = (void *)addr;
-    h -= 1;
+    hdr_t *h = ck_ptr_is_alloced(addr);
+    if(!h)
+        loc_panic(l, "freeing bogus pointer: %p\n", addr);
+
+    // allocated block starts right after the header.
+
+    void *blk_start = ck_data_start(h);
+    if(blk_start != addr)
+        loc_panic(l, "not freeing using start pointer: have %p, need %p\n",
+            addr, blk_start);
 
     if(h->state != ALLOCED)
         loc_panic(l, "freeing unallocated memory: state=%d\n", h->state);
@@ -52,7 +60,9 @@ void (ckfree)(void *addr, src_loc_t l) {
     assert(ck_ptr_is_alloced(addr));
     h->state = FREED;
 
+    // just remove from the allocated list.
     todo("implement the rest\n");
+
     kr_free(h);
 }
 
@@ -71,5 +81,13 @@ void *(ckalloc)(uint32_t nbytes, src_loc_t l) {
     h->alloc_loc = l;
     h->block_id = block_id++;
 
-    todo("implement the rest\n");
+    // set addr;
+    void *addr = 0;
+
+    todo("put on allocated list\n");
+
+    assert(ck_ptr_is_alloced(addr));
+    if(ck_verbose_p)
+        loc_debug(l, "successful alloc of %p\n", addr);
+    return addr;
 }

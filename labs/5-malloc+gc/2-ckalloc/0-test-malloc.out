@@ -1,1 +1,0 @@
-malloc(1)=0x17ffd8, diff=PANIC:./libc/printk.c:vprintk:59:only handling llx format, have: <d

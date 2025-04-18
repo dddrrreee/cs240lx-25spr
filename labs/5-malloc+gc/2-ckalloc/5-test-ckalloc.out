@@ -1,1 +1,0 @@
-5-test-ckalloc.c:notmain:43:DEBUG:ERROR: Assertion `p0 == p1` failed.
