@@ -33,7 +33,12 @@ You'll import the K&R `malloc` into libpi:
 
 tl;dr:
   - Code is in: `code-leak+gc/ckalloc.c`
-  - Currently need to add tests (sorry).
+  - There are three tests:
+
+        PROGS := tests/ck-test1-ok.c
+        PROGS += tests/ck-test2-ok.c
+        PROGS += tests/ck-test3-ok.c
+
 
 For GC and leak detection we need a way to determine:
   1. The set of allegedly allocated blocks (so we know what to free
