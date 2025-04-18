@@ -22,7 +22,10 @@ STAFF_OBJS += staff-ck-gc.o
 STAFF_OBJS += staff-gc-asm.o
 
 RUN=1
-OPT_LEVEL = -O0
+# if you get issues, try swapping this.
+# OPT_LEVEL = -O0
+OPT_LEVEL = -O2
+CFLAGS += -fno-inline
 
 #LIB_POST := ../armv6-encodings/libgcc.a
 #LIBS += $(LIB_POST)
