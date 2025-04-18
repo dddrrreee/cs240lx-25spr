@@ -1,0 +1,3 @@
+TRACE:notmain:CK test: simple alloc and free
+TRACE:notmain:allocated  blockid=1, is allocated
+TRACE:notmain:SUCCESS:  blockid=1, is free!
