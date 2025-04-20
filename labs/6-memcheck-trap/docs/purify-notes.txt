@@ -1,0 +1,994 @@
+Add as many concrete examples as possible!
+-------------------------------------------------------------------
+what is the plan here?
+
+1. overview of paper coolness.
+2. have them pull out claims
+3. go through the example
+4. go through the state machine
+5. go through concrete examples.
+
+at some point:
+6. implement referent tracking
+	do it using shadow memory rather than ref(&x).  
+	then show how to implement shadow memory.
+
+-------------------------------------------------------------------
+really nice, clear, concrete writing (atom same way).
+	if you have to write a paper about a system come back and read this.
+
+	deceptive in terms of infomation packed in.
+
+very real: 
+	[maybe get them to do this from the intro?]
+
+   - compatible w/ existing debuggers.
+   - most examples w/ X which is a huge ugly widely-used/tested piece of code
+   - only requires adding a single word to link line :)
+   - ... alot of practical details.
+
+   - USENIX ATC: technical conference, mostly for hacking/implementation.
+     compare writing to other one.  and utility.
+
+how to tell dated?
+ 	- "errors only detectable at runtime"
+	- the size of the programs
+	- sparc
+	- has to argue that yeah, deployed code has errors!
+
+reed hastings
+	- stanford MS program graduates.
+
+	- one of most successful software tool companies ever.
+		- really nice: can buy a box and run.  
+
+		- not scientific test but stronger in some ways: people
+		  would use it to find bugs in other's code to make fun
+		  of them.
+
+	- what did he do w/ it after selling?
+	- nick was on boating trip w/ him.  would go down rapids all day,
+	  then hack on purify at night.  "could just feel he was going to
+	  be a success"
+-----------------------------------------------------------------------------
+go through intro, pull out the key points.
+	anything they claim you don't believe?
+	
+this will make things active.
+	buy our tool b/c:
+		infrequent.  intermittant.
+
+	cause and symptom delayed and coincidental
+	not visible
+	many programs have bugs
+
+	leaks even harder: omissoin rather than commision.  not really
+	visible.
+
+	easy to make, hard to eliminate.
+
+	detect at the point of occurance.
+
+you want to start a company and make $$$.  how do they sell mem errors?
+
+   "frequent and intermittent"
+	- hit them and you don't even know you hit them.
+  	- manifestation long after cause.  may not be visible.
+	- may not be your fault: errors not modular.
+
+   "easy to introduce, hard to eliminate"
+	- leaks very hard to detect, slow, can occur over long period of time.
+	  (omission rather than commission)  again: rarely produce visible
+	  effects.
+
+what don't they say?
+	- it's not verification.
+	- no math.
+	- no proof.
+	- run our thing, no errors.
+	- extensible.
+	- run on lots of programs
+	- no real discussion about false positive.
+
+purify:
+	main spin: detects when happens.  often don't know.  
+	tree fall in forest, no one hears, etc.  [such a big part of systems.]
+-----------------------------------------------------------------------------
+[nice: put after the next?]
+  - two bug types:
+	bohr bug: nice, deterministic.  foo(4) crashes, then foo(4) always
+	crashes.
+
+	heisenbug: non-deterministic.  foo(4) crashes.  run in debugger, 
+	works fine.  
+ 
+  *** can view as they turn heisenbugs into bohr bugs. ***
+
+  - which do you want during testing?  during dev?
+----------------------------------------------------------------------------
+runtime tool that works on binary to find memory errors.
+
+what adjectives in this could change?
+	static
+	binary
+	memory errors.
+
+tradeoff
+
+
+----------------------------------------------------------------------------
+
+[boring]
+what type of tool are we talking about?
+	- read uninit mem, overflow, use of deallocated mem, leaks.
+
+	- interesting: can view this tool as something that just makes it
+	visible when you hit an error: users write tests or run code to
+	hit the error and this just makes it clear you did since silent.
+	bit different from static ( potential errors, not hit) and from
+	some dynamic (e.g., eraser)
+
+		tradeoff with static?
+			- couple errors in X.  100s in kernel.
+			- static can run kernel.
+			- binary: so "lang independent" 
+			- real-ish errors since you hit them.
+			[false positives?]
+			- only check paths you check.  limited.
+		  ...
+
+	- object code.	libraries.
+
+	- "compatitble w/ existing debuggers" --- obviously care about making
+	  things work for real.
+
+	- claim 3x slowdown (seems to be 5.5 when run memcpy)
+
+	- SPARC.  ran on others.
+alternative:
+
+   you have a test suite.  you run it and don't see bugs.
+        - how do you run it under purify?
+
+        - if you fix all the crashes in the suite and then run it under
+          purify will you see bugs or will you have to write new tests?
+                can see new bugs: you could have been hitting them but
+                not see affects.
+
+            how could this happen?
+                uninit: could have been zero by happenstance.
+                corruptions: could have been missing.
+                use-after-free: could have just not realloced in time.
+                leaks: could have been missing.
+
+        - can you run it on your code while you use it?
+                only 3x slower, so sure.
+
+        - can you run it on an OS?
+        - can you run it on java bytecode? [well, sort of]
+----------------------------------------------------------------------------
+talk about paper example [have them go through it?]
+
+   - backtrace: how do you get this?
+	- for error: walk back up the stack, map RA to location
+	- for alloction: they store at allocation time (in the redzone)
+
+	[- how does it know where allocated?
+	- what would be more helpful?
+	- why no line information sometimes?]
+  
+   - where did the error show up?
+   - where did it occur?
+   - why are these different locations?
+   - why didn't they just give you the cause?
+
+   - looking at this, is "works with existing debuggers" a nice have, or
+     is it crucial?
+                    -----------------------------
+   - what's the easiest error message to provide.
+   - what happens if you remove the first chunk of text
+   - what happens if you remove the second chunk of text
+   - what would you like better?	
+	  well: the code example
+    why not do that?
+	may not have the source.
+	though it does have source and doesn't seem to do. 
+
+	it also doesn't follow the flow of data, so can't backtrack.  
+                    -----------------------------
+
+   - why no line number?  [x library, no symbols]
+   - why a address for memory block?
+	doesn't have source; doesn't seem to do much w/ debug.
+   - gives where error, and where object came from.
+   - which function has the error?  [not bcopy(src,dst,n): called wrong]
+   - what is the bug?
+
+   - what's really the problem w/ this code?
+	- ugly.  jesus.  just use a linked list like a normal person.
+	- why array?
+	   [saving 4 bytes per elem]
+
+   - how do we find the bug?
+	set breakpoint in CATCH_ME(), use "up"
+	hunt around, go up each stack frame.
+	use debugger.
+
+  "many people find it hard to believe bug exists" :)
+    osdi story.
+    everything has bugs.  lots of bugs.  everything.
+
+  * how does it know that overwrite end of array?
+	- has a red zone.
+	- detects when go out.
+		is this perfect?
+
+	discuss redzones.
+	[good.]
+
+  * how could this escape testing?
+	- recursive destroy.  maybe didn't  do.
+	- even if did: could miss.
+
+  what is going to happen to you if you had used this routine?
+	is fine for destroy'd windows, i think main problem is that it
+	trashes the memory after.
+
+
+  * ah: lets say you referenced one of the freed slots.  does purify catch?
+	- no: doesn't know that that is a dead entry.
+	- if you switched to ll would actually catch.
+
+  if you switch bcopy to memcpy (and swap arguments) what happens?
+ 	could get an error since memcpy not for overlapping regions.
+
+ 	or might not get.  could have the same implementation.
+
+	is an example of how checking implementation can miss errors in
+	specification.
+----------------------------------------------------------------------------
+possible: maybe just do the two figures, then get into the details?
+
+for state machine:
+	- insert error transitions.
+	- list exactly when a transition occurs
+	- esp: when do we get error
+	- what are the legal sentences
+	- what are the illegal sentences
+
+        have them insert read / writes.
+        error states.
+        when does this SM run?
+
+	list out all the operations that lead to a transition.
+		fork
+		sbrk
+		threads?
+
+        [do the same for leaks? -- say when run]
+	let's say code does:
+		p = mymalloc(...);
+		x = *p; // may give error, may not.
+
+		p = malloc(n);
+		write(fd, p, n);
+		x = *p;   // will give error, but there isn't one.
+
+		p = mmap(...);
+		*p = 0;   // will give error, but there isn't one.
+		
+	legal sentences in this language?
+		{}
+		U->A
+		U->A->U
+		U->A->W->(R|W)*->U
+
+	- what happens if they switch to words?
+                off by one of strings.
+                anything else?  uninitizlied byte read/writes.
+	- what happens if they switch to bits?
+
+    [huh?
+    4x more overhead than tracking at word.  is it worth it?
+	- get off-byte-one byte errors: overflow and reads.
+	- streings.
+
+	- could not even track and use a bitpattern.  but there is no
+	  rare bitpattern for chars.  fp's.]
+
+[do this before?]
+nice: take figure 2:
+	how else could this figure look?
+
+        you move purify to the .C stage.
+                what are the pro/con?
+        you move it to the a.out stage
+                what are the pro/con?
+
+	what do you have to do after insert code?
+		relocate everything.
+		what is that specifically?
+
+		- change all jumps and calls.
+		- they also put redzones.
+
+	they make a big deal about catching bugs in library code.  lets
+	say you have verified libraries.  is it still useful to instrutment?
+		yup, obviously.  that's where the error can show up.
+
+  when you ask so concretely, makes it more interesting.  asking them to
+  list the pro/cons is boring w/o a de-contextualization.
+
+when insert?
+	- before linking
+	- 50x faster than doing during compilation, which would miss library
+	  bugs.
+	- .o's given to linker, so not such a burden.  not as convenient
+	  as purify a.out, but nice.
+
+	- all of code: hand-optimized asm.  [need to do tricks to make
+	  sure stack ok.]
+
+what can you not run on?
+	- operating systems for one
+	- dynamic libraries.
+	- jitted code
+	- self modifying code
+----------------------------------------------------------------------------
+what would you have to change to it detects when you delete the last pointer?
+----------------------------------------------------------------------------
+[ugh. this is a mess]
+
+then have them do the insertion stuff?
+
+if the instrumented binary calls CATCH_ME() what happened?
+	why use this?
+		need a breakpoint.  has to be well known so you can 
+		use it.
+
+	why not have seperate for the diff errors?
+		well it prints diagnostic before so not needed.
+
+
+put the discussion of state machines here, after examples.
+
+ -draw the errors in the FSM.
+ - write the load and store routines.
+
+  write has one error:
+
+   	enum { ALLOC_INIT = 0,   ALLOC_UNINIT = 01, UNALLOC = 10
+
+	load8(char *addr) {
+		for(i = 0; i < 4; i++)
+			// huh?  there is a better way to look up shadow.
+			region *r = regions[i];
+			if(addr >= r->base && addr < r->base)
+				goto done;
+		}
+		error("bad write");
+		return;
+
+   	found:
+		offset = addr - r->base;
+		s = &shadow[offset];
+		if(*s == ALLOC_INIT)
+			return;
+		...
+
+	for 32 bits:
+		// ugh: probably do some sort of trick
+		if(*(char *)s & 10101010)
+			error("bad");
+		*(char *)s = = 01010101;
+
+	// well, will be weird.
+	load32(char *addr) {
+		load8(addr);
+		load8(addr+1);
+		load8(addr+2);
+		load8(addr+3);
+	}
+
+how does it work?
+	everything unit
+
+	load:
+		if alloc and init = ok
+		else error
+
+	store:
+
+	malloc:
+		- allocate N + 2* redzone
+		- set range of memory to alloc/unit.  
+		      redzone to unallocated
+			store backtrace in redzone
+
+	free:
+		- mark as freed.
+		- put on a list andflush out in order.
+
+		need to get the size: store in redzone?
+
+	also walks all statically allocated data.
+
+  - how do they do lookup?  binary search i assume.  self modifying
+    code could help.  should insert different based on whether off
+    stack pointer.  "If most accesses to stack are off of %sp then
+    how can you speed this up"
+
+ - how to speed up lookup?  coul insert biased calls based on
+   whether its off the sp?  cute.
+---------------------------------------------------------------------------
+Examples (mostly false negatives)
+
+  [are there false positives?]
+
+will purify:
+	- always catch error
+	- might catch it
+	- miss it.
+
+    overflow
+        --------------------------------------------
+           int *p = malloc(100);
+           p[1000] = 5;
+
+	may catch: if pointer goes beyond redzone misses.
+
+        --------------------------------------------
+	redzone:
+        	you run purify.  you fix all the errors you see.
+
+        	you decrease redzone size: can you hit errors?
+			obviously.
+        	you increase redzone size: can you hit errors?
+			yes.
+        --------------------------------------------
+	  [internal arrays]
+
+          struct foo {
+                        int x[10];
+                        int bar;
+
+                };
+                struct foo *x = malloc(sizeof *x);
+                x->x[10] = 1;
+
+          misses: does not know internal structure of array.
+
+        --------------------------------------------
+	[stack vars]
+
+      void foo(void) {
+                int x,y;
+                memset(&x, 0, 8);
+
+       if stack grows down towards 0: 
+		catches, since it redzones between frames.
+       if stack grows up away from 0: 
+		(&x < &y)
+		misses, since doesn't know internal layout.
+        --------------------------------------------
+
+       char buf[128];
+       read(fd, buf, 1024);
+      
+	they say they validate system calls, but don't really talk about it.
+ 
+        --------------------------------------------
+     "what happens if someone has their own memory allocation?"
+        - false negatives i think.
+        - will they find any errors?  yes.  initial ones.
+
+	p = my_malloc(10);
+	x = *p;
+		// may if it's the first alloc, not if reuse.
+
+	what happens?
+		p[11] = 0;
+	[one big block of memory, so can't see structure]
+
+	what happens?
+		return p[10];
+
+	[doesn't see free, so can still be marked as init]
+
+   uninit 
+	----------------------------------------------
+	stack frame
+
+	int foo(void) { int i; return i; }
+
+	assume compiler produces code that looks like this
+
+	catch?
+	yes.  upon function entry sets to alloc but uninit.
+
+	what if compiler optimizes?  well there is an error, so it's allowed
+	to just return whatever, so won't catch.
+
+	[uninit bits]
+
+       struct foo {
+                unsigned x:1;
+                unsigned bar:1;
+        };
+
+        unsigned bar(void) {
+                struct foo f;
+                f.bar = 1;
+                return f.x;
+        }
+
+         misses: does not catch uninitialized bitfields.
+        --------------------------------------------
+	int foo(void) { 
+    		int x,y;
+    		x = y;
+    		return x;
+
+        [actually: compiler can optimize away :)  expect this to be
+	 silent]
+         -------------------------------------------
+	int foo(void) { 
+		static int x;
+		return x;
+	}
+	
+	?
+	nothing: it's initialized by C.
+         -------------------------------------------
+	[not sure about this one]
+	char foo(void) {
+		char a[128], b[128];
+		// i think error at this point.  i don't think they prop
+		strcpy(a,b);
+		...
+	}
+
+	   [when copied in register and then written to memory, what happens?]
+		i think they flag it
+
+	initialized by C tho.
+         -------------------------------------------
+    padding:
+        struct { short s; } f,g;
+        f.s = 1;
+        g = f;
+
+        what happens?
+
+        how to eliminate?
+                - could init the whole thing.
+                - could have a PURIFY_INIT(&f, sizeof f) that gets defined to
+                  nothing.
+         -------------------------------------------
+
+    use after free:
+	int *foo(void) { int i; return &i; }
+
+	catch?  don't know.  it could by setting to unalloc.  don't know
+	if it does tho.  overhead is low enough that i think perhaps not.
+
+	they do allocation / uninit on call -- wouldn't htat imply the
+	other way on return?
+	--------------------------------------------------------
+
+	p = malloc(20);
+	free(p);
+	...
+	q = malloc(20);
+	*p = 10;
+
+
+	if the reuse spans the aging.  ("what do they do to minimize?)
+
+
+    what system calls do they have to track?
+
+"are there any other tricky cases?"
+
+  - int a[10];  int b[40];  
+    you put a redzone and things stop working:
+	if(a[20] == 'f')
+		return 10;
+
+    what happened.  yacc indexs from one to another (relies on
+    non-reorg.  this is dumb.)
+
+    false positive (in a sense: changes behavior)
+
+---------------------------------------------------------------------------
+ah.  this is tricky.  pull this in.
+
+they say they find uninit.  this is a bit tricky.
+	- at what point do they flag?
+		- i think must be on the first load
+		- *they don't track through registers*  there isn't any
+		  discussion of shadow regs.
+
+	what is the problem?
+		struct foo {
+			short s;
+			int i;
+		};
+
+
+		struct foo s1,s2;
+
+		s1.s = 0;
+		s1.i = 0;
+
+		memcpy(&s1, &s2, sizeof s2);
+		
+	how would they solve?
+		have to go through registers.  they don't.
+
+	when would you flag?
+		i gues when used for branch?  when would get written out?
+--------------------------------------------------------------------
+details of implementation.
+  - what do they do at link time?
+	put routines before every load and store.
+	put redzone around variables.
+	override malloc/free (I think)
+  
+  - how to insert a function call?
+	have to save the caller saved registers, save ra, save args/temps.
+
+	why is their overhead not so large?
+		- on sparc: register windows.
+
+  - what does it require to work with a language?
+	has to know what registers are safe to use?  [actually i guess
+	can save all of them so doesn't care]
+
+  - out of bounds write: what do they report?
+
+        int * p = malloc(10);
+        p[-1] = 5;
+        p[-1] = 5;  <--- what happens?  [good question.  i think they give
+			 another report?]
+
+	backtrace to allocation, location of malloc[?]
+
+	how do they know bt?
+
+  	store allocation information in the red zone 
+	
+	   - file, line? [no: ra values]
+	   - isn't this slow?  no: only look up on error.
+	   - when do you see truncated bts? [recursion deeper than the redzone]
+
+       they write: doesn't it get corrupt?
+		put the check before the store.
+
+		but second error, i'm not sure, unless they mark as
+		reported error and don't report again.
+
+       could skip: how?
+		you know the RA, and instructions are 4 bytes :)
+
+  what else do they have to override?
+	malloc
+	free
+	sbrk(?)
+	mmap
+
+
+
+"can you reapply purify to itself?"
+	- probably not [replace malloc once or does it interpose?] 
+	- fundamental?
+
+- how could you add shadow registers?
+
+	would have to instrument everything
+
+- how do we know we found all the code?
+	.o
+
+	don't know where they begin
+
+lets say programmer wanted to use purify deeper.  how would you change
+interface?
+  mark_uninitialized(addr, size)
+  mark_free(addr, size)
+  mark_alloc(addr, size)
+	want to do own malloc, have internal things that get reset, etc.
+-------------------------------------------------------------------
+what is reassuring about the para that says some programs index b/n
+arrays?
+        they must have built this thing.  really hard to think of this
+        on your own unless you WTF hit it in practice.
+
+        you really want to see these kind of paragraphs.
+
+        make sense in retrospect, but so surprising unlikely to have made
+        up w/o building.
+-------------------------------------------------------------------
+LEAKS
+
+what hard about leaks?
+	run long time
+	how to cause?  repeat?  
+		- may not cause addr to grow b/c small.
+		- may not be freed, but just there for next iter.
+
+	usually what you do: have malloc record, then see what's not freed
+	at end.
+
+	kind of a pain though: since may not free a lot of stuff legitimately
+	(wait for exit) and it gets mixed in.
+
+how to interpret message?
+	lots deallocated.
+	
+	gives the backtrace of the allocation.
+
+	- why not the error?
+		doesn't really exist.
+
+		not true: in case that they nuke pointer.
+
+	- what better? track last use as well.  can they do? 
+		i think so: they tracking every store/load anyway.
+
+	how do they detect?  walk over looking for things not referenced.
+
+	how to find?  walk up, looking at each place in callchain.
+
+- if you switch from 32 to 64 bit do you expect to find more or less leaks?
+  if you lose a GB chunk and a 10byte chunk, which number do you expect each
+  to be?
+
+- why this sorting?  how imporve?
+        be nice to see how many pointers into it.
+                - if one less likely real.
+        if that value is ever loaded.
+                how to check?
+
+
+you allocate more frequently. get more leak errors, why?
+	one reason: you do the code that loses things more
+
+you allocate less frequently. get more leak errors why?
+	not sure.  what was i htinking?
+
+what would be even more useful?
+	- would like to know when they killed the last pointer to an
+	  object.
+
+	- very expensive: perhaps could rerun?
+
+- for GC: can't tell pointers from not, but you could rerun the
+        application changing layout and do a differntial to see if the
+        same ones come up.
+
+---------------------------------------------------------------------
+how does this gc thing work?
+
+    what is the standard "pessimistic" manner?
+    only walk over allocated?
+
+    mark and sweep.
+
+	- have map of all allocated mem.  mark as "unreferenced"
+
+	- where to look for all pointers?
+		heap, stack, data.
+
+		registers: i'm not sure how to walk up reg windows
+		actually --- stack is not enough.
+
+	- lookup every value that could be an address
+		map to object
+		mark objec as allocated.
+
+	must be able to enumerate all allocated objects [hooked into
+	malloc, so np]
+
+	- when at the end go over map, complain about every block of
+	  memory not referenced.
+
+	do we know what a pointer is?
+		no. 
+		just be conservative: if could be a pointer, is.
+		
+	(1) certainly garbage (no pointers to them at all)
+		- could have written to disk.
+		- xor'd two pointers.
+	(2) potentially (no pointers to beginning)
+	(3) probably not (pointers to beginning)
+		- could be false.
+
+        - X is 10x bigger than Y.  relative probability of which is 10x
+          more likely?  (3)  less?  (1)  same?  (2)
+
+          says problem for big d linked list?  "why?"
+
+    user calls check_gc() --- why can't system?
+	doesn't know when things supposed to be freed.
+
+	[actually can]
+
+    misses?
+ 	- circular won't be considered.
+	- more general. can have a pointer, but won't be referenced.
+	
+    false positives?
+	- wrote pointer to disk
+	- mangled it.
+
+    sparc didn't allow unaligned.  lets say it did.  what would happen?
+        - 4x more pointers, so more (2), more (3)
+        - 4x the time to scan.
+
+alternative:
+	have a malloc that tracks all and complains if not free.
+
+	problem?
+		don't free if about to exit.
+
+        - for GC: can't tell pointers from not, but you could rerun the
+        application changing layout and do a differntial to see if the
+        same ones come up.
+-----------------------------------------------------------
+experiments
+
+        - worst case for purify?  mostly loads - so copy in unrolled loop.
+        they say for tight loop is 5.5x
+
+
+        - they claim 25%, heap size is about that, but text size 1.7
+         ["why?"] and it's comparable.
+
+        - 5x link time.  doesn't really matter for most.
+
+-----------------------------------------------------------
+how to do inbounds correctly?
+	need to have shadow for every pointer saying which memory object
+	it was set to point to.
+
+	when a load is done off the pointer, make sure the produced address
+	is within that object.
+
+key problem: how to build inbounds(p)?
+
+    suppose we record each block for
+                p = malloc(n);          [base=p,len=n]
+                p = &q;                 [base=p,len=sizeof q]
+                p = "foo";              [base=p,len=strlen(p)]
+
+    do inbounds(addr) as:
+        int inbounds(void *addr) {
+                o = lookup(addr);
+                if(!o)
+                        return 0;
+                if(addr >= o.base && addr < o.base+o.len)
+                        return 1;
+                return 0;
+        }
+
+
+    nice:
+        - does not change pointer representation.
+        - work with foreign libraries, system calls, etc.
+
+    but doesn't work.  assume we do:
+        if(p == q)
+                *p;
+                *q;
+
+     if(inbounds(p) == true) is this guaranteed to be legal code?
+        NO.  can point to different objects.  [draw two rects, pointer]
+
+        how to tell if q is legal?  look in hash?  if it got incremented
+        beyond to another memory location will look legal.  so want to
+        *know what the thing decended from*
+                p = malloc(10);
+                p += 1000;
+
+                p might still be legal address, but not legal cursor
+                in object.
+
+     need to tell which object a pointer descended from.  detect when
+     reads/writes (not) in bounds.
+
+     instead index using the address of the pointer.
+
+     p = malloc(n)      ==>     p = malloc(n)
+                                base(&p) = p;
+     p = q + k;         ==>  p = q+k;
+                             base(&p) = base(&q)
+
+        use the addres since that's a unique name.
+
+     prop on function calls, too.
+
+     p can go way out of bounds, but we always know what object it's
+     supposed to correspond to.
+
+     one way: make pointers fat
+        pointer = [base, len, off)
+        problem?  can't pass to external routines: systemcalls, anything
+        you didn't compile.
+
+problem is overhead.
+	and load these things all the time.  sort of want when they use in 
+	bad way.
+
+--------------------------------------------------------------------
+design an atom pass:  [do this in the atom discussion]
+
+   for each proc
+	if malloc: pass arguments to purify:
+		skip instrumenting(?)
+	else if free: pass arguments to purify:
+		skip instrumenting(?)
+	otherwise
+		get size of AR
+		tell purify that we allocated.
+		add redzone: need to change the stack add/sub.
+
+	foreach block
+		foreach inst
+			# need to pass size?  i think so: byte tracking.
+			if i == ld)
+				purify_ld(effective addr, size)
+			if(i == st)
+				purify_st(effective addr, size)
+
+   void alloc(void *addr, unsigned nbytes) {
+	nbytes += red_zone * 2;
+
+	char *p = get_backtrace(redzone);
+	memcpy(addr, p, redzone);
+
+	// how to translate addr to the right offset?  there is stack
+	// and data?
+	memset(shadow[addr], allocated, nbytes);
+
+	// store the location?
+
+	return addr + red_zone_size;
+
+   "how to find shadow?"  
+	- i think there are three of them.
+		- static data, stack, heap.
+		- index based on point.  
+		- dense.
+		
+
+   void free(void *addr) {
+	for(i < n)
+		if(shadow[addr+i] == unallocated)
+			error
+		shadow[addr].state = deallocated;
+
+	// does it actually free?  no: puts on FIFO list.  only kicks out
+	// when list hits a max size?  age measured in calls to free.
+
+	// age.
+	if(list.size = age)
+		free(dequeue)
+	push(list, addr)
+   }
+
+   void store(void *addr, unsigned nbytes) {
+	for(i < n)
+		if(shadow[addr].state == unallocated)
+		 	error
+			CATCH_ME();
+		
+		shadow[addr].state = initialized;
+
+   void load(addr, unsigned nbytes) {
+	for(i < n)
+		if state != initialized
+			error
+			CATCH_ME();
+
+   }
