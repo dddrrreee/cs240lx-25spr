@@ -1,0 +1,19 @@
+FOUND: </dev/ttyUSB0>
+opened tty port </dev/ttyUSB0>.
+pi-install: tty-usb=</dev/ttyUSB0> program=<./tests/part1-test1-no-bug.bin> about to boot
+TRACE:simple_boot: sending 13148 bytes, crc32=afa27502
+waiting for a start
+putting code
+bootloader: Done.
+listening on ttyusb=</dev/ttyUSB0>
+redzone checking: init
+test1
+TRACE:notmain:alloc returned 1 [0x17fef8]
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 1 blocks, detected no errors
+TRACE:notmain:SUCCESS heap checked out
+DONE!!!
+
+Saw done
+
+bootloader: pi exited.  cleaning up

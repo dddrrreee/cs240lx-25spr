@@ -1,0 +1,10 @@
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 6 blocks, detected no errors
+TRACE:notmain:SUCCESS heap checked out
+TRACE:notmain:corrupting 
+TRACE:ck_heap_errors:going to check heap
+TRACE:mem_check:ERROR:Freed block 5  corrupted at offset 173
+TRACE:hdr_print:	logical block id=5,  nbytes=171
+TRACE:hdr_print:	Block allocated at: tests/part1-test6-bugs.c:notmain:14
+TRACE:ck_heap_errors:checked 6 blocks, detected 1 errors
+TRACE:notmain:SUCCESS found error

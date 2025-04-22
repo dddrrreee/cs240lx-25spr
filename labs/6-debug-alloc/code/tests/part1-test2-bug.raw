@@ -1,0 +1,21 @@
+FOUND: </dev/ttyUSB0>
+opened tty port </dev/ttyUSB0>.
+pi-install: tty-usb=</dev/ttyUSB0> program=<./tests/part1-test2-bug.bin> about to boot
+TRACE:simple_boot: sending 13084 bytes, crc32=b7dc4c59
+waiting for a start
+putting code
+bootloader: Done.
+listening on ttyusb=</dev/ttyUSB0>
+redzone checking: init
+test2: memory overflow at offset 4
+TRACE:mem_check:ERROR:Allocated block 1 [0x17fef8] corrupted at offset 4
+TRACE:hdr_print:	logical block id=1, [addr=0x17fef8] nbytes=4
+TRACE:hdr_print:	Block allocated at: tests/part1-test2-bug.c:notmain:7
+TRACE:ckfree:ERROR:corrupted block 1 [addr=0x17fef8]
+TRACE:hdr_print:	logical block id=1, [addr=0x17fef8] nbytes=4
+TRACE:hdr_print:	Block allocated at: tests/part1-test2-bug.c:notmain:7
+DONE!!!
+
+Saw done
+
+bootloader: pi exited.  cleaning up

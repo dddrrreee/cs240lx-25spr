@@ -1,0 +1,10 @@
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 1 blocks, detected no errors
+TRACE:notmain:SUCCESS heap checked out
+TRACE:ck_heap_errors:going to check heap
+TRACE:mem_check:ERROR:Freed block 1  corrupted at offset 3
+TRACE:hdr_print:	logical block id=1,  nbytes=4
+TRACE:hdr_print:	Block allocated at: tests/part1-test4-bug.c:notmain:7
+TRACE:check_list:	Wrote block after free!
+TRACE:ck_heap_errors:checked 1 blocks, detected 1 errors
+TRACE:notmain:SUCCESS: detected corruption on block 1 

@@ -1,0 +1,4 @@
+TRACE:notmain:alloc returned 1 
+TRACE:ck_heap_errors:going to check heap
+TRACE:ck_heap_errors:SUCCESS: checked 1 blocks, detected no errors
+TRACE:notmain:SUCCESS heap checked out
