@@ -29,7 +29,7 @@ does have weaknesses:
     it misses the redzone and goes into another allocated block.
   - errors are only detected with a delay.
 
-However, redzone allocators are simple, hav few moving parts (no
+However, redzone allocators are simple, have few moving parts (no
 interrupts, minor amount of code) while giving you a good way to find
 a bunch of dumb errors easily.
 
