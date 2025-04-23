@@ -119,6 +119,14 @@ What you do:
 
 We discuss these differences a bit more next.
 
+#### What to do first.
+
+tl;dr:
+  1. Make sure `make check` passes.
+  2. Copy your `ckalloc.c` over, switch the Makefile.
+  3. Start working through the parts below --- you'll initially
+     get some linker errors until you implement the missing routines.
+
 #### Change: Add a freelist
 
 Change `ckfree` to just add a block to a free list, rather than actually freeing

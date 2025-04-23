@@ -1,6 +1,0 @@
-FOUND: </dev/ttyUSB0>
-opened tty port </dev/ttyUSB0>.
-pi-install: tty-usb=</dev/ttyUSB0> program=<./tests/part1-test3-bug.bin> about to boot
-TRACE:simple_boot: sending 13160 bytes, crc32=aa5e7c77
-waiting for a start
-putting code
