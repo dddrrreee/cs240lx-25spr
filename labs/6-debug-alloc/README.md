@@ -39,7 +39,6 @@ on labs, which will focus on removing the listed weaknesses.
 
 #### Checkoff
 
-Checkoff:
   1. You should pass all the tests.
   2. You should write a couple new tests, put your name
      in the comment, and add them to the ed group so everyone can use
