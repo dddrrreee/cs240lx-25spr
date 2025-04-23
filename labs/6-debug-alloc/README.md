@@ -147,6 +147,8 @@ it with `kr_free`.
 We need this list so that we can scan free blocks later (after a given free)
 looking for errors. 
 
+
+
 #### Change: add redzone checking
 
 You should change your `ckalloc` implementation to:
@@ -177,6 +179,15 @@ error print it out using the following format:
 Where `offset` is a negative number if the corruption was in 
 the initial redzone (before the data) and positive if its 
 in the subsequent rezone (after the data).
+
+When you find a use after free I did:
+
+            trace("\tWrote block after free!\n");
+
+Also, some of the error messages encode the routine name in them (e.g.,
+`mem_check` or `check_list`) so you'll have to call your routine the
+same thing or modify the test case.  Sorry about that --- we probably
+should have stripped the internal name out.
 
 #### Add `ck_heap_errors`
 
