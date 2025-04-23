@@ -285,3 +285,6 @@ Several adult moves that we should have done but didn't:
      of `ckalloc` and `ckfree` don't change) but add additional methods that
      take a pointer to a heap structure of some kind.
 
+  4. Adapt the redzone allocator to Unix so you can quickly drop it in 
+     for your regular classes.  Ideally: run it on some old code and
+     find a bug!
