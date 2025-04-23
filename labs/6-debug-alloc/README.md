@@ -263,6 +263,21 @@ to make this faster:
 You can do other tricks after that.
 
 ------------------------------------------------------------------------------
+### Setup memory in a more realistic way
+
+Right now we just grab random memory in the pi address space.  This 
+is amateur hour.   What we should do (and will, but you can get a 
+jump on it) is to:
+  1. Use the mailbox interface to get the number of MB on the pi 
+     available to the ARM (you did this in lab 1).
+  2. Make a page allocator keeps track of which of the MB pages are
+     free or allocated.
+  3. Change the allocators to get their heap memory from this page allocator.
+
+We will do this pretty soon, but it's much more informative if you figure
+it out yourself.
+
+------------------------------------------------------------------------------
 ### Extension: make adult allocators
 
 Several adult moves that we should have done but didn't:
