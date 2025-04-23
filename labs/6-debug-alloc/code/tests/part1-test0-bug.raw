@@ -1,0 +1,23 @@
+FOUND: </dev/ttyUSB0>
+opened tty port </dev/ttyUSB0>.
+pi-install: tty-usb=</dev/ttyUSB0> program=<./tests/part1-test0-bug.bin> about to boot
+TRACE:simple_boot: sending 13128 bytes, crc32=770745de
+waiting for a start
+putting code
+bootloader: Done.
+listening on ttyusb=</dev/ttyUSB0>
+redzone checking: init
+test1
+TRACE:notmain:alloc returned 1 [0x17ff78]
+TRACE:ck_heap_errors:going to check heap
+TRACE:mem_check:ERROR:Freed block 1 [0x17ff78] corrupted at offset 0
+TRACE:hdr_print:	logical block id=1, [addr=0x17ff78] nbytes=4
+TRACE:hdr_print:	Block allocated at: tests/part1-test0-bug.c:notmain:9
+TRACE:check_list:	Wrote block after free!
+TRACE:ck_heap_errors:checked 1 blocks, detected 1 errors
+TRACE:notmain:SUCCESS found error
+DONE!!!
+
+Saw done
+
+bootloader: pi exited.  cleaning up

@@ -1,0 +1,8 @@
+TRACE:notmain:alloc returned 1 
+TRACE:ck_heap_errors:going to check heap
+TRACE:mem_check:ERROR:Freed block 1  corrupted at offset 0
+TRACE:hdr_print:	logical block id=1,  nbytes=4
+TRACE:hdr_print:	Block allocated at: tests/part1-test0-bug.c:notmain:9
+TRACE:check_list:	Wrote block after free!
+TRACE:ck_heap_errors:checked 1 blocks, detected 1 errors
+TRACE:notmain:SUCCESS found error
