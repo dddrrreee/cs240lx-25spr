@@ -284,5 +284,6 @@ void * custom_c_runtime_init(void);
 void cache_flush_all(void);
 void flush_caches (void);
 
+#include "rpi-rand.h"
 
 #endif

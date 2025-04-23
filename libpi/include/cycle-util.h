@@ -73,6 +73,7 @@ wait_until_usec(int pin, int v, unsigned timeout_usec) {
             return 1;
         if((timer_get_usec_raw() - start) > timeout_usec)
             return 0;
+        rpi_wait();
     }
 }
 #endif

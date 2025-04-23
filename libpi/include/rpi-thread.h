@@ -115,6 +115,19 @@ static inline void rpi_arg_put(rpi_thread_t *t, void *arg) {
     t->arg = arg;
 }
 #endif
+
+unsigned rpi_nthreads(void);
+
+void rpi_dump_runq(void);
+
+
+#define rpi_yield_other() do { \
+    if(rpi_nthreads() <= 1)     \
+        panic("deadlock: trying to yield to another thread but none exists\n"); \
+    rpi_yield();\
+} while(0)
+
+
 static inline unsigned rpi_tid(void) {
     rpi_thread_t *t = rpi_cur_thread();
     if(!t)
