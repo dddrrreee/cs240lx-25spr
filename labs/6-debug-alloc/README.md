@@ -36,6 +36,19 @@ a bunch of dumb errors easily.
 The features we have will also be useful for the follow
 on labs, which will focus on removing the listed weaknesses.
 
+
+#### Checkoff
+
+Checkoff:
+  1. You should pass all the tests.
+  2. You should write a couple new tests, put your name
+     in the comment, and add them to the ed group so everyone can use
+     them.  Ideally these are tests we get wrong!  (this counts towards
+     extension) Sadly this shouldn't be a huge challenge since I didn't
+     test the code well.
+  3. Do some kind of extension, ideally something useful that you
+     would use yourself. 
+
 ------------------------------------------------------------------------------
 ### Checking equivalance
 
