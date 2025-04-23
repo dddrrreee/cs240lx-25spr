@@ -85,7 +85,6 @@ Where:
   - the `data` is the user data.
   - the unused remainder is extra bytes the underlying allocator allocated
     (for the K and R allocator we have, this should just be b/c of alignment).
-    
 
 Today's lab simply adds two additional chunks of bytes (the "redzones") 
 where each memory block is laid out as follows:
@@ -120,45 +119,68 @@ What you do:
 
 We discuss these differences a bit more next.
 
-#### What to add to ckalloc.c
+#### Change: Add a freelist
 
-To make it easy to check redzone corruption, I wrote a 
-simple checking routine:
-```
-static int mem_check(hdr_t *h, char *rz, unsigned nbytes) {
-    int i;
-    unsigned nerrors = 0;
+Change `ckfree` to just add a block to a free list, rather than actually freeing
+it with `kr_free`.
 
-    for(i = 0; i < nbytes; i++) {
-        if(rz[i] != REDZONE_VAL) {
-            char *addr = ck_data_start(h);
+We need this list so that we can scan free blocks later (after a given free)
+looking for errors. 
 
-            int offset = &rz[i] - addr;
+#### Change: add redzone checking
+
+You should change your `ckalloc` implementation to:
+  1. Allocate enough space for the second redzone (`ckalloc.h:REDZONE_NBYTES`)
+     We put the first redzone at the end of the header so it's already
+     included.
+    
+  2. Initialize both redzones to their special values `ckalloc.h:RESZONE_VAL`.
+     You'll check for corruption by scanning both redzones for any byte that
+     is not this value.  
+
+  3. As a sanity check: after you do step 2, run your redzone check routine
+     on the block to make sure it passes.
+
+You should change your `ckfree` to:
+
+  1. check the redzones immediately before you change the block's state.
+  2. Set the data portion of the allocation to the redzone value so you
+     can check that it isn't modified after.
+
+To keep our errors consistent, when you find a redzone corruption
+error print it out using the following format:
+
             ck_error(h, "%s block %u [%p] corrupted at offset %d\n",
                     h->state == FREED ? "Freed" : "Allocated",
                         h->block_id, addr, offset);
-            nerrors++;
-        }
-    }
-    return nerrors == 0;
-}
 
-// for debug
-static int check_block(hdr_t *h) {
-    // short circuit the checks.
-    return check_hdr(h)
-        && mem_check(h, ck_get_rz1(h), REDZONE_NBYTES)
-        && mem_check(h, ck_get_rz2(h), REDZONE_NBYTES);
-}
+Where `offset` is a negative number if the corruption was in 
+the initial redzone (before the data) and positive if its 
+in the subsequent rezone (after the data).
+
+#### Add `ck_heap_errors`
+
+This walks over the free and allocated lists checking the blocks for
+errors.  To make it easy, here's mine: you'll have to write `check_list`.
+
 
 ```
+// integrity check the allocated / freed blocks in the heap
+int ck_heap_errors(void) {
+    trace("going to check heap\n");
 
-`check_block` gets called:
-  1. `ckfree`: As soon as a block gets freed
-  2. `ck_heap_errors`: On each block in the allocated and free list.
-  3. Generally as a sanity check whenever we setup redzones or modify
-     the header to make sure that nothing unexpected changed.
+    unsigned nblks = 0;
 
+    unsigned nerrors = check_list(&nblks, alloc_list,0)
+                     + check_list(&nblks, free_list, 1);
+
+    if(nerrors)
+        trace("checked %d blocks, detected %d errors\n", nblks, nerrors);
+    else
+        trace("SUCCESS: checked %d blocks, detected no errors\n", nblks);
+    return nerrors;
+}
+```
 
 
 ------------------------------------------------------------------------------
