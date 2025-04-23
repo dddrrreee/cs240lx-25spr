@@ -1,5 +1,22 @@
 ## Building a redzone allocator.
 
+
+### clarifications
+
+If you need division, add the following two lines that define
+`LIB` and `LIB_POST` to the Makefile:
+
+        
+        # add these two lines.
+        LIB =  $(CS240LX_2025_PATH)/lib/libgcc.a
+        LIB_POST =  $(CS240LX_2025_PATH)/lib/libgcc.a
+
+        # unchanged in the original
+        include $(CS240LX_2025_PATH)/libpi/mk/Makefile.robust-v2
+
+
+### Overview
+
 Memory corruption bugs suck.  While some people use Rust, we're going
 to try to make C less bad by attempting to check every load and store
 for safety.
