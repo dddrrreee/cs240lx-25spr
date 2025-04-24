@@ -195,7 +195,7 @@ void mpu6050_reset(uint8_t addr) {
     // give time to shutdown, spin up.
     delay_ms(100);
 
-    if(bit_set(imu_rd(addr, PWR_MGMT_1), 6))
+    if(bit_is_on(imu_rd(addr, PWR_MGMT_1), 6))
         output("device booted up in sleep mode!\n");
 
     // clear sleep mode: (PWR_MGMT_1)
@@ -274,12 +274,9 @@ imu_xyz_t accel_rd(const accel_t *h) {
 // gyro registers.
 enum {
     // p13, p6
-    CONFIG = 28, 
+    CONFIG = 26, 
     // p14, p6
-    GYRO_CONFIG = 29, 
-
-    // p6, p14
-    gyro_config_reg = 0x1b,
+    GYRO_CONFIG = 27, 
 
     // p7
     GYRO_XOUT_H = 67,

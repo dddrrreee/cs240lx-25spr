@@ -53,7 +53,7 @@ void notmain(void) {
     i2c_init();      // can change this to use the <i2c_init_clk_div> for faster.
     delay_ms(100);   // allow time for i2c/dev to settle after init.
 
-    // from application note.
+    // from application note: p15
     uint8_t dev_addr = 0b1101000;
 
     enum { 
