@@ -71,9 +71,20 @@ Some other documents in no particular order:
    make sure that both `driver-accel.c` and `driver-gyro.c` give
    reasonable answers.
 
- - Implement some kind of extension.  A cool one that Joseph and Yash did
-   last year was doing the step counter.  A standard useful one would
-   be to add interrupts and put the readings in a circular queue.
+ - Implement some kind of extension.  
+    - A trivial one is getting the temperature.  Compare it with
+      the pi temperature (obtained using the mailbox).
+    - A cool one that Joseph and Yash did last year was doing the step 
+      counter (I believe using the motion detection p 39, but check
+      with Joseph!).  
+    - A standard, useful one would be to add interrupts and put the 
+      readings in a circular queue (p 27-29 of the register map).  
+    - A useful one would be figuring out how to use the self-test.
+    - A fun one is using the IMU to control pixels on a small screen.
+      E.g., to make a game controller.  We have some small screens.
+    - An adult one is to do the 9250 or Polou IMU.
+    - An OS one is to write your own I2C driver --- if you do this
+      let us know, since there are some pointers.
 
 ---------------------------------------------------------------------------
 ### Incomplete cheat sheet of page numbers.
@@ -170,7 +181,8 @@ What to do:
  2. Look in the driver code `driver-accel.c` to see how it's calling
     the accel code.
  3. Look at the interface description in `mpu-6050.h`.
- 4. Write the accel routines in `mpu-6050.c`.
+ 4. Write the accel routines in `mpu-6050.c` and change the Makefile
+    to use your code.
  5. Make sure that the results make sort-of sense.
 
 Use the datasheet and application note from the docs directory.
@@ -178,11 +190,12 @@ There are notes in the code.
 
 Note:
   - We use the "data ready" interrupt to see when new data is available.
-    With the checked-in i2c implementation this check will *never* fail 
-    because the speed is too slow.   I checked in a faster staff i2c
-    (or you can write your own!) to fix this.  Interesting bug to 
-    track down since it's also consistent with misconfiguration.
+    With the default value used for the i2c initialization this check
+    will *never* fail because the speed is too slow.   You can change
+    the clock divisor used to initialize the i2c driver to fix this.
 
+    (Interesting bug to track down since it's also consistent with
+    misconfiguration.)
 
 ---------------------------------------------------------------------------
 ### Part 2: fill in the gyroscope code in the code directory.
@@ -193,9 +206,8 @@ Similar to accel:
  3. Look at the interface in `mpu-6050.h`.
  4. Write the gyro routines in `mpu-6050.c`.
 
-Use the datasheet and application note from the prelab.  Start with
-the simple cookbook example they give and make sure your stuff looks
-reasonable!
+Use the datasheet and application note.  Start with the simple cookbook
+example they give and make sure your stuff looks reasonable!
 
 ---------------------------------------------------------------------------
 ### Extension: display the readings using your light strip or LED
@@ -209,9 +221,19 @@ One dumb way:
    - display!
 
 ---------------------------------------------------------------------------
-### Extension: write your own bit-banged i2c
+### Extension: write your own hardware or bit-banged i2c
 
-This is fun, and not hard from the wikipedia.
+The wikipedia for the i2c protocol gives a pretty easy pseudo-code you
+can use to do a bit-banged version.
+
+The broadcom document pages 28---36 describes the hardware i2c.
+
+You'll notice that the i2c datasheet looks similar to UART
+(fixed-size FIFO queue for transmit and receive, the need to check
+if data or space is available, control over speed, errata, etc).
+The more devices you do the more you'll notice they share common
+patterns.  The nice thing: there exists an N s.t. after doing N
+devices, doing N+1 is pretty quick.
 
 ---------------------------------------------------------------------------
 ### Extension: multiple devices + i2c
