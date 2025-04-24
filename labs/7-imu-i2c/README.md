@@ -4,26 +4,6 @@
   <img src="images/robot-pi.png" width="450" />
 </p>
 
-
-
-### MPU 6050: Errata
-
-Errata:
-- The given register values for the gyro are not correct
-  (e.g., `CONFIG` and `GYRO_CONFIG`).  You should use the values in the
-  PDF, not in the C code.  
-
-- change the `bit_set` in `mpu6050_reset`:
-
-        if(bit_set(imu_rd(addr, PWR_MGMT_1), 6))
-            output("device booted up in sleep mode!\n");
-
-- to `bit_is_on`:
-
-        if(bit_is_on(imu_rd(addr, PWR_MGMT_1), 6))
-            output("device booted up in sleep mode!\n");
-
-
 Today we're going to communicate with the InvenSense MPU-6050
 accelerometer + gyroscope using the I2C protocol.  Inertial measruement
 units  (IMUs) are useful for measuring and controlling stuff based
@@ -46,28 +26,30 @@ The plan is to:
      using an i2c driver we give you.
   2. Write your own driver from the Broadcom documents.
 
-  3. Extension: We also have several more advanced MPU's --- the
-     InvenSenses MPU9250 and Polou's MiniMPU v5 --- both of which have
-     a magnetometer.  In technical slang, these are called 9-axis DoF
-     (degree of freedom) devices  --- 3-axis for the X, Y, Z accelerometer
-     + 3-axis for the gyro + 3-axis for the magnetometer.  Porting your
-     code to these is a good way to make it obvious what are the common
-     things to do, and whats device-specific.
 
 There are a ton of extensions.   Literally tons.  Many I wish I had
 time to do, so with modest effort you can crank my boomer envy to 11.
 (In my ideal world people go off and figure out how to do different
 tricks and then do a show-and-tell next lab as a follow on.)
+  - If you're interested in this topic, we have several more advanced
+    MPU's --- the InvenSenses MPU9250 and Polou's MiniMPU v5 --- both of
+    which have a magnetometer.  Extension: If you're interested in this
+    type of device, we also have a more expensive 9-axis InvenSense's
+    MPU-9250 and Polou's MiniMPU v5 (both about $20-25) that you can
+    do for the lab or for an extension.  They include a magnetometer so
+    you can do correction.
 
-  - If you're interested in this type of device, we also have a more
-    expensive 9-axis MPU-9250 (about $20) that you can do for the lab
-    or for an extension.  The 9250 includes a magnetometer so you can
-    do correction.
+    In technical slang, these are called 9-axis DoF (degree of freedom)
+    devices  --- 3-axis for the X, Y, Z accelerometer + 3-axis for the
+    gyro + 3-axis for the magnetometer.  Porting your code to these
+    is a good way to make it obvious what are the common things to do,
+    and whats device-specific.
 
 Hard (Daniel) mode:
  - You can easily ignore our starter code and write everything from
    scratch.  The needed interface is narrow (reset, initialize, has-data,
    read-data) without any datastructures.  It's an interesting exercise.
+
 
 
 The `docs` directory has a bunch of documents.  The two main ones for
@@ -82,6 +64,16 @@ the MPU-6050:
 Some other documents in no particular order:
   - [A nice clear SPARKFUN tutorial on gyros](https://learn.sparkfun.com/tutorials/gyroscope/all).
   - [MPU6050 overview](https://mjwhite8119.github.io/Robots/mpu6050).
+
+#### Checkoff
+
+ - You should implement the `todo` parts of `code/mpu-6050.c` and
+   make sure that both `driver-accel.c` and `driver-gyro.c` give
+   reasonable answers.
+
+ - Implement some kind of extension.  A cool one that Joseph and Yash did
+   last year was doing the step counter.  A standard useful one would
+   be to add interrupts and put the readings in a circular queue.
 
 ---------------------------------------------------------------------------
 ### Incomplete cheat sheet of page numbers.
@@ -164,7 +156,7 @@ read/write with what values:
     chip and its responsive.
 
 ---------------------------------------------------------------------------
-### 1: fill in the accelerometer code in the code directory.
+### Part 1: fill in the accelerometer code in the code directory.
 
 <p float="center">
   <img src="images/6050-top.jpg" width="300" />
@@ -193,7 +185,7 @@ Note:
 
 
 ---------------------------------------------------------------------------
-### 2: fill in the gyroscope code in the code directory.
+### Part 2: fill in the gyroscope code in the code directory.
 
 Similar to accel:
  1. Look at the readings from our code.
