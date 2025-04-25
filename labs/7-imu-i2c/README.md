@@ -12,8 +12,6 @@ Note:
 ### Overview
 
 
-
-
 <p align="center">
   <img src="images/robot-pi.png" width="450" />
 </p>
@@ -92,6 +90,10 @@ Some other documents in no particular order:
     - An adult one is to do the 9250 or Polou IMU.
     - An OS one is to write your own I2C driver --- if you do this
       let us know, since there are some pointers.
+    - If you want a cool drone extension pull in madgewick
+      calculations (see the end of this README) and do something with
+      them.   Ashwin'22 3-D printed a gimble and used these values to
+      control where it pointed.
 
 Alternatively, you can just do hard (Daniel) mode:
  - You can easily ignore our starter code and write everything from
@@ -297,6 +299,7 @@ For the gyro (register map, p 10):
 
   4. Acceptable is within +/- 14%.  Anything more than that is a reject.
 
+If you need floating point, look in: [../../guides/using-float](../../guides/using-float).  Hopefully "it just works" after you change the Makefile.
  
 ---------------------------------------------------------------------------
 ### Extension: multiple devices + i2c
