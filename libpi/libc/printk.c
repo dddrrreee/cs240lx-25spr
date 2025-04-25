@@ -57,7 +57,16 @@ static void __emit_float(double d) {
     }
     emit_val(10, fp_get_integral(d));
     putchar('.');
-    emit_val(10, fp_get_frac(d));
+
+    // changes below
+    unsigned frac = fp_get_frac(d);
+    unsigned divisor = 100000;
+    while (frac != 0 && frac / divisor == 0) {
+        putchar('0');
+        divisor /= 10;
+    }
+
+    emit_val(10, frac);
 }
 
 #endif
