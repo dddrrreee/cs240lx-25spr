@@ -23,6 +23,11 @@ START ?= $(LPP)/staff-start.o
 DEFAULT_START := $(LPP)/staff-start.o
 MEMMAP ?= $(LPP)/memmap
 
+LIBM_DIR ?=  $(CS240LX_2025_PATH)/lib/libm/
+LIBM ?=  $(LIBM_DIR)/libm-pi.a
+LIBM_INC ?=  -I$(LIBM_DIR) -I$(LIBM_DIR)/include/
+
+
 # include path: user can override
 INC += -I. -I$(LPP)/include -I$(LPP)/ -I$(LPP)/src  -I$(LPP)/libc -I$(LPP)/staff-private
 # optimization level: client can override
@@ -56,3 +61,7 @@ CFLAGS += -mtp=soft
 
 # for .S compilation so we can use the preprocessor.
 CPP_ASFLAGS =  -nostdlib -nostartfiles -ffreestanding   -Wa,--warn -Wa,--fatal-warnings -Wa,-mcpu=arm1176jzf-s -Wa,-march=armv6zk   $(INC)
+
+
+CFLAGS += -DRPI_FP_ENABLED  -mhard-float -mfpu=vfp 
+CPP_ASFLAGS += -DRPI_FP_ENABLED  -mhard-float -mfpu=vfp
