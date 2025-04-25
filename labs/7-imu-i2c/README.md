@@ -187,12 +187,14 @@ There are notes in the code.
 
 Note:
   - We use the "data ready" interrupt to see when new data is available.
-    With the default value used for the i2c initialization this check
-    will *never* fail because the speed is too slow.   You can change
-    the clock divisor used to initialize the i2c driver to fix this.
 
-    (Interesting bug to track down since it's also consistent with
-    misconfiguration.)
+    If you set the i2c speed low enough (by having a high i2c clock
+    divisor) then this check will *never* fail because the speed is
+    too slow.
+
+    Our initial i2c implementation ignored clock-div and had this
+    bug.  Interesting to track down since it's also consistent with
+    misconfiguration.
 
 ---------------------------------------------------------------------------
 ### Part 2: fill in the gyroscope code in the code directory.
