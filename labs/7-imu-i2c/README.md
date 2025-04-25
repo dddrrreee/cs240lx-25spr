@@ -291,6 +291,25 @@ If you have your own i2c, you can easily hook up more than one device.
 This is a good step towards a sensor glove or a wearable harness.
 
 ---------------------------------------------------------------------------
+### Madgewick
+
+The directory `example-madgewick` has some examples of using madgewick
+calculations to determine position.
+
+When you run it, you'll get something like:
+
+        Time (s): 1.169999, roll: -3.184346, pitch: 3.179441, yaw: -0.88397
+        Time (s): 1.179999, roll: -3.123109, pitch: 3.118479, yaw: -0.85033
+        Time (s): 1.189999, roll: -3.184346, pitch: 3.179441, yaw: -0.88397
+        Time (s): 1.199999, roll: -3.123109, pitch: 3.118479, yaw: -0.85033
+        Time (s): 1.209999, roll: -3.184346, pitch: 3.179441, yaw: -0.88397
+        Time (s): 1.220000, roll: -3.123109, pitch: 3.118479, yaw: -0.85033
+        Time (s): 1.230000, roll: -3.184346, pitch: 3.179441, yaw: -0.88397
+        Time (s): 1.240000, roll: -3.123109, pitch: 3.118479, yaw: -0.85033
+        Time (s): 1.250000, roll: -3.184346, pitch: 3.179441, yaw: -0.88397
+
+
+---------------------------------------------------------------------------
 ### Some Legit Extensions
 
 If you finish, there's lots of tricks to play.  A major one is doing

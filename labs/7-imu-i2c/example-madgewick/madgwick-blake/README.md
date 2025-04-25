@@ -1,0 +1,54 @@
+## madgwick filter code slightly adapted for 240lx.
+
+Taken from:
+    - https://github.com/bjohnsonfl/Madgwick_Filter
+
+Madgwick is intended to take gyro, magnetmeter and accel and fuse these
+into a pitch, yawl, etc.
+
+If you have a way to check the results, lmk.
+
+
+Text below is original README:
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+# Madgwick Filter
+The paper can be found [here](https://courses.cs.washington.edu/courses/cse474/17wi/labs/l4/madgwick_internal_report.pdf).
+My explanation of the filter can be found on my website [here](https://blakejohnsonuf.com/project/#IMU), just scroll down to the Madgwick Filter section.
+
+## Brief Description
+An IMU is a sensor suite complete with an accelerometer and gyroscope. A MARG contains an IMU plus a Magnetometer.
+All three of these sensors measure physical qualities of Earth's fields or orientation due to angular momentum. Alone, these sensors have faults thats that the other sensors can make up for. One problem is when a sensor has an axis aligned with Earth's field which prevents using trig functions to determine orientation due to tan(90) being undefined.
+The fusion of sensors is critical for accuracy of orientation and for a complete transformation from the sensor's inertial frame to the Earth frame. 
+
+The Madgwick Filter fuses the IMU and optonally the MARG. It does this by using gradient descent to optimize a Quaternion that orients accelerometer data to a known reference of gravity. This quaternion is weighted and integrated with the gyroscope quaternion and previous orientation. This result is normalized and and converted to Euler angles.
+
+A Quaternion is a 4 dimensional number, an extension of the complex plane. It has a real component and 3 imaginary components. Rather than rotate about 3 axes, the quaternion rotates a certain amount of degrees about a vector. The math is ridiculously simple (in quaternion form) compared to euler rotation matrices. My website link above goes into quaternions to a deeper level.
+
+## Whats next
+
+This filter will be used in my IMU project, also on github, and run on an embedded MCU. I also intend to implement the MARG filter.  
+
+## Build Instructions 
+This Project includes a basic CMakeList.txt. Run the following commands to build, make, and run the program.
+
+```bash
+# Clone the repo and cd to the root of the directory
+
+# Create a build directory 
+ mkdir build
+
+ # Run CMake
+ cmake -S . -B build
+
+ # Build the program with the generated make files
+ cmake --build build/
+
+ # Run the program
+ ./build/Madgwick_Filter
+ ```
+
+ ### CMake
+ Use this [Modern CMake](https://cliutils.gitlab.io/modern-cmake/) guide as an introduction to CMake.
+ 

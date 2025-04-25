@@ -1,0 +1,26 @@
+author: Pim van Pelt <pim@ipng.nl>
+description: Library that implements various IMU devices
+type: lib
+version: 1.0
+
+tags:
+  - c
+  - hw
+  - docs:drivers:IMU
+
+# List of files / directories with C sources. No slashes at the end of dir names.
+sources:
+  - src
+  - third-party/bosch/src
+
+includes:
+  - include
+  - third-party/bosch/include
+
+config_schema:
+
+libs:
+  - location: https://github.com/mongoose-os-libs/i2c
+
+# Used by the mos tool to catch mos binaries incompatible with this file format
+manifest_version: 2017-05-18
