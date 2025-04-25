@@ -262,12 +262,12 @@ can use to do a bit-banged version.
 
 The broadcom document pages 28---36 describes the hardware i2c.
 
-You'll notice that the i2c datasheet looks similar to UART
-(fixed-size FIFO queue for transmit and receive, the need to check
-if data or space is available, control over speed, errata, etc).
-The more devices you do the more you'll notice they share common
-patterns.  The nice thing: there exists an N s.t. after doing N
-devices, doing N+1 is pretty quick.
+You'll notice that the i2c datasheet looks similar to UART (fixed-size
+FIFO queue for transmit and receive, the need to check if data or space
+is available, control over speed, errata, etc).  The more devices you
+do the more you'll notice they share common patterns.  The nice thing:
+there exists an N s.t. after doing N devices, doing N+1 is pretty quick.
+
 ---------------------------------------------------------------------------
 ### Extension: self test
 
