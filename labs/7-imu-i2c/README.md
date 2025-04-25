@@ -309,6 +309,10 @@ When you run it, you'll get something like:
         Time (s): 1.250000, roll: -3.184346, pitch: 3.179441, yaw: -0.88397
 
 
+If you need floating point, look in: [../../guides/using-float](../../guides/using-float).
+
+
+
 ---------------------------------------------------------------------------
 ### Some Legit Extensions
 
