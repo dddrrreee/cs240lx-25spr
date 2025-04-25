@@ -296,6 +296,13 @@ This is a good step towards a sensor glove or a wearable harness.
 The directory `example-madgewick` has some examples of using madgewick
 calculations to determine position.
 
+
+The directory: `imu/src` has a madgwick implementation to fuse gyro, accel
+and mag.  The `madgwick-blake` directory has a version that fuses gyro
+and accel.  They give euler angles as well as other location indications.
+
+
+
 When you run it, you'll get something like:
 
         Time (s): 1.169999, roll: -3.184346, pitch: 3.179441, yaw: -0.88397
@@ -308,9 +315,10 @@ When you run it, you'll get something like:
         Time (s): 1.240000, roll: -3.123109, pitch: 3.118479, yaw: -0.85033
         Time (s): 1.250000, roll: -3.184346, pitch: 3.179441, yaw: -0.88397
 
+I didn't have time to figure out how to use this so: great final project!
+
 
 If you need floating point, look in: [../../guides/using-float](../../guides/using-float).
-
 
 
 ---------------------------------------------------------------------------
