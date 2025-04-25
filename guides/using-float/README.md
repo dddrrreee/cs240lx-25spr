@@ -6,10 +6,10 @@ do a pull and recompile.
 There are two examples: `fp-example` uses floats, `complex-example` uses
 complex numbers.
 
-Note the makefile slightly changes in that you have to specify where to 
-find the floatig point library (`lib/libm`).  The current library
-only compiles a small subset of the math library.  Should be easy 
-enough to add the rest.
+Note the Makefile slightly changes in that you have to specify where to
+find the floating point library [cs240lx-25spr/lib/libm](../../lib/libm).
+The current library only compiles a small subset of the math library.
+Should be easy enough to add the rest.
 
 If you compile and run `fp-example`:
 
