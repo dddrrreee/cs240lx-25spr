@@ -1,11 +1,9 @@
 ## Building a redzone allocator.
 
+### Clarifications
 
-### clarifications
-
-If you need division, add the following two lines that define
-`LIB` and `LIB_POST` to the Makefile:
-
+If you get a division linking error, add the following two lines that define
+`LIB` and `LIB_POST` to the `Makefile`:
         
         # add these two lines.
         LIB =  $(CS240LX_2025_PATH)/lib/libgcc.a
