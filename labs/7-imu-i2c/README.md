@@ -179,13 +179,17 @@ What to do:
     (header will have the same number of pins and the silkscreen
      will say "MPU 6050")
 
+    <p align="center">
     <img src="images/mpu-6050-parthiv.jpg" width="300" align="center"/>
+    </p>
 
     Or use jumpers, which is a bit more complicated but lets you
     wave the MPU around easier.  The pins: SDA is gpio pin 2, 
     SCL is gpio pin 3, power should be 3v.
 
+    <p align="center">
     <img src="images/mpu-6050-jumpers.jpg" width="300" align="center"/>
+    </p>
 
     In either case: When the power is on, the red LED on the MPU should
     light up
