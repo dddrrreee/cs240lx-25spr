@@ -179,14 +179,14 @@ What to do:
     (header will have the same number of pins and the silkscreen
      will say "MPU 6050")
 
-  <img src="images/mpu-6050-parthiv.jpg" width="300" />
+    <img src="images/mpu-6050-parthiv.jpg" width="300" align="center"/>
 
-   Or use jumpers, which is a bit more complicated but lets you
-   wave the MPU around easier.
+    Or use jumpers, which is a bit more complicated but lets you
+    wave the MPU around easier.
 
-   When the power is on, the red LED on the MPU should light up
+    When the power is on, the red LED on the MPU should light up
 
-  <img src="images/mpu-6050-jumpers.jpg" width="300" />
+    <img src="images/mpu-6050-jumpers.jpg" width="300" align="center"/>
 
  2. Make sure that the staff code works.  When you run the
     `driver-accel.c` (the default in the Makefile). It should give
