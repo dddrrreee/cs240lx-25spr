@@ -12,7 +12,7 @@ movement tracking, movement reactive light shows, etc.)
 
 Why:
  1. The code isn't complicated, and is a good break from debugging
-    explosive execution stuff.
+    lower level stuff.
  2. Doing different devices is a good good basis for final projects.  
  3. The exact lab today can be used as a cheat code in other classes
     that have final projects --- e.g., just do what Tina did and 
@@ -24,8 +24,8 @@ Why:
 The plan is to:
   1. Write the 6050 device driver to configure and use the accelerometer
      using an i2c driver we give you.
-  2. Write your own driver from the Broadcom documents.
-
+  2. Write your own i2c driver from the Broadcom documents in a subsequent
+     lab.
 
 There are a ton of extensions.   Literally tons.  Many I wish I had
 time to do, so with modest effort you can crank my boomer envy to 11.
@@ -44,13 +44,6 @@ tricks and then do a show-and-tell next lab as a follow on.)
     gyro + 3-axis for the magnetometer.  Porting your code to these
     is a good way to make it obvious what are the common things to do,
     and whats device-specific.
-
-Hard (Daniel) mode:
- - You can easily ignore our starter code and write everything from
-   scratch.  The needed interface is narrow (reset, initialize, has-data,
-   read-data) without any datastructures.  It's an interesting exercise.
-
-
 
 The `docs` directory has a bunch of documents.  The two main ones for
 the MPU-6050:
@@ -86,6 +79,10 @@ Some other documents in no particular order:
     - An OS one is to write your own I2C driver --- if you do this
       let us know, since there are some pointers.
 
+Alternatively, you can just do hard (Daniel) mode:
+ - You can easily ignore our starter code and write everything from
+   scratch.  The needed interface is narrow (reset, initialize, has-data,
+   read-data) without any datastructures.  It's an interesting exercise.
 ---------------------------------------------------------------------------
 ### Incomplete cheat sheet of page numbers.
 
