@@ -252,7 +252,38 @@ if data or space is available, control over speed, errata, etc).
 The more devices you do the more you'll notice they share common
 patterns.  The nice thing: there exists an N s.t. after doing N
 devices, doing N+1 is pretty quick.
+---------------------------------------------------------------------------
+### Extension: self test
 
+A constant problem with devices checking if the output is garbage.
+This can happen because the hardware is broken, it's a cheap counterfeit,
+or (most likely) because our initial code is broken.  There usually isn't
+any ground truth to compare to and broken devices (and broken code) may
+not render the device inoperable, but instead just produce bogus values.
+(A common one today: swapping the high and low bytes of the readings or
+not sign extending.)
+
+Fortunately, accel and gyros often have a "self-test" mode that can be
+used to check for such problems.
+
+The mpu 6050 register map document talks about self-test in Section 4
+(page 9-12). Where you compare the readings obtained in self-test
+mode to the "factory trim" and compute the percentage difference.
+
+For the gyro (register map, p 10):
+  1. Full-scale range should be +/- 250dps.
+  2. You read the factory trim settings using registers 13-15 (p6) and
+     using the low five bits (bit 0 to bit 4 inclusive) 
+
+  3. You compute the percentage difference as follows:
+
+         (Self-test - Factory Trim)
+          -----------------------
+               Factory Trim
+
+  4. Acceptable is within +/- 14%.  Anything more than that is a reject.
+
+ 
 ---------------------------------------------------------------------------
 ### Extension: multiple devices + i2c
 
