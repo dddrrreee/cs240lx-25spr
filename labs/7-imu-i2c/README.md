@@ -166,11 +166,6 @@ read/write with what values:
 ---------------------------------------------------------------------------
 ### Part 1: fill in the accelerometer code in the code directory.
 
-<p float="center">
-  <img src="images/6050-top.jpg" width="300" />
-  <img src="images/6050-side.jpg" width="300" />
-</p>
-
 
 Hook up the hardware:
    1. Either plug in your mpu-6050 into the Parthiv board directly 
@@ -180,6 +175,12 @@ Hook up the hardware:
 <p align="center">
     <img src="images/mpu-6050-parthiv.jpg" width="300" align="center"/>
 </p>
+
+<p float="center">
+  <img src="images/6050-top.jpg" width="300" />
+  <img src="images/6050-side.jpg" width="300" />
+</p>
+
 
   2. Or use jumpers, which is a bit more complicated but lets you
      wave the MPU around easier.  The pins: SDA is gpio pin 2, 
@@ -194,17 +195,16 @@ Hook up the hardware:
 
 
 What to do:
-    1. Make sure that the staff code works.  When you run the
-       `driver-accel.c` (the default in the Makefile). It should give
-       *roughly* 1000mg or -1000mg readings for the different axis that
-       are pointed to the ceiling.
-
-    2. Look in the driver code `driver-accel.c` to see how it's calling
-       the accel code.
-    3. Look at the interface description in `mpu-6050.h`.
-    4. Write the accel routines in `mpu-6050.c` and change the Makefile
-       to use your code.
-    5. Make sure that the results make sort-of sense.
+  1. Make sure that the staff code works.  When you run the
+     `driver-accel.c` (the default in the Makefile). It should give
+     *roughly* 1000mg or -1000mg readings for the different axis that
+     are pointed to the ceiling.
+  2. Look in the driver code `driver-accel.c` to see how it's calling
+     the accel code.
+  3. Look at the interface description in `mpu-6050.h`.
+  4. Write the accel routines in `mpu-6050.c` and change the Makefile
+     to use your code.
+  5. Make sure that the results make sort-of sense.
 
 Use the datasheet and application note from the docs directory.
 There are notes in the code.
