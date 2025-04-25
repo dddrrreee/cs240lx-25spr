@@ -136,7 +136,6 @@ read/write with what values:
   - p30-p31: accel readings (reg 59-64): you get a high byte and a low byte.
     make sure you combine these correctly!
   - p31: temperature (65 and 66).
-
   - p32: gyro output (regs=67-72, 0x43-0x48).  sensitivity set by `FS_SEL`
     (reg 27).
   - p38: reset signal path.  does not reset the sensor registers.  i think
@@ -149,7 +148,6 @@ read/write with what values:
   - p41: power managmement 1 (reg 107, 0x6b): use to reset the device, 
     configure stuff.  in theory: after reset starts in "sleep mode" so
     you have to turn that off!  difference from 6500.
-
   - p42: power management 2 (reg 108): used in low-power mode (which we don't).
   - p44: FIFO count registers (regs 0x72,0x73).
   - p45: read/write fifo (0x74): these are written in order of register 
@@ -159,13 +157,11 @@ read/write with what values:
     use the fifo to make sure we get a clean internally-consistent read
     of registers rather than some old and some new (if a reading comes
     in while extracting them).
-
   - p46: `WHO_AM_I` (117): use this to validate you can read from the
     chip and its responsive.
 
 ---------------------------------------------------------------------------
 ### Part 1: fill in the accelerometer code in the code directory.
-
 
 Hook up the hardware:
    1. Either plug in your mpu-6050 into the Parthiv board directly 
@@ -190,11 +186,10 @@ Hook up the hardware:
      <img src="images/mpu-6050-jumpers.jpg" width="300" align="center"/>
      </p>
 
-     In either case: When the power is on, the red LED on the MPU should
-     light up
+In either case: When the power is on, the red LED on the MPU should
+light up
 
-
-What to do:
+What to do now:
   1. Make sure that the staff code works.  When you run the
      `driver-accel.c` (the default in the Makefile). It should give
      *roughly* 1000mg or -1000mg readings for the different axis that
