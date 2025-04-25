@@ -172,14 +172,14 @@ Hook up the hardware:
       (header will have the same number of pins and the silkscreen
       will say "MPU 6050")
 
-     <p align="center">
+      <p align="center">
         <img src="images/mpu-6050-parthiv.jpg" width="300" align="center"/>
-     </p>
+      </p>
 
-     <p float="center">
+      <p float="center">
        <img src="images/6050-top.jpg" width="300" />
        <img src="images/6050-side.jpg" width="300" />
-     </p>
+      </p>
 
 
   2. Or use jumpers, which is a bit more complicated but lets you
