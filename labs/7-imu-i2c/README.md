@@ -182,11 +182,13 @@ What to do:
     <img src="images/mpu-6050-parthiv.jpg" width="300" align="center"/>
 
     Or use jumpers, which is a bit more complicated but lets you
-    wave the MPU around easier.
-
-    When the power is on, the red LED on the MPU should light up
+    wave the MPU around easier.  The pins: SDA is gpio pin 2, 
+    SCL is gpio pin 3, power should be 3v.
 
     <img src="images/mpu-6050-jumpers.jpg" width="300" align="center"/>
+
+    In either case: When the power is on, the red LED on the MPU should
+    light up
 
  2. Make sure that the staff code works.  When you run the
     `driver-accel.c` (the default in the Makefile). It should give
