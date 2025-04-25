@@ -175,36 +175,36 @@ read/write with what values:
 
 
 What to do:
- 1. Either plug in your mpu-6050 into the Parthiv board directly 
-    (header will have the same number of pins and the silkscreen
-     will say "MPU 6050")
+    1. Either plug in your mpu-6050 into the Parthiv board directly 
+       (header will have the same number of pins and the silkscreen
+        will say "MPU 6050")
 
-    <p align="center">
-    <img src="images/mpu-6050-parthiv.jpg" width="300" align="center"/>
-    </p>
+       <p align="center">
+       <img src="images/mpu-6050-parthiv.jpg" width="300" align="center"/>
+       </p>
 
-    Or use jumpers, which is a bit more complicated but lets you
-    wave the MPU around easier.  The pins: SDA is gpio pin 2, 
-    SCL is gpio pin 3, power should be 3v.
+       Or use jumpers, which is a bit more complicated but lets you
+       wave the MPU around easier.  The pins: SDA is gpio pin 2, 
+       SCL is gpio pin 3, power should be 3v.
 
-    <p align="center">
-    <img src="images/mpu-6050-jumpers.jpg" width="300" align="center"/>
-    </p>
+       <p align="center">
+       <img src="images/mpu-6050-jumpers.jpg" width="300" align="center"/>
+       </p>
 
-    In either case: When the power is on, the red LED on the MPU should
-    light up
+       In either case: When the power is on, the red LED on the MPU should
+       light up
 
- 2. Make sure that the staff code works.  When you run the
-    `driver-accel.c` (the default in the Makefile). It should give
-    *roughly* 1000mg or -1000mg readings for the different axis that
-    are pointed to the ceiling.
+    2. Make sure that the staff code works.  When you run the
+       `driver-accel.c` (the default in the Makefile). It should give
+       *roughly* 1000mg or -1000mg readings for the different axis that
+       are pointed to the ceiling.
 
- 3. Look in the driver code `driver-accel.c` to see how it's calling
-    the accel code.
- 4. Look at the interface description in `mpu-6050.h`.
- 5. Write the accel routines in `mpu-6050.c` and change the Makefile
-    to use your code.
- 6. Make sure that the results make sort-of sense.
+    3. Look in the driver code `driver-accel.c` to see how it's calling
+       the accel code.
+    4. Look at the interface description in `mpu-6050.h`.
+    5. Write the accel routines in `mpu-6050.c` and change the Makefile
+       to use your code.
+    6. Make sure that the results make sort-of sense.
 
 Use the datasheet and application note from the docs directory.
 There are notes in the code.
