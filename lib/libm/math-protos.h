@@ -33,3 +33,30 @@ float asinf(float x);
 float fabsf(float x);
 /* s_atanf.c */
 float atanf(float x);
+/* e_sqrtf.c */
+float sqrtf(float x);
+/* s_cosf.c */
+float cosf(float x);
+/* k_cosf.c */
+float __kernel_cosdf(double x);
+/* k_sinf.c */
+float __kernel_sindf(double x);
+/* e_powf.c */
+float powf(float x, float y);
+/* e_pow.c */
+double pow(double x, double y);
+/* s_sinf.c */
+float sinf(float x);
+/* s_scalbnf.c */
+float scalbnf(float x, int n);
+/* s_copysignf.c */
+float copysignf(float x, float y);
+/* e_rem_pio2f.c */
+/* s_cimag.c */
+/* s_cimagf.c */
+/* s_cimagl.c */
+/* s_creal.c */
+/* s_crealf.c */
+/* s_creall.c */
+/* e_exp.c */
+double exp(double x);

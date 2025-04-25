@@ -14,7 +14,7 @@ LIB_OBJS += s_copysignf.o
 LIB_OBJS += e_rem_pio2f.o
 LIB_OBJS += s_cimag.o  s_cimagf.o  s_cimagl.o
 LIB_OBJS += s_creal.o  s_crealf.o  s_creall.o
-LIB_OBJS += e_exp.o   k_exp.o  #   s_cexp.o  
+LIB_OBJS += e_exp.o   # k_exp.o  #   s_cexp.o  
 
 
 
