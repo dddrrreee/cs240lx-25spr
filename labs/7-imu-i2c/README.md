@@ -1,5 +1,19 @@
 ## Using an i2c mems-based IMU (accelerometer + gyroscope)
 
+### Errata
+
+Note: 
+ - We updated libpi to use floating point halfway through the
+   lab.  This means if you do a pull and compile using the staff
+   staff-mpu-6050.o it won't link.  We added a staff-mpu-6050-fp.o that
+   should work.
+
+
+### Overview
+
+
+
+
 <p align="center">
   <img src="images/robot-pi.png" width="450" />
 </p>
