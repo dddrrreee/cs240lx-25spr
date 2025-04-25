@@ -171,16 +171,34 @@ read/write with what values:
   <img src="images/6050-side.jpg" width="300" />
 </p>
 
+
+
+
 What to do:
- 1. Plug in your mpu-6050 and make sure that the staff code works.
-    It should give *roughly* 1000mg or -1000mg readings for the different
-    axis that are pointed to the ceiling.
- 2. Look in the driver code `driver-accel.c` to see how it's calling
+ 1. Either plug in your mpu-6050 into the Parthiv board directly 
+    (header will have the same number of pins and the silkscreen
+     will say "MPU 6050")
+
+  <img src="images/mpu-6050-parthiv.jpg" width="300" />
+
+   Or use jumpers, which is a bit more complicated but lets you
+   wave the MPU around easier.
+
+   When the power is on, the red LED on the MPU should light up
+
+  <img src="images/mpu-6050-jumpers.jpg" width="300" />
+
+ 2. Make sure that the staff code works.  When you run the
+    `driver-accel.c` (the default in the Makefile). It should give
+    *roughly* 1000mg or -1000mg readings for the different axis that
+    are pointed to the ceiling.
+
+ 3. Look in the driver code `driver-accel.c` to see how it's calling
     the accel code.
- 3. Look at the interface description in `mpu-6050.h`.
- 4. Write the accel routines in `mpu-6050.c` and change the Makefile
+ 4. Look at the interface description in `mpu-6050.h`.
+ 5. Write the accel routines in `mpu-6050.c` and change the Makefile
     to use your code.
- 5. Make sure that the results make sort-of sense.
+ 6. Make sure that the results make sort-of sense.
 
 Use the datasheet and application note from the docs directory.
 There are notes in the code.
