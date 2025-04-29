@@ -9,7 +9,7 @@ it yourself.  To remove all mystery, we will do it using both
 the hardware i2c in the bcm2835 and a bit-banged version.
 
   - hardware i2c: described in the broadcom document pages 28---36 of
-    the BCM document.  See: [./docs/BCM2835-i2c.pdf][hw-i2c].
+    the BCM document.  Excerpted: [./docs/BCM2835-i2c.pdf][hw-i2c].
 
     You'll notice that the i2c datasheet looks similar to UART
     (fixed-size FIFO queue for transmit and receive, the need to check
@@ -21,8 +21,6 @@ the hardware i2c in the bcm2835 and a bit-banged version.
   - software i2c: [The wikipedia for the i2c protocol][bit-bang-i2c]
     gives a pretty easy pseudo-code you can use to do a bit-banged
     version.
-
-
  
 
 Checkoff:
@@ -136,7 +134,8 @@ the world a better place in several ways:
 
 The following is a raw cut-and-paste from the [wikipedia bit-bang i2c
 implementation][bit-bang-i2c].  If you define the different helper
-routines it should just work.
+routines it should just work --- we'll discuss these helpers
+after the code.
 
 ```
 // Hardware-specific support functions that MUST be customized:
@@ -323,6 +322,102 @@ void I2C_delay(void)
 }
 ```
 
+
+#### Implementing helpers.
+
+Given the above code, the game is to build the different helpers.
+
+```
+void I2C_delay(void);
+bool read_SCL(void); // Return current level of SCL line, 0 or 1
+bool read_SDA(void); // Return current level of SDA line, 0 or 1
+void set_SCL(void); // Do not drive SCL (set pin high-impedance)
+void clear_SCL(void); // Actively drive SCL signal low
+void set_SDA(void); // Do not drive SDA (set pin high-impedance)
+void clear_SDA(void); // Actively drive SDA signal low
+void arbitration_lost(void);
+```
+
+Before starting, you'll want to keep in mind a few weird differences in
+the i2c compared to some of the other devices we've done:
+
+  1. Rather than being initialized at the beginning to either
+     output or input, the GPIO pins used get switched from input to
+     output depending on where you are in the i2c protocol.  No
+     other device we used has done this!
+
+  2. Unlike other devices,  we *do not* write a 1 by:
+       1. Initialization: set GPIO to output.
+       2. Use: Writing a 1 to it.
+
+     Since this would cause problems when running multiple devices.  
+     Instead, we set a pin to "high impedence" by:
+       1. Initialization: set each GPIO pin to be a pullup.
+          This adds a resistence of about 50k ohm to the GPIO pin.
+          Once you set this, you don't change it.
+       2. Use: To "write" a 1: simply set the GPIO pin to input.
+          This will cause any device reading to see a 1 but won't cause
+          eletrical conflicts if multiple devices do this.
+
+The easy routines:
+
+  - `I2C_delay`: you can juse use a microsecond delay.  (Fancier is to 
+     have a custom speed per i2c device.)
+
+  - `read_SCL`: set the SCL pin to an input and return a read of it.
+  - `read_SDA`: set the SDA pin as an input and return a read of it.
+  - `arbitration_lost`: panic that arbitration is lost.
+
+The weird routines:
+
+  - `set_SCL`: set pin to high impedence (just switch to input).
+  - `set_SDA`: set pin to high impedence (just switch to input).
+  - `clear_SCL`: set pin to output and write a 0.
+  - `clear_SDA`: set pin to output and write a 0.
+
+
+The wrong way to track what state a pin is in, is to stare really
+hard at the code.  This will reliably produce a bunch of bugs.
+Instead you can just track the current state of the SDA and SCL pins,
+and do the needful.
+
+
+To make things a bit easier, we defined the following structure
+in `sw-i2c.h`:
+
+```
+typedef struct i2c {
+    // is this a transmitter or receiver?
+    unsigned is_transmit_p;
+    bool started_p;
+
+    uint8_t addr;
+    uint8_t SCL;
+    uint8_t SDA;
+
+    // these can switch back and forth. 
+    unsigned SCL_is_input_p:1;
+    unsigned SDA_is_input_p:1;
+} i2c_t;
+```
+
+During initialization you shoudl set the SCL and SDA pins to
+   1. input.
+   2. pullups (`gpio_set_pullup`).
+
+
+Then during use, just rely on the `is_input_p` fields to check the
+state of a pin.  
+  1. If it's input, and you need it to be output, switch it and set
+     the `input_p` field to 0.
+  2. If it's output and you need it to be input, switch it and 
+     set the `input_p` field to 1.
+  3. If it's input and you need it to be input, or output and you
+     need output: do nothing.
+
+Having dynamic checks will add some cycles, but they are neglibile here
+and they make it trivial to avoid bugs.
+
 ------------------------------------------------------------------------------
 ### Extensions.
 
@@ -346,9 +441,6 @@ Some interesting extensions:
      and do a cswitch when they are waiting using  delays (the code
      in libpi will call `rpi_wait` that you can just write to call
      `rpi_yield`).
-
-------------------------------------------------------------------------------
-### Refs
 
 [bit-bang-i2c]: https://en.wikipedia.org/wiki/I%C2%B2C
 [hw-i2c]: ./docs/BCM2835-i2c.pdf
