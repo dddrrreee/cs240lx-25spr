@@ -7,7 +7,7 @@
 # $(error "copy/symlink your MPU6050 in a subdir here (or put in libpi) and update the makefile!");
 
 # if you put it in a subdir.
-IMU_DIR = mpu6050/
+# IMU_DIR = mpu6050/
 IMU_DIR = ../../7-imu-i2c/code/
 
 # this is just from last lab.
