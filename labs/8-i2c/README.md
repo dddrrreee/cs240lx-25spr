@@ -8,7 +8,8 @@ communicate with your accel/gyro, so it makes sense to write
 it yourself.  To remove all mystery, we will do it using both
 the hardware i2c in the bcm2835 and a bit-banged version.
 
-  - hardware i2c: [described in the broadcom document pages 28---36][hw-i2c].
+  - hardware i2c: described in the broadcom document pages 28---36 of
+    the BCM document.  See: [./docs/BCM2835-i2c.pdf][hw-i2c].
 
     You'll notice that the i2c datasheet looks similar to UART
     (fixed-size FIFO queue for transmit and receive, the need to check
