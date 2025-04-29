@@ -350,5 +350,5 @@ Some interesting extensions:
 ### Refs
 
 [bit-bang-i2c]: https://en.wikipedia.org/wiki/I%C2%B2C
-[hw-i2c]: ./docs/BCM2835-ARM-Peripherals-i2c.pdf
+[hw-i2c]: ./docs/BCM2835-i2c.pdf
 
