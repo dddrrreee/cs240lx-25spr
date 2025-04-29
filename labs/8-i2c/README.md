@@ -8,7 +8,7 @@ communicate with your accel/gyro, so it makes sense to write
 it yourself.  To remove all mystery, we will do it using both
 the hardware i2c in the bcm2835 and a bit-banged version.
 
-  - hardware i2c: described in the broadcom document pages 28---36.
+  - hardware i2c: [described in the broadcom document pages 28---36][hw-i2c].
 
     You'll notice that the i2c datasheet looks similar to UART
     (fixed-size FIFO queue for transmit and receive, the need to check
@@ -33,17 +33,6 @@ Checkoff:
      test was optional from last lab but it found so many issues
      in code that we're adding it as a requirement for today's lab.
   
-Various extension ideas:
-  1. SW i2c.  This is useful for banging a bunch of devices. 
-  2. Overclock your pi and measure how much faster you can get it before 
-     things break down.  Ideally you'd read the temperature and downthrottle
-     when things get "too hot" (not sure what that is :).
-  3. Drive a bunch of accels at once.
-  4. Do loop back where you SW i2c to yourself and see how fast you 
-     can make it: use two threads, one for sender, one for receiver,
-     and do a cswitch when they are waiting using  delays (the code
-     in libpi will call `rpi_wait` that you can just write to call
-     `rpi_yield`).
 
 ------------------------------------------------------------------------------
 ### 1. hardware I2C driver: `code-i2c/i2c.c`
@@ -350,9 +339,16 @@ Some interesting extensions:
   4. Use DMA to pull the readings off the IMU.  We'll do DMA in a few
      labs, but if you can figure it out on your own you'll obviously
      learn more.
-     
 
+  5. Do loop back where you SW i2c to yourself and see how fast you 
+     can make it: use two threads, one for sender, one for receiver,
+     and do a cswitch when they are waiting using  delays (the code
+     in libpi will call `rpi_wait` that you can just write to call
+     `rpi_yield`).
 
+------------------------------------------------------------------------------
+### Refs
 
 [bit-bang-i2c]: https://en.wikipedia.org/wiki/I%C2%B2C
+[hw-i2c]: ./docs/docs/BCM2835-ARM-Peripherals-i2c.pdf
 
