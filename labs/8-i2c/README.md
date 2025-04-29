@@ -3,12 +3,12 @@
 Since this is midterm week, we'll do a low-key device lab by building
 the main black box of the IMU lab: the i2c device driver.
 
-The i2c protocol.  You used our staff i2c code on tuesday to
+The i2c protocol.  You used our staff i2c code on Tuesday to
 communicate with your accel/gyro, so it makes sense to write
 it yourself.  To remove all mystery, we will do it using both
 the hardware i2c in the bcm2835 and a bit-banged version.
 
-  - hardware i2c: described in the broadcom document pages 28---36 of
+  - hardware i2c: described in the Broadcom document pages 28---36 of
     the BCM document.  Excerpted: [./docs/BCM2835-i2c.pdf][hw-i2c].
 
     You'll notice that the i2c datasheet looks similar to UART
@@ -18,7 +18,7 @@ the hardware i2c in the bcm2835 and a bit-banged version.
     patterns.  The nice thing: there exists an N s.t. after doing N
     devices, doing N+1 is pretty quick.
 
-  - software i2c: [The wikipedia for the i2c protocol][bit-bang-i2c]
+  - software i2c: [The Wikipedia for the i2c protocol][bit-bang-i2c]
     gives a pretty easy pseudo-code you can use to do a bit-banged
     version.
  
@@ -108,12 +108,12 @@ The code:
 ### 2. software I2C driver: `code-sw-i2c/i2c.c`
 
 Like many digital protocols, building a bit-banged version of the 
-hardware protocol (1) can be easier than writig the hardware version
+hardware protocol (1) can be easier than writing the hardware version
 and (2) removes alot of the mystery of what is going on.
 Besides just a life of knowledge, having a software version makes 
 the world a better place in several ways:
   1. You can work around hardware bugs.  For example, the BCM has
-     a known i2c "clock stretching" bug that you can elminate with the
+     a known i2c "clock stretching" bug that you can eliminate with the
      software version.
   2. You can work around hardware limitations: typically hardware
      has a small set of speeds you can select among using a "clock
@@ -126,13 +126,13 @@ the world a better place in several ways:
   4. It's very easy to port.  Device hardware descriptions are not famous
      for simplicity, nor for error-free prose. Further, in many new chips,
      there simply is no hardware description (or if there is, it's not
-     in english).  If we have a bit banged protocol, porting to a new
+     in English).  If we have a bit banged protocol, porting to a new
      machine involves setting GPIO pins and having some kind of cycle
      (or microsecond) counter.  Porting the bit-banged driver today,
      could easily just take a couple minutes on a new chip.
 
 
-The following is a raw cut-and-paste from the [wikipedia bit-bang i2c
+The following is a raw cut-and-paste from the [Wikipedia bit-bang i2c
 implementation][bit-bang-i2c].  If you define the different helper
 routines it should just work --- we'll discuss these helpers
 after the code.
@@ -345,33 +345,31 @@ the i2c compared to some of the other devices we've done:
      output or input, the GPIO pins used get switched from input to
      output depending on where you are in the i2c protocol.  No
      other device we used has done this!
-
   2. Unlike other devices,  we *do not* write a 1 by:
        1. Initialization: set GPIO to output.
        2. Use: Writing a 1 to it.
 
      Since this would cause problems when running multiple devices.  
-     Instead, we set a pin to "high impedence" by:
-       1. Initialization: set each GPIO pin to be a pullup.
-          This adds a resistence of about 50k ohm to the GPIO pin.
+     Instead, we set a pin to "high impedance" by:
+       1. Initialization: set each GPIO pin to be a pull-up.
+          This adds a resistance of about 50k ohm to the GPIO pin.
           Once you set this, you don't change it.
        2. Use: To "write" a 1: simply set the GPIO pin to input.
           This will cause any device reading to see a 1 but won't cause
-          eletrical conflicts if multiple devices do this.
+          electrical conflicts if multiple devices do this.
 
 The easy routines:
 
-  - `I2C_delay`: you can juse use a microsecond delay.  (Fancier is to 
+  - `I2C_delay`: you can just use a microsecond delay.  (Fancier is to 
      have a custom speed per i2c device.)
-
   - `read_SCL`: set the SCL pin to an input and return a read of it.
   - `read_SDA`: set the SDA pin as an input and return a read of it.
   - `arbitration_lost`: panic that arbitration is lost.
 
 The weird routines:
 
-  - `set_SCL`: set pin to high impedence (just switch to input).
-  - `set_SDA`: set pin to high impedence (just switch to input).
+  - `set_SCL`: set pin to high impedance (just switch to input).
+  - `set_SDA`: set pin to high impedance (just switch to input).
   - `clear_SCL`: set pin to output and write a 0.
   - `clear_SDA`: set pin to output and write a 0.
 
@@ -401,10 +399,9 @@ typedef struct i2c {
 } i2c_t;
 ```
 
-During initialization you shoudl set the SCL and SDA pins to
-   1. input.
-   2. pullups (`gpio_set_pullup`).
-
+During initialization you should set the SCL and SDA pins to
+   1. Input.
+   2. Pullups (`gpio_set_pullup`).
 
 Then during use, just rely on the `is_input_p` fields to check the
 state of a pin.  
@@ -415,7 +412,7 @@ state of a pin.
   3. If it's input and you need it to be input, or output and you
      need output: do nothing.
 
-Having dynamic checks will add some cycles, but they are neglibile here
+Having dynamic checks will add some cycles, but they are negligible here
 and they make it trivial to avoid bugs.
 
 ------------------------------------------------------------------------------
@@ -424,7 +421,7 @@ and they make it trivial to avoid bugs.
 Some interesting extensions:
   1. How fast can you run a given IMU in terms of data / sec?
   2. How fast can you run two IMU's in terms of data/sec?
-  3. I havent' done this: but can you use two simultanous IMUs
+  3. I havent' done this: but can you use two simultaneous IMUs
      to get better data by interpolating?  
 
      Ideally if an IMU produces readings every T microseconds, you'd
