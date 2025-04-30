@@ -21,21 +21,21 @@ uint8_t i2c_read_byte(i2c_t *h, bool done_p) {
 }
 
 
-// Read a byte from I2C bus
-uint8_t i2c_read_byte(i2c_t *h, bool done_p) {
-    uint8_t byte = 0;
+int sw_i2c_read(i2c_t *h, uint8_t data[], unsigned nbytes) {
+    i2c_start_cond(h);  // xfer start
 
-    // msb reads
-    for (unsigned bit = 0; bit < 8; ++bit)
-        byte = (byte << 1) | i2c_read_bit(h);
+    // send address for read: low bit is 1
+    if(!i2c_write_byte(h, h->addr<<1|1))
+        panic("nake: failed to write byte\n");
 
-    // if it's the last byte, <done_p>=1
-    i2c_write_bit(h, done_p);
-    return byte;
+    // write a bit after each bit: are we done?
+    for(unsigned i = 0; i < nbytes; i++)
+        data[i] = i2c_read_byte(h, i==(nbytes-1));
+
+    i2c_stop_cond(h);  // xfer end
+    return 1;
 }
-
 ```
-
 
 ### overview
 
