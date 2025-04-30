@@ -57,16 +57,33 @@ Hints:
   3. In general: Make sure you have device barriers when setting GPIO and I2C.  
      Along with when we enter and leave the routines.
 
+
+
+You can see that the GPIO SCL and SDA pins are pins 2 and 3.
+
+
+
+
+
 Initialization: `i2c_init`
 
-  1. You'll need to setup the GPIO SCL and SDA pins (you can see those in 
-     `docs/gpio.png`).  
+  1. You'll need to setup the GPIO SCL and SDA pins. You can see those 
+     in [../../docs/gpio.png][gpio-pins].  You can then look up how
+     to set them in the BCM doc p 102:
+
+<p align="center">
+  <img src="images/gpio-i2c.png" width="200" />
+</p>
+
   2. Then enable the BSC we want (C register, p 29) to use along with
      any clock divider (p 34, default is 0).
   3. Clear the BSC status register (S register, p 31):
      clear any errors and clear the done field.
   4. After done: Make sure there is no active transfer (S register, p31)
      and along with a few other fields that make sense (up to you).
+
+
+
 
 Again, make sure you use device barriers.
 
@@ -480,4 +497,5 @@ Some interesting extensions:
 
 [bit-bang-i2c]: https://en.wikipedia.org/wiki/I%C2%B2C
 [hw-i2c]: ./docs/BCM2835-i2c.pdf
+[gpio-pins]: ../../docs/gpio.png
 
