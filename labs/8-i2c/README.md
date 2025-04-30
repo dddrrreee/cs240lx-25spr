@@ -1,10 +1,17 @@
 ## I2C
 
+### Errata
 
-### errata
+Two big changes for software I2c.
 
-My I2C looks slightly different from the wikipedia.  I send a 1 as
-the last bit on the last byte:
+First,  delete the checking if the pin is input or output and always
+set it to the right thing.   Just delete:
+
+        unsigned SCL_is_input_p:1;
+        unsigned SDA_is_input_p:1;
+
+Second, My I2C looks slightly different from the wikipedia.  
+I send a 1 as the last bit on the last byte:
 
 ```
 // Read a byte from I2C bus
@@ -458,7 +465,8 @@ typedef struct i2c {
     uint8_t SCL;
     uint8_t SDA;
 
-    // these can switch back and forth. 
+    // XXX: NOTE: we eliminated the use of is_input_p
+    // just cut this.
     unsigned SCL_is_input_p:1;
     unsigned SDA_is_input_p:1;
 } i2c_t;
@@ -468,17 +476,10 @@ During initialization you should set the SCL and SDA pins to
    1. Input.
    2. Pullups (`gpio_set_pullup`).
 
-Then during use, just rely on the `is_input_p` fields to check the
-state of a pin.  
-  1. If it's input, and you need it to be output, switch it and set
-     the `input_p` field to 0.
-  2. If it's output and you need it to be input, switch it and 
-     set the `input_p` field to 1.
-  3. If it's input and you need it to be input, or output and you
-     need output: do nothing.
+Then:
+   1. If you want to "write" a 1: Set the pin to `gpio_input`.
+   2. If you want to write a 0: set the pin to `gpio_output` and write a 0.
 
-Having dynamic checks will add some cycles, but they are negligible here
-and they make it trivial to avoid bugs.
 
 #### What to do first
 
