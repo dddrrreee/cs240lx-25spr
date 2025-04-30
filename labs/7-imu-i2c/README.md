@@ -292,16 +292,25 @@ mode to the "factory trim" and compute the percentage difference.
 
 For the gyro (register map, p 10):
   1. Full-scale range should be +/- 250dps.
-  2. You read the factory trim settings using registers 13-15 (p6) and
-     using the low five bits (bit 0 to bit 4 inclusive) 
+  2. Read the gyro values before-hand --- these are the measurements
+     *without* self test.
+  3. Turn self-test on in the `GYRO_CONFIG` register.   Wait til settles
+     (Javier did 250ms).  I also discarded the first 20 readings.
+  4. Read the gyro values --- these are the measurements *with* self test.
+     STR = these values subtracted from (2).
+  5. Then read the factory trim settings using registers 13-15 (p6) and
+     using the low five bits (bit 0 to bit 4 inclusive).   Compute
+     the FT readings using the formula from the datasheet above:
 
-  3. You compute the percentage difference as follows:
 
-         (Self-test - Factory Trim)
-          -----------------------
-               Factory Trim
+            float ft_z =  25. * 131. * powf(1.046, z - 1.);
+            float ft_x =  25. * 131. * powf(1.046, x - 1.);
+            float ft_y = -25. * 131. * powf(1.046, y - 1.);
 
-  4. Acceptable is within +/- 14%.  Anything more than that is a reject.
+
+  6. You compute the percentage difference as: (STR - FT) / FT.  Where
+     STR = (2) - (3).  FT = (5).  Acceptable is within +/- 14%.
+     Anything more than that is a reject.
 
 We changed the repo to use floating-point by default.
 If you need the the floating point math library, look in:
