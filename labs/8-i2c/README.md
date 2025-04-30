@@ -65,12 +65,12 @@ the hardware i2c in the bcm2835 and a bit-banged version.
 Checkoff:
   1. i2c hardware driver.  Should drop into last lab and give sensible
      values.  
-  2. i2c software driver.  Should drop into last lab and give sensible
-     values.  
+  2. ***this is now an extension***: i2c software driver.  Should drop
+     into last lab and give sensible values.
+
   3. Both of these should pass the gyro and accel self-test.  Self-
      test was optional from last lab but it found so many issues
      in code that we're adding it as a requirement for today's lab.
-  
 
 ------------------------------------------------------------------------------
 ### 1. hardware I2C driver: `code-i2c/i2c.c`
@@ -96,13 +96,7 @@ Hints:
   3. In general: Make sure you have device barriers when setting GPIO and I2C.  
      Along with when we enter and leave the routines.
 
-
-
 You can see that the GPIO SCL and SDA pins are pins 2 and 3.
-
-
-
-
 
 Initialization: `i2c_init`
 
