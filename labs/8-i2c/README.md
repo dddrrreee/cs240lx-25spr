@@ -67,9 +67,11 @@ You can see that the GPIO SCL and SDA pins are pins 2 and 3.
 
 Initialization: `i2c_init`
 
-  1. You'll need to setup the GPIO SCL and SDA pins. You can see those 
-     in [../../docs/gpio.png][gpio-pins].  You can then look up how
-     to set them in the BCM doc p 102:
+  1. You'll need to setup the GPIO SCL and SDA pins. Note that these
+     are different than the i2c device so you need a dev barrier.
+
+     You can see those in [../../docs/gpio.png][gpio-pins].  You can
+     then look up how to set them in the BCM doc p 102:
 
 <p align="center">
   <img src="images/gpio-i2c.png" width="500" />
