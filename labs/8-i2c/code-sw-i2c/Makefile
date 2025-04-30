@@ -1,35 +1,30 @@
-# sort of gross:
-#   1. make a sym link to your mpu6050;
-#   2. or just copy it over.
-#   3. or put your mpu6050.c and mpu6050.h in libpi/src and the
-#      driver here.
+# double check that everything works and then swap 
+# these so it uses your sw-i2c.c
+# COMMON_SRC = sw-i2c.c 
+STAFF_OBJS += staff-sw-i2c.o 
 
-# $(error "copy/symlink your MPU6050 in a subdir here (or put in libpi) and update the makefile!");
+# a vaneer to let the big banged work with code
+# that assumes the hardware interface.
+COMMON_SRC += sw-i2c-vaneer.c
 
-# if you put it in a subdir.
-# IMU_DIR = mpu6050/
-IMU_DIR = ../../7-imu-i2c/code/
+# use last lab's code
+IMU_DIR := ../../7-imu-i2c/code/
+PROGS = $(IMU_DIR)/driver-gyro.c
 
-# this is just from last lab.
 PROGS = $(IMU_DIR)/driver-accel.c
 
-COMMON_SRC = sw-i2c.c sw-i2c-vaneer.c 
-
-# update the location.
-COMMON_SRC += $(IMU_DIR)/mpu-6050.c
-
-# you can swap your hw i2c back and forth or the staff .o
-# COMMON_SRC = i2c.c
-
+# when done, should use yours.
+# pick either yours or ours.
+# COMMON_SRC += $(IMU_DIR)/mpu-6050.c
+STAFF_OBJS += $(IMU_DIR)/staff-mpu-6050.o
 
 # define this if you need to give the device for your pi
 TTYUSB = 
 BOOTLOADER = my-install
 
-# uncomment if you want it to automatically run.
+# set to 0 or comment out if you don't want it to run automatically.
 RUN=1
 
 LIBS += $(LGCC)
 LIB_POST := $(LGCC)
-
 include ../../../libpi/mk/Makefile.robust-v2
