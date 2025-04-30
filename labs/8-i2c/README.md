@@ -72,7 +72,7 @@ Initialization: `i2c_init`
      to set them in the BCM doc p 102:
 
 <p align="center">
-  <img src="images/gpio-i2c.png" width="400" />
+  <img src="images/gpio-i2c.png" width="500" />
 </p>
 
   2. Then enable the BSC we want (C register, p 29) to use along with
