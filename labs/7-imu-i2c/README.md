@@ -286,6 +286,9 @@ The mpu 6050 register map document talks about self-test in Section 4
 (page 9-12). Where you compare the readings obtained in self-test
 mode to the "factory trim" and compute the percentage difference.
 
+
+##### gyro
+
 <p align="center">
   <img src="images/gyro-self-test.png" width="500" />
 </p>
@@ -311,6 +314,33 @@ For the gyro (register map, p 10):
   6. You compute the percentage difference as: (STR - FT) / FT.  Where
      STR = (2) - (3).  FT = (5).  Acceptable is within +/- 14%.
      Anything more than that is a reject.
+
+
+##### accel
+
+<p align="center">
+  <img src="images/accel-self-test.png" width="500" />
+</p>
+
+Note: the self test registers are different from gyro!
+
+The trim formula:
+
+        float compute_ft(unsigned t) {
+            if(t == 0)
+                return 0;
+            return 4096. * .34 * powf(.92/.34, (t-1.)/(2*2*2*2*2-2.));
+        }
+
+
+Common mistake:
+  1. Not combining the two different locations of the self-test readings. E.g.,
+     `SELF_TEST_X` and `SELF_TEST_A`
+  2. Not setting the initial accel configuration correctly (should be 8g).
+  3. Using `GYRO_CONFIG` instead of `ACCEL_CONFIG`.
+
+
+##### fp
 
 We changed the repo to use floating-point by default.
 If you need the the floating point math library, look in:
