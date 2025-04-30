@@ -122,12 +122,12 @@ using a `PUT32` (not `PUT8`).
   2. If you do `make` everything should run and produce readings.
   3. Now change:
 
-        # code-i2c/Makefile
-        # COMMON_SRC = i2c.c
+            # code-i2c/Makefile
+            # COMMON_SRC = i2c.c
 
      To:
 
-        COMMON_SRC = i2c.c
+            COMMON_SRC = i2c.c
 
      And the makefile will compile in the `i2c.c` and start using that.
 
@@ -452,14 +452,14 @@ and they make it trivial to avoid bugs.
   2. If you do `make` everything should run and produce readings.
   3. Now change:
 
-        # code-sw-i2c/Makefile
-        # COMMON_SRC = sw-i2c.c 
-        STAFF_OBJS += staff-sw-i2c.o
+            # code-sw-i2c/Makefile
+            # COMMON_SRC = sw-i2c.c 
+            STAFF_OBJS += staff-sw-i2c.o
 
      To:
 
-        COMMON_SRC = sw-i2c.c 
-        # STAFF_OBJS += staff-sw-i2c.o
+            COMMON_SRC = sw-i2c.c 
+            # STAFF_OBJS += staff-sw-i2c.o
 
      And the makefile will compile in the `sw-i2c.c` and start using that.
 
