@@ -286,6 +286,10 @@ The mpu 6050 register map document talks about self-test in Section 4
 (page 9-12). Where you compare the readings obtained in self-test
 mode to the "factory trim" and compute the percentage difference.
 
+<p align="center">
+  <img src="images/gyro-self-test.png" width="500" />
+</p>
+
 For the gyro (register map, p 10):
   1. Full-scale range should be +/- 250dps.
   2. You read the factory trim settings using registers 13-15 (p6) and
@@ -299,8 +303,11 @@ For the gyro (register map, p 10):
 
   4. Acceptable is within +/- 14%.  Anything more than that is a reject.
 
-If you need floating point, look in: [../../guides/using-float](../../guides/using-float).  Hopefully "it just works" after you change the Makefile.
- 
+We changed the repo to use floating-point by default.
+If you need the the floating point math library, look in:
+[../../guides/using-float](../../guides/using-float).  Hopefully "it
+just works" after you change the Makefile.
+
 ---------------------------------------------------------------------------
 ### Extension: multiple devices + i2c
 
