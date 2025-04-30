@@ -1,15 +1,27 @@
 /*
- * simplified i2c implementation --- no dma, no interrupts.  the latter
- * probably should get added.  the pi's we use can only access i2c1
- * so we hardwire everything in.
+ * simplified i2c implementation --- no dma, no interrupts. should 
+ * probobaly add both.  
+ *
+ * the pi's we use can only access i2c1 (gpio pins 2,3) so we hardwire 
+ * everything in.
  *
  * datasheet starts at p28 in the broadcom pdf.
  *
+ * make sure you use device barriers at the start and end!  we don't
+ * know what else the client code was doing.
  */
 #include "rpi.h"
 #include "libc/helper-macros.h"
 #include "i2c.h"
 
+// example of using a structure to control a device.  
+// note:
+//   1. the use of static asserts to check offsets.
+//   2. we don't use bitfields here, and only read/write
+//      using 32 values. p28: "All accesses are assumed to 
+//      be 32-bit"
+//   3. probably should have just stuck with enums, but
+//      the starter code was already out, so :)
 typedef struct {
 	uint32_t control; // "C" register, p29
 	uint32_t status;  // "S" register, p31
@@ -53,18 +65,28 @@ _Static_assert(offsetof(RPI_i2c_t, clock_delay) == 0x18, "wrong offset");
  */
 static volatile RPI_i2c_t *i2c = (void*)0x20804000; 	// BSC1
 
-// extend so this can fail.
+// write <nbytes> of data from input array <data> to device <addr>.
+//
+// should extend so this can fail.
 int i2c_write(unsigned addr, uint8_t data[], unsigned nbytes) {
     todo("implement");
 	return 1;
 }
 
-// extend so it returns failure.
+// read <nbytes> of data from device <addr> and write it into 
+// output array <data>
+//
+// should extend so it returns failure.
 int i2c_read(unsigned addr, uint8_t data[], unsigned nbytes) {
     todo("implement");
 	return 1;
 }
 
+// initialize the i2c hardware to default speed.
+//
+// notes:
+//  - make sure you setup the GPIO pins to enable i2c.
+//  - uses a clock divider of 0.
 void i2c_init(void) {
     todo("setup GPIO, setup i2c, sanity check results");
 }
