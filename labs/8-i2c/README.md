@@ -359,7 +359,6 @@ the i2c compared to some of the other devices we've done:
           electrical conflicts if multiple devices do this.
 
 The easy routines:
-
   - `I2C_delay`: you can just use a microsecond delay.  (Fancier is to 
      have a custom speed per i2c device.)
   - `read_SCL`: set the SCL pin to an input and return a read of it.
@@ -367,12 +366,10 @@ The easy routines:
   - `arbitration_lost`: panic that arbitration is lost.
 
 The weird routines:
-
   - `set_SCL`: set pin to high impedance (just switch to input).
   - `set_SDA`: set pin to high impedance (just switch to input).
   - `clear_SCL`: set pin to output and write a 0.
   - `clear_SDA`: set pin to output and write a 0.
-
 
 The wrong way to track what state a pin is in, is to stare really
 hard at the code.  This will reliably produce a bunch of bugs.
