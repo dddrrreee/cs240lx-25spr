@@ -98,11 +98,28 @@ Write has the same transfer start (step 1) and end (step 3). As with
 uart you'll have to wait until there is space and then you write 8 bits
 using a `PUT32` (not `PUT8`).
 
-The code:
-  1. There is currently just a simple program that reads the device ID.
-  2. To run your accel you'll either copy or symlink the code into a subdirectory
-     in `code-i2c` or put `mpu6050.c` and `mpu6050.h` into libpi, the driver
-     into `code-i2c`, and link against it.
+#### What to do first
+
+  1. The Makefile links in the accel driver and the staff code from
+     last lab.
+  2. If you do `make` everything should run and produce readings.
+  3. Now change:
+
+        # code-i2c/Makefile
+        # COMMON_SRC = i2c.c
+
+     To:
+
+        COMMON_SRC = i2c.c
+
+     And the makefile will compile in the `i2c.c` and start using that.
+
+  4. If you get stuck you can always comment this out back out and
+     it will use the staff i2c.  If the code still seems broken,
+     power-cycle your pi by unplugging the usb cord and plug it back in.
+     The IMU's state can stay across reboots since it doesn't know you
+     rebooted, it only knows it still has power.
+
 
 ------------------------------------------------------------------------------
 ### 2. software I2C driver: `code-sw-i2c/i2c.c`
@@ -411,6 +428,30 @@ state of a pin.
 
 Having dynamic checks will add some cycles, but they are negligible here
 and they make it trivial to avoid bugs.
+
+#### What to do first
+
+  1. The Makefile links in the accel driver, the staff code from
+     last lab, and a staff version of the bit-banged i2c.
+  2. If you do `make` everything should run and produce readings.
+  3. Now change:
+
+        # code-sw-i2c/Makefile
+        # COMMON_SRC = sw-i2c.c 
+        STAFF_OBJS += staff-sw-i2c.o
+
+     To:
+
+        COMMON_SRC = sw-i2c.c 
+        # STAFF_OBJS += staff-sw-i2c.o
+
+     And the makefile will compile in the `sw-i2c.c` and start using that.
+
+  4. If you get stuck you can always comment this out back out and
+     it will use the staff i2c.  If the code still seems broken,
+     power-cycle your pi by unplugging the usb cord and plug it back in.
+     The IMU's state can stay across reboots since it doesn't know you
+     rebooted, it only knows it still has power.
 
 ------------------------------------------------------------------------------
 ### Extensions.
