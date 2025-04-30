@@ -72,7 +72,7 @@ Initialization: `i2c_init`
      to set them in the BCM doc p 102:
 
 <p align="center">
-  <img src="images/gpio-i2c.png" width="200" />
+  <img src="images/gpio-i2c.png" width="400" />
 </p>
 
   2. Then enable the BSC we want (C register, p 29) to use along with
@@ -81,8 +81,6 @@ Initialization: `i2c_init`
      clear any errors and clear the done field.
   4. After done: Make sure there is no active transfer (S register, p31)
      and along with a few other fields that make sense (up to you).
-
-
 
 
 Again, make sure you use device barriers.
