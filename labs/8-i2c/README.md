@@ -84,7 +84,9 @@ Reading data: `i2c_read`:
 
      Set the device address and length.
 
-     Set the control reg to read and start transfer.
+     Set the control reg to read and start transfer.  Common mistake:
+     don't disable the i2c hardware device, and make sure you clear
+     the read bit so it doesn't preserve the old value.  
 
      Wait until the transfer has started.
 
@@ -119,7 +121,6 @@ using a `PUT32` (not `PUT8`).
      power-cycle your pi by unplugging the usb cord and plug it back in.
      The IMU's state can stay across reboots since it doesn't know you
      rebooted, it only knows it still has power.
-
 
 ------------------------------------------------------------------------------
 ### 2. software I2C driver: `code-sw-i2c/i2c.c`
