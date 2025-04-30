@@ -1,5 +1,44 @@
 ## I2C
 
+
+### errata
+
+My I2C looks slightly different from the wikipedia.  I send a 1 as
+the last bit on the last byte:
+
+```
+// Read a byte from I2C bus
+uint8_t i2c_read_byte(i2c_t *h, bool done_p) {
+    uint8_t byte = 0;
+
+    // msb reads
+    for (unsigned bit = 0; bit < 8; ++bit)
+        byte = (byte << 1) | i2c_read_bit(h);
+
+    // if it's the last byte, <done_p>=1
+    i2c_write_bit(h, done_p);
+    return byte;
+}
+
+
+// Read a byte from I2C bus
+uint8_t i2c_read_byte(i2c_t *h, bool done_p) {
+    uint8_t byte = 0;
+
+    // msb reads
+    for (unsigned bit = 0; bit < 8; ++bit)
+        byte = (byte << 1) | i2c_read_bit(h);
+
+    // if it's the last byte, <done_p>=1
+    i2c_write_bit(h, done_p);
+    return byte;
+}
+
+```
+
+
+### overview
+
 Since this is midterm week, we'll do a low-key device lab by building
 the main black box of the IMU lab: the i2c device driver.
 
