@@ -287,7 +287,7 @@ The mpu 6050 register map document talks about self-test in Section 4
 mode to the "factory trim" and compute the percentage difference.
 
 
-##### gyro
+#### gyro
 
 <p align="center">
   <img src="images/gyro-self-test.png" width="500" />
@@ -316,7 +316,7 @@ For the gyro (register map, p 10):
      Anything more than that is a reject.
 
 
-##### accel
+#### accel
 
 <p align="center">
   <img src="images/accel-self-test.png" width="500" />
@@ -340,7 +340,7 @@ Common mistake:
   3. Using `GYRO_CONFIG` instead of `ACCEL_CONFIG`.
 
 
-##### fp
+#### fp
 
 We changed the repo to use floating-point by default.
 If you need the the floating point math library, look in:
