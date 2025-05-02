@@ -150,6 +150,8 @@ and display the code on one side, and the counts on the other side.
 
 For example, when I run `1-prof-test.c` with caching enabled I get:
 
+        ...a bunch of values...
+
 	    pc=0x96d4: cnt=164
 	    pc=0x96d8: cnt=164
 	    pc=0x96dc: cnt=164
@@ -158,8 +160,11 @@ For example, when I run `1-prof-test.c` with caching enabled I get:
 	    pc=0x96e8: cnt=164
 	    pc=0x96ec: cnt=164
 
+        ...another bunch of values...
 
-When I run:
+
+When I use "addr2line" to get the file and function of the first address
+`0x96d4` by running:
 
         % arm-none-eabi-addr2line 0x96d4 -s -f  \
                   -e objs/l1/l2/l3/tests/1-prof-test.elf
