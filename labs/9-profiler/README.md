@@ -360,3 +360,23 @@ to speed it up.  Massive improvements are possible!
 
 [single-step]: https://github.com/dddrrreee/cs140e-25win/tree/main/labs/9-debug-hw
 [interrupts]: https://github.com/dddrrreee/cs140e-25win/tree/main/labs/4-interrupts
+
+------------------------------------------------------------------
+### Hard Extension: make the profiler able to profile itself
+
+This is an interesting challenge.  I believe its possible,
+but you need some clever recursive thinking. 
+
+Assume profiler-A is profiling profiler-B.  You'll have to do some
+virtualization tricks (similar to a full VMM) so that profiler-A can
+emulate / virtualize the privileged instructions and exceptions that
+profiler-B uses:  
+  - breakpoint instructions.
+  - reads/writes of cpsr, spsr.
+  - the cps instruction.
+  - others?
+  - You'll also have to use different memory (stack, etc)
+
+Very interesting if you can do more than two!
+
+This is a hard extension.  Interesting final project.
