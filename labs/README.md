@@ -36,5 +36,3 @@ Many more labs TBA:
 <p align="center">
   <img src="lab-memes/coding.jpg" width="350" />
 </p>
-
-
