@@ -193,11 +193,12 @@ compared to running a single instruction that just recording them would
 be useless.
 
 Ideally, what we would want to do instead is:
-  1. As the first line of the fault handler, record the cycle count.
+  1. At the first line of the fault handler, record the cycle count.
   2. At the last line of the fault handler, record the cycle count.
   3. Subtracting (1) from (2)  gives the difference.  (Note, of course,
-     by Heisenberg that there will still be perturbations, but if
-     small enough, it gets more deterministic and we can subtract it).
+     by Heisenberg that there will still be perturbations, but the
+     smaller you can make this, the the smaller it gets and the more we
+     can correct it).
 
 How can we do this?  Various problems:
   1. How can we read the cycle counter when we get an exception?
