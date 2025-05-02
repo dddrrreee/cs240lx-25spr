@@ -118,7 +118,8 @@ The basic algorithm:
 
  4. For the simple test `tests/1-prof-test.c` that just repeatedly prints,
     the expected results are most counts should be in `PUT32`, `GET32`,
-    and various `uart` routines.
+    and various `uart` routines.  Note: you will get different 
+    results when you have caching enabled or not (why?).
 
 Write a couple tests and validate that your profiler eats them and spits
 out interesting values.  For interesting tests, please post to Ed so we
@@ -131,6 +132,30 @@ the GNU utility `arm-none-eabi-addr2line` to convert the addresses to
 file and line number information.  You can even open the given files
 and display the code on one side, and the counts on the other side.
 (Super useful!)
+
+For example, when I run `1-prof-test.c` with caching enabled I get:
+
+	    pc=0x96d4: cnt=164
+	    pc=0x96d8: cnt=164
+	    pc=0x96dc: cnt=164
+	    pc=0x96e0: cnt=164
+	    pc=0x96e4: cnt=164
+	    pc=0x96e8: cnt=164
+	    pc=0x96ec: cnt=164
+
+
+When I run:
+
+        % arm-none-eabi-addr2line 0x96d4 -s -f  \
+                  -e objs/l1/l2/l3/tests/1-prof-test.elf
+
+I get:
+
+        uart_can_putc
+        uart.c:159
+
+Which makes sense --- mostly the code is waiting to be able to emit 
+output.
 
 ------------------------------------------------------------------
 ### Part 2: add support for cycle counters
