@@ -1,0 +1,30 @@
+TRACE:test:ss pixie start
+TRACE:test:ss pixie stop
+TRACE:notmain:SUCCESS: 0!
+TRACE:test:ss pixie start
+TRACE:test:ss pixie stop
+TRACE:notmain:SUCCESS: 1!
+TRACE:test:ss pixie start
+TRACE:test:ss pixie stop
+TRACE:notmain:SUCCESS: 2!
+TRACE:test:ss pixie start
+TRACE:test:ss pixie stop
+TRACE:notmain:SUCCESS: 3!
+TRACE:test:ss pixie start
+TRACE:test:ss pixie stop
+TRACE:notmain:SUCCESS: 4!
+TRACE:test:ss pixie start
+TRACE:test:ss pixie stop
+TRACE:notmain:SUCCESS: 5!
+TRACE:test:ss pixie start
+TRACE:test:ss pixie stop
+TRACE:notmain:SUCCESS: 6!
+TRACE:test:ss pixie start
+TRACE:test:ss pixie stop
+TRACE:notmain:SUCCESS: 7!
+TRACE:test:ss pixie start
+TRACE:test:ss pixie stop
+TRACE:notmain:SUCCESS: 8!
+TRACE:test:ss pixie start
+TRACE:test:ss pixie stop
+TRACE:notmain:SUCCESS: 9!

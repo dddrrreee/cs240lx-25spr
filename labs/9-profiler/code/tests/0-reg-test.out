@@ -1,0 +1,18 @@
+TRACE:pixie_die_handler:die handler
+TRACE:pixie_die_handler:regs = 0x0
+TRACE:pixie_die_handler:regs = 0x1
+TRACE:pixie_die_handler:regs = 0x2
+TRACE:pixie_die_handler:regs = 0x3
+TRACE:pixie_die_handler:regs = 0x4
+TRACE:pixie_die_handler:regs = 0x5
+TRACE:pixie_die_handler:regs = 0x6
+TRACE:pixie_die_handler:regs = 0x7
+TRACE:pixie_die_handler:regs = 0x8
+TRACE:pixie_die_handler:regs = 0x9
+TRACE:pixie_die_handler:regs = 0xa
+TRACE:pixie_die_handler:regs = 0xb
+TRACE:pixie_die_handler:regs = 0xc
+TRACE:pixie_die_handler:regs = 0xd
+TRACE:pixie_die_handler:regs = 0xe
+TRACE:pixie_die_handler:regs = 0x80dc
+TRACE:pixie_die_handler:success!
