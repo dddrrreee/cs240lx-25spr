@@ -211,11 +211,11 @@ How can we do this?  Various problems:
      need a stack to push it onto, but the stack needs `sp`.
 
      Fortunately, the arm1176 provides (at least) three coprocessor
-     registers for "process and thread id's."  However, since the
-     values are not interpreted by the hardware, they can be used to
-     store arbitrary values.  The screenshot of page 3-129 (chapter
+     scratch registers for "process and thread id's."  However, since
+     the values are not interpreted by the hardware, they can be used
+     to store arbitrary values.  The screenshot of page 3-129 (chapter
      3 of the arm 1176.pdf manual) below gives the instructions.
-    
+
      (Note: this kind of arm lore is a good reason to reach chapter 3 of
      the arm1176: there are all sorts of weirdo little operations that
      when you add cleverness can let you do neat stuff not possible on
@@ -226,11 +226,11 @@ How can we do this?  Various problems:
 </p>
 
 
-  3. Ok: so what about at the end?  We need the closet possible value
-     to when we jump back.  If we put this in sp, we won't have any
-     place to do the read in (1).   As you probably guessed we can put 
-     it in one of the other scratch registers.  (Or maybe do something
-     more clever?)
+  3. Ok: so what about at the end?  We want the cycle counter read
+     as close as possible to when we jump back.  If we put this reading
+     in sp, we won't have any place to do the read in (1).   As you
+     probably guessed we can put it in one of the other scratch registers.
+     (Or maybe do something more clever?)
 
      Thus, the difference betwen (2) and (3) gives the number of cycles 
      from
