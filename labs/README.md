@@ -9,6 +9,10 @@ The first part of the class usually spends a bit more time per lab
 since there are people that haven't taken 140e.  The latter portion
 of the class speeds up.
 
+For those with high executive function, there is an initial list of
+possible [final projects](./final-projects/README.md).
+
+
 Many more labs TBA:
 
    - [1-mailboxes](1-mailboxes): using the GPU mailbox interface
