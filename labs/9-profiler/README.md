@@ -234,6 +234,29 @@ What to do:
   3. Write some simple code that you know the answer to and validate
      that you get useful answers.
 
+Some common bugs:
+  1. If you notice a big cycle counter value at a PC soon after
+     the user switch: this is because the scratch register used to
+     record the "last" cycle read has not been initialized.  Easy fix:
+     before the `cps` instruction in `pixie_switchto_user_asm` read the
+     cycle counter and set it.
+  2. If you add a line comment `@` or `//` to a macro used in the
+     `ss-pixie-asm.S` file, this will eat the entire remainder of
+     the macro body!  So either don't use a macro, or use `/* ... */`
+     style comments.  If you're getting reset faults, after changing
+     the trampoline macro, this is what is going on :).
+  3. Note that for most approaches, the cycle counter differences
+     will be for the *previous* instruction not the current one.
+  4. Bugs in your profiler often won't lead to crashes, just 
+     wrong results.  And wrong results are hard to spot if you
+     don't know what the right one is!   So write some very very
+     simple tests where you can see what is going on and validate
+     that what you expect is what you get.  For example,
+     `4-nop-test.c` profiles a routine that does 10 nops, no
+     loads or stores with caching enabled.  We expect each `nop`
+     instruction to take about the same (for me 36 cycles).  Any
+     big spike is a sign that somethig is off.
+
 <p align="center">
   <img src="images/global-regs.png" width="800" />
 </p>
@@ -244,9 +267,7 @@ add cleverness can let you do neat stuff not possible on a
 general purpose OS.
 
 ------------------------------------------------------------------
-### Part 3: Implement PMU counters
-
-***When you get here do a pull: filling stuff in***
+### Extension: Implement PMU counters
 
 The arm1176 has a bunch of interesting performance counters
 we can use to see what is going on, such as cache misses, TLB misses,
@@ -300,12 +321,11 @@ write some code that shows off something they can measure (or run on your
 `libpi/include` directory and they should just work.
 
 ------------------------------------------------------------------
-### Part 4: Use PMU counters in your profiler
-
-***When you get here do a pull: filling stuff in***
+### Extension: Use PMU counters in your profiler
 
 For this, you'll take the assembly from part 3 and add the counters
-to the prefetch abort fault handler trampoline.
+to the prefetch abort fault handler trampoline.  
+
 
 [single-step]: https://github.com/dddrrreee/cs140e-25win/tree/main/labs/9-debug-hw
 [interrupts]: https://github.com/dddrrreee/cs140e-25win/tree/main/labs/4-interrupts
