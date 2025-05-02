@@ -267,7 +267,7 @@ add cleverness can let you do neat stuff not possible on a
 general purpose OS.
 
 ------------------------------------------------------------------
-### Extension: Implement PMU counters
+### Extension: Implement PMU counters `code-pmu`
 
 The arm1176 has a bunch of interesting performance counters
 we can use to see what is going on, such as cache misses, TLB misses,
@@ -286,9 +286,9 @@ In addition, they can be used to test your understanding of the hardware
 code based on this understanding and measure if the expected result is
 the actual.
 
-#### Implement `code/armv6-pmu.h`
+#### Implement `code-pmu/armv6-pmu.h`
 
-Fill in the `unimplemented` routines in `code/armv6-pmu.h`.  I'd suggest
+Fill in the `unimplemented` routines in `code-pmu/armv6-pmu.h`.  I'd suggest
 using the `cp_asm` macros in
 
         #include "asm-helpers.h"
@@ -326,6 +326,17 @@ write some code that shows off something they can measure (or run on your
 For this, you'll take the assembly from part 3 and add the counters
 to the prefetch abort fault handler trampoline.  
 
+------------------------------------------------------------------
+### Extension: Do a hierarchical profiler
+
+Seeing that a given instruction is run alot, is great, but if it's in
+a routine called by many other routines you can't easily figure out how
+to optimize.   A very useful tool is a hierarchical profiler that tracks
+who called what, and when they did, how much it cost.  You can do a full
+graph, or do 2 deep, 3 deep, etc.  Any of them will be extremely useful.
+
+A great use of this is to apply it to your fat32 file system and use it
+to speed it up.  Massive improvements are possible!
 
 [single-step]: https://github.com/dddrrreee/cs140e-25win/tree/main/labs/9-debug-hw
 [interrupts]: https://github.com/dddrrreee/cs140e-25win/tree/main/labs/4-interrupts
