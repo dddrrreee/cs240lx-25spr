@@ -222,7 +222,7 @@ How can we do this?  Various problems:
      a general purpose OS.)
 
 <p align="center">
-  <img src="images/global-regs.png" width="800" />
+  <img src="images/global-regs.png" width="600" />
 </p>
 
 
