@@ -1,5 +1,14 @@
 ## 240lx Labs.
 
+We generally alternate between a couple technical labs and then
+something fun.  Often if there is a hard topic we will do a lab on it,
+wait a couple weeks and then do another so that it can sink in more
+("spaced repetition").
+
+The first part of the class usually spends a bit more time per lab
+since there are people that haven't taken 140e.  The latter portion
+of the class speeds up.
+
 Many more labs TBA:
 
    - [1-mailboxes](1-mailboxes): using the GPU mailbox interface
@@ -20,8 +29,6 @@ Many more labs TBA:
    - [9-profiler](9-profiler): use single-step debug hardware to build
      an exact instruction profiler.  Extend it with sleazy tricks
      to do cycle counting.
-
--------------------------------------------------------------------
 
 <p align="center">
   <img src="lab-memes/coding.jpg" width="350" />
