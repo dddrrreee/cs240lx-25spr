@@ -211,8 +211,17 @@ How can we do this?  Various problems:
      Fortunately, the arm1176 provides (at least) three coprocessor
      registers for "process and thread id's."  However, since the
      values are not interpreted by the hardware, they can be used to
-     store arbitrary values.  The screenshot of the manual below gives
-     the instructions.
+     store arbitrary values.  The screenshot of page 3-129 (chapter
+     3 of the arm 1176.pdf manual) below gives the instructions.
+
+<p align="center">
+  <img src="images/global-regs.png" width="800" />
+</p>
+
+     Note: this kind of arm lore is a good reason to reach chapter 3 of
+     the arm1176: there are all sorts of weirdo little operations that
+     when you add cleverness can let you do neat stuff not possible on
+     a general purpose OS.
 
   3. Ok: so what about at the end?  We need the closet possible value
      to when we jump back.  If we put this in sp, we won't have any
@@ -235,15 +244,6 @@ How can we do this?  Various problems:
 
      NOTE: if you find a case where A and C have significant variance,
      it is interesting --- let us know! 
-
-<p align="center">
-  <img src="images/global-regs.png" width="800" />
-</p>
-
-Note: this is a good reason to reach chapter 3 of the arm1176:
-there are all sorts of weirdo little operations that when you
-add cleverness can let you do neat stuff not possible on a
-general purpose OS.
 
 #### What code to write
 
