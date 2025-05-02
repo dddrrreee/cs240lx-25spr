@@ -389,6 +389,15 @@ Some expedient limits we add just because we are doing a lab:
      encodes pointers.
 
 ----------------------------------------------------------------------------
+### Extension: gc your fat32 file system
+
+In 140e we did fat32 in a very dumb way, with massive memory leaks at
+basically every point.  You have a great way to fix that.  Plug in your
+gc and run your fat32 for a long time, tracking that every allocation
+gets freed.  This is a great stress test for your gc and should vastly
+improve your fat32 performance / uptime.
+
+----------------------------------------------------------------------------
 ### Extensions
 
 In order to fit these topics in a short lab we are wildly over-simplifying
