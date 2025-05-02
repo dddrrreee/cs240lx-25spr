@@ -31,7 +31,7 @@ External motivation:
 Useful 140e labs:
   - [single-step][single-step]: this discusses the single step hardware
     and how to build the breakpoint veneer.
-  - [interrupt][interrupts]: this gives a working interrupt lab and discusses
+  - [interrupts][interrupts]: this gives a working interrupt lab and discusses
     shadow registers.
 
 Checkoff:
@@ -233,4 +233,4 @@ For this, you'll take the assembly from part 3 and add the counters
 to the prefetch abort fault handler trampoline.
 
 [single-step]: https://github.com/dddrrreee/cs140e-25win/tree/main/labs/9-debug-hw
-[interrupt]: https://github.com/dddrrreee/cs140e-25win/tree/main/labs/4-interrupts
+[interrupts]: https://github.com/dddrrreee/cs140e-25win/tree/main/labs/4-interrupts
