@@ -62,11 +62,9 @@ running at user level, so at a high level the code works as follows:
   1. `pixie_start`: sets up the exception vectors to catch mismatch
      faults and to handle system calls (see below), enables the debug
      hardware, and switches to user mode.
-
   2. As soon as the code run at user level, it will get mismatch faults
      (which get vectored to the "prefetch abort" handler).  This handler
      counts the instructions and sets the next fault.
-
   3. When the code wants to turn off tracing it calls `pixie_stop` to turn
      off mismatching and switch back to privileged mode.
 
