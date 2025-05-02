@@ -100,9 +100,9 @@ The basic algorithm:
  2. In the fault handler, use the program counter value (register 15)
     to index into this array and increment the associated count.  
 
-    NOTE: its very easy to mess up sizes.  Each instruction is 4 bytes,
-    so you'll divide the `pc` by 4.  You'll want to subtract where the
-    code starts (0x800).
+    NOTE: its very easy to mess up sizes.  Each instruction is 4 bytes, so
+    you'll divide the `pc` by 4.  You'll want to subtract where the code
+    starts (from our `memmap` we expect `__code_start__` to be `0x8000`).
 
  3. `pixie_dump(N)`: the easiest acceptable way to build this is to 
     just dump out any instruction with a higher than N count in order.
