@@ -1,20 +1,19 @@
 ## 240lx Labs.
 
-We generally alternate between a couple technical labs and then
-something fun.  Often if there is a hard topic we will do a lab on it,
-wait a couple weeks and then do another so that it can sink in more
-("spaced repetition").
+Overview:
+  - We generally alternate between a couple technical labs and then
+    something fun.  Often if there is a hard topic we will do a lab on it,
+    wait a couple weeks and then do another so that it can sink in more
+    ("spaced repetition").
 
-The first part of the class usually spends a bit more time per lab
-since there are people that haven't taken 140e.  The latter portion
-of the class speeds up.
+  - The first part of the class usually spends a bit more time per lab
+    since there are people that haven't taken 140e.  The latter portion
+    of the class speeds up.
 
-For those with high executive function, there is an initial list of
-possible [final projects](./final-projects/README.md).
-
+  - For those with high executive function, there is an initial list of
+    possible [final projects](./final-projects/README.md).
 
 Many more labs TBA:
-
    - [1-mailboxes](1-mailboxes): using the GPU mailbox interface
      to do fun hacks such as overclocking the pi.
    - [2-dynamic-code-gen](2-dynamic-code-gen/): how 
