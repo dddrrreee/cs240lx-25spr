@@ -127,8 +127,9 @@ can steal them (add your name / year).
 
 #### To add your ckalloc
 
-If you want to use your ckalloc, change the Makefile in
-`9-profiler/code/Makefile` to pull it in:
+If you want to use your ckalloc, and you finished lab 6 (as in: you
+use your code in the makefile rather than staff binaries), you can just
+change the Makefile in `9-profiler/code/Makefile` to pull it in:
 
         CFLAGS += -I../../6-debug-alloc/code/
         COMMON_SRC += ../../6-debug-alloc/code/ckalloc.c
@@ -139,6 +140,8 @@ If you want to use your ckalloc, change the Makefile in
 Note: you really shouldn't need the gc stuff.  Unfortunately `kr-malloc`
 needs `sbrk` which we foolishly put in `ck-gc.c`.  A good approach is to 
 pull it apart so it's seperate.
+
+Otherwise you have to copy it into a subdirectory and use it.
 
 #### A great extension!   
 
