@@ -104,10 +104,17 @@ The basic algorithm:
     so you'll divide the `pc` by 4.  You'll want to subtract where the
     code starts (0x800).
 
- 3. You should define some way to print out the top, sorted, non-zero
-    values in this array along with the `pc` value they correspond to.
-    You should be able to look in the disassembled code (the `.list`
-    file for each routine) to see which instruction these correspond to.
+ 3. `pixie_dump(N)`: the easiest acceptable way to build this is to 
+    just dump out any instruction with a higher than N count in order.
+    We will take this.
+
+    A more client friendly implementation is to print out the top,
+    sorted, non-zero values in this array along with the `pc` value they
+    correspond to.
+
+    In any case: You should be able to look in the disassembled code
+    (the `.list` file for each routine) to see which instruction these
+    correspond to.
 
  4. For the simple test `tests/1-prof-test.c` that just repeatedly prints,
     the expected results are most counts should be in `PUT32`, `GET32`,
@@ -116,6 +123,14 @@ The basic algorithm:
 Write a couple tests and validate that your profiler eats them and spits
 out interesting values.  For interesting tests, please post to Ed so we
 can steal them (add your name / year).
+
+#### A great extension!   
+
+Have a wrapper around `my-install` that uses passes each PC address to
+the GNU utility `arm-none-eabi-addr2line` to convert the addresses to
+file and line number information.  You can even open the given files
+and display the code on one side, and the counts on the other side.
+(Super useful!)
 
 ------------------------------------------------------------------
 ### Part 2: add support for cycle counters
