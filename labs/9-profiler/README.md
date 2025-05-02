@@ -79,9 +79,12 @@ You should poke around the example.  It's heavily commented.
 ------------------------------------------------------------------
 ### Part 1: turn `ss-pixie` into an instruction profiler
 
-Similar to the `gprof` code you wrote in 140e, you'll add an 
-array that is the size of the code segment and increment it
-each time an instruction runs.
+Modify the `ss-pixie` code to count how many times each instruction
+gets run.
+  1. You can get the faulting PC address from the 15th register.
+  2. Similar to the `gprof` code you wrote in 140e, you'll add an
+     array that is the size of the code segment and increment it each
+     time an instruction runs.
 
 The basic algorithm:
 
