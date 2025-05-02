@@ -215,16 +215,16 @@ How can we do this?  Various problems:
      values are not interpreted by the hardware, they can be used to
      store arbitrary values.  The screenshot of page 3-129 (chapter
      3 of the arm 1176.pdf manual) below gives the instructions.
+    
+     (Note: this kind of arm lore is a good reason to reach chapter 3 of
+     the arm1176: there are all sorts of weirdo little operations that
+     when you add cleverness can let you do neat stuff not possible on
+     a general purpose OS.)
 
 <p align="center">
   <img src="images/global-regs.png" width="800" />
 </p>
 
-
-     Note: this kind of arm lore is a good reason to reach chapter 3 of
-     the arm1176: there are all sorts of weirdo little operations that
-     when you add cleverness can let you do neat stuff not possible on
-     a general purpose OS.
 
   3. Ok: so what about at the end?  We need the closet possible value
      to when we jump back.  If we put this in sp, we won't have any
