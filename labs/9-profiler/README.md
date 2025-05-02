@@ -99,7 +99,7 @@ The basic algorithm:
  3. You should define some way to print out the top, sorted, non-zero
     values in this array along with the `pc` value they correspond to.
     You should be able to look in the disassembled code (the `.list`
-    file for each routie) to see which instruction these correspond to.
+    file for each routine) to see which instruction these correspond to.
 
  4. For the simple test `tests/1-prof-test.c` that just repeatedly prints,
     the expected results are most counts should be in `PUT32`, `GET32`,
@@ -110,7 +110,7 @@ out interesting values.  For interesting tests, please post to Ed so we
 can steal them (add your name / year).
 
 ------------------------------------------------------------------
-### Part 2: add suppot for cycle counters
+### Part 2: add support for cycle counters
 
 Counting instructions is good, but we would also like to count the number
 of cycles each instruction costs.  When there is a big difference between 
@@ -125,8 +125,8 @@ Ideally, what we would want to do instead is:
   1. As the first line of the fault handler, record the cycle count.
   2. At the last line of the fault handler, record the cycle count.
   3. Subtracting (1) from (2)  gives the difference.  (Note, of course,
-     by Heisenburg that there will still be perturbations, but if
-     small enough, it gets more deterministic and we can subtrat it).
+     by Heisenberg that there will still be perturbations, but if
+     small enough, it gets more deterministic and we can subtract it).
 
 
 How can we do this?  Various problems:
@@ -207,7 +207,7 @@ What you need:
    1. Performance monitor control register (3-133): write this to
       select which performance counters to use (the values are in tabel
       3-137) and to enable the PMU at all.
-   2. Cycyle counter register (3-137): read this to get the current
+   2. Cycle counter register (3-137): read this to get the current
       cycle count.
    3. Count register 0 (3-138): read this to get the 32-bit 0-event
       counter (set in step 1).
