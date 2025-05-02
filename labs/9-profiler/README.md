@@ -220,6 +220,7 @@ How can we do this?  Various problems:
   <img src="images/global-regs.png" width="800" />
 </p>
 
+
      Note: this kind of arm lore is a good reason to reach chapter 3 of
      the arm1176: there are all sorts of weirdo little operations that
      when you add cleverness can let you do neat stuff not possible on
