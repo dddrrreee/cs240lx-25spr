@@ -189,16 +189,17 @@ these it's interesting.
 
 We have cycle counter routines in `libpi/include/cycle-count.h` so it
 might seem easy.  Unfortunately, our single step handler does so much 
-compared to running a single instruction that just recording them would
-be useless.
+compared to running a single instruction that just recording cycles in 
+the handler would be useless.
 
 Ideally, what we would want to do instead is:
   1. At the first line of the fault handler, record the cycle count.
   2. At the last line of the fault handler, record the cycle count.
-  3. Subtracting (1) from (2)  gives the difference.  (Note, of course,
-     by Heisenberg that there will still be perturbations, but the
-     smaller you can make this, the the smaller it gets and the more we
-     can correct it).
+  3. Subtracting (1) from (2) gives the cycles it cost to return
+     from the exception, run the next instruction, and then get
+     another fault.     Now, while it still includes the overhead
+     of taking and returning from an exception, these costs are large
+     but low variance (more below).
 
 How can we do this?  Various problems:
   1. How can we read the cycle counter when we get an exception?
@@ -237,11 +238,11 @@ How can we do this?  Various problems:
        - C: and then took another mismatch exception and got back to 
          the handler.
 
-     While A and C are large compared to B, they are performed internally
-     within the hardware itself and (appear to!) have low variance ---
-     and low variance means they  just add (roughly) a constant overhead,
-     easily removed.  B on the other hand can vary significantly, which
-     is what we are interested in.
+     As mentioned above, while A and C are large compared to B, they are
+     performed internally within the hardware itself and (appear to!) have
+     low variance --- and low variance means they  just add (roughly)
+     a constant overhead, easily removed or ignored.  B on the other
+     hand can vary significantly, which is what we are interested in.
 
      NOTE: if you find a case where A and C have significant variance,
      it is interesting --- let us know! 
