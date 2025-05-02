@@ -220,42 +220,21 @@ How can we do this?  Various problems:
      it in one of the other scratch registers.  (Or maybe do something
      more clever?)
 
-     Thus, given (2) and (3) we can compute the number of cycles in
-     the handler.
+     Thus, the difference betwen (2) and (3) gives the number of cycles 
+     from
+       - A: when we return from a mismatch exception;
+       - B: ran the next instruction;
+       - C: and then took another mismatch exception and got back to 
+         the handler.
 
-What to do:
-  1. Use the scratch registers to record the cycle counter at the 
-     start and end of the handler.  Try to write the code so 
-     the reads are as close to the start and end as possible.
+     While A and C are large compared to B, they are performed internally
+     within the hardware itself and (appear to!) have low variance ---
+     and low variance means they  just add (roughly) a constant overhead,
+     easily removed.  B on the other hand can vary significantly, which
+     is what we are interested in.
 
-  2. You'll have to subtract off a correction factor.  The cleaner
-     step 1 is, the more stable this factor will be.
-
-  3. Write some simple code that you know the answer to and validate
-     that you get useful answers.
-
-Some common bugs:
-  1. If you notice a big cycle counter value at a PC soon after
-     the user switch: this is because the scratch register used to
-     record the "last" cycle read has not been initialized.  Easy fix:
-     before the `cps` instruction in `pixie_switchto_user_asm` read the
-     cycle counter and set it.
-  2. If you add a line comment `@` or `//` to a macro used in the
-     `ss-pixie-asm.S` file, this will eat the entire remainder of
-     the macro body!  So either don't use a macro, or use `/* ... */`
-     style comments.  If you're getting reset faults, after changing
-     the trampoline macro, this is what is going on :).
-  3. Note that for most approaches, the cycle counter differences
-     will be for the *previous* instruction not the current one.
-  4. Bugs in your profiler often won't lead to crashes, just 
-     wrong results.  And wrong results are hard to spot if you
-     don't know what the right one is!   So write some very very
-     simple tests where you can see what is going on and validate
-     that what you expect is what you get.  For example,
-     `4-nop-test.c` profiles a routine that does 10 nops, no
-     loads or stores with caching enabled.  We expect each `nop`
-     instruction to take about the same (for me 36 cycles).  Any
-     big spike is a sign that somethig is off.
+     NOTE: if you find a case where A and C have significant variance,
+     it is interesting --- let us know! 
 
 <p align="center">
   <img src="images/global-regs.png" width="800" />
@@ -265,6 +244,44 @@ Note: this is a good reason to reach chapter 3 of the arm1176:
 there are all sorts of weirdo little operations that when you
 add cleverness can let you do neat stuff not possible on a
 general purpose OS.
+
+#### What code to write
+
+What to do:
+  1. Use the scratch registers to record the cycle counter at the 
+     start and end of the handler.  Try to write the code so 
+     the reads are as close to the start and end as possible. 
+     The cleaner you can do this, the more stable the measurements
+     will be.
+
+  2. Write some simple code that you know the answer to and validate
+     that you get useful answers.
+
+  3. After you're happy with (2), you can subtract off a correction
+     factor.  Or, alternatively, just keep things as is and use the
+     relative differences.
+
+Some common bugs:
+  1. If you notice a unusually large cycle value at a PC soon after
+     the user switch: this is because the scratch register used to
+     record the "last" cycle read has not been initialized.  Easy fix:
+     before the `cps` instruction in `pixie_switchto_user_asm` read the
+     cycle counter and set it.
+  2. If you add a line comment `@` or `//` to a macro used in the
+     `ss-pixie-asm.S` file, this will eat the entire remainder of
+     the macro body!  So either don't do this, don't use a macro, or
+     use `/* ... */` style comments.  If you're getting reset faults,
+     after changing the trampoline macro, this is what is going on :).
+  3. Note that for most approaches, the cycle counter differences
+     will be for the *previous* instruction not the current one.
+  4. Bugs in your profiler often won't lead to crashes, just
+     wrong results.  And wrong results are hard to spot if you don't know
+     what the right one is.   So write some very very simple tests where
+     you can see what is going on and validate that what you expect is
+     what you get.  For example, `4-nop-test.c` profiles a routine that
+     does 10 nops, no loads or stores with caching enabled.  We expect
+     each `nop` instruction to take about the same (for me 36 cycles).
+     Any big spike is a sign that somethig is off.
 
 ------------------------------------------------------------------
 ### Extension: Implement PMU counters `code-pmu`
