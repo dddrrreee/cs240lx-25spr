@@ -7,7 +7,6 @@ It will have a similar style:
   2. Short starter code.
   3. Real puzzles.
 
-
 The arm1176 has a bunch of interesting performance counters, such as cache
 misses, TLB misses, prediction misses, procedure calls.  You'll write
 a simple library that exposes these, which will make it much easier to
@@ -53,13 +52,56 @@ Enough yap, let's code.
 
 Base checkoff:
    - Part 1: Write the PMU routines.
-   - Part 2: write 4-5 small programs that cause the
-     counters to do what you intend.
+   - Part 2: write the smallest program to show the effect of 
+             alignment on the prefetch buffer.
+   - Part 2 and Part 3: write 4-5 small programs that cause the
+     counters to do what you intend.   Pick whatever you want.
+
+     Note: if your result is surprising enough, we'll take one.
 
 Daniel mode:
   - Daniel mode for this lab is easy since we don't depend on it
     later.  Write the code yourself using whatever interfaces you
-    want and figure out some interesting stuff.
+    want and figure out 4-5 interesting things.
+
+------------------------------------------------------------------
+#### Warning: you'll waste time b/c of this.
+
+A major, constant source of problems here is that our observations
+can easily perturb the experiment.  This is especially true since the
+compiler transforms them:
+  - If your code behaves weirdly, it could be because of what the 
+    compiler did to the code *doing* the measurement, not that
+    the measured code does something weird.
+
+Incomplete set of Ways to prevent:
+  - Always look at the disassembled code in the list.  It's going to
+    be confusing, but you can generally scan for the repeated "mcr" and
+    "mrc" instructions to see where things start and end.
+
+  - If we want to measure X and aren't careful the compiler will
+    smears X outside of the measurement.  We partially use compiler
+    memory barriers for this, but they aren't guaranteed.  You can also
+    put the code in another file (our version of gcc won't do inter-file
+    optimization).  Or, if you want to really be sure, in a seperate
+    assembly file.  We provide empty files `measure-fns.c` and `measure-asm.S`
+    for this.
+
+  - Alignment can have a big impact that changes each time you relink.
+    Using the ".align" directive can help.
+
+  - If you have the icache on --- each access it will bring in an
+    entire cache blocks.  This can cause weird things (why?)
+
+  - Ideally if you figure out something, cross-check it a second
+    way.  Sometimes bullshit gives you the answer you expected
+    and you declare success when in fact all you had was nonsense.
+    (Be me, today.)
+
+  - As mentioned, one easy way to defeat the compiler is to write your
+    own assembly. In addition when you are trying to have precise
+    control over layout it can be easier to allocat a large
+    block and jit into it.
 
 ------------------------------------------------------------------
 #### Part 1: Implement `code/rpi-pmu.h`
@@ -136,6 +178,8 @@ When you are done, the following tests should run:
 
 ```
 
+    Puzzle: can you rewrite this code so we get cleaner measurements?
+
  3. `2-pmu-test.c`:this uses the helper macro `pmu_stmt_measure` 
     measure the code with less typing.
 ```
@@ -188,16 +232,41 @@ lmk --- it's a good representative puzzle :)
 #### Part 2: write tiny programs to show these counters.
 
 Use the counters to figure out:
-  1. What effect does code alignment have one cost?  You should
-     be able to use them to figure show what is happening.
-  2. How big is the icache?  What's the associativity?  Might be
-     easiest to jit code.
-  3. Figure out the branch prediction algorithm.  
+
+  1. Using cycle counters: With the icache off, the arm1176 will still
+     fetch multiple instructions in a small prefetch buffer.  Use the
+     cycle counter and the align directive to figure out how alignment
+     interacts with this.
+
+     Bonus: do you have a clever trick to figure out the prefetch
+     buffer size?
+
+  2. Chapter 3 of 1176, p 3-74 has the instruction to invalidate the
+     icache.  Implement it, and use the counters to show that your 
+     implementation works.
+
+     JIT some code to show that without this you get stale results,
+     and with it, you get accurate ones.
+
+  3. Chapter 3 of 1176: p 3-75: has instructions to invalidate a i-cache
+     block by "mva" and to prefetch by mva.  Implement these
+     and use the counters to show that your implementation works as
+     expected.
+
+     JIT some code to show that without this you get stale results,
+     and with it, you get accurate ones.
+
+  4. Chapter 3 of 1176: 3-22: has the instruction to get the 
+     cache types.  Get the type, print it out, and write
+     some code that uses the counters to test the claimed
+     cache attributes.
+
+  5. Use the counters to figure out the branch prediction algorithm.  
 
 ------------------------------------------------------------------
 #### Part 3: write tiny programs to show other counters.
 
-Now is the fun part.  This is a choose-your-own adventure:  look
+This is a choose-your-own adventure:  look
 through the counters and write the smallest programs you can to shows
 off something they can measure.  You'll notice that some of them don't
 do exactly what they claim.
@@ -205,51 +274,18 @@ do exactly what they claim.
 I'll add some suggestions (which you can ignore) as the lab goes.
 If you see this sentence do a pull!
 
+Ideally, you can use the counters to infer and validate things about the
+the arm1176 chip --- cache size, associativity, prefetching instructions,
+etc.
+
 For cases where the code behaves weirdly, figure out what is going on,
 ideally using some of the other counters.
-
-
-A major, constant source of problems here is that our observations
-can easily perturb the experiment.  This is especially true since the
-compiler transforms them:
-  - If your code behaves weirdly, it could be because of what the 
-    compiler did to the code *doing* the measurement, not that
-    the measured code does something weird.
-
-Incomplete set of Ways to prevent:
-  - Always look at the disassembled code in the list.  It's going to 
-    be confusing, but you can generally scan for the repeated "mcr"
-    and "mrc" instructions to see where things start and end.
-
-  - If we want to measure X and aren't careful the compiler will
-    smears X outside of the measurement.  We partially use compiler
-    memory barriers for this, but they aren't guaranteed.  You can also
-    put the code in another file (our version of gcc won't do inter-file
-    optimization).  Or, if you want to really be sure, in a seperate
-    assembly file.
-
-  - Alignment can have a big impact that changes each time you relink.
-    Using the ".align" directive can help.
-
-  - If you have the icache one --- it will bring in entire cache
-    blocks.  This can cause weird things (why?)
-
-  - Ideally if you figure out something, cross-check it a second
-    way.  Sometimes bullshit gives you the answer you expected
-    and you declare success when in fact all you had was nonsense.
-    (Be me, today.)
-
-------------------------------------------------------------------
-#### Part 3: use the counters to figure out the arm1176
-
-Use the counters to infer and validate things about the the arm1176 chip
---- cache size, associativity, prefetching instructions, etc.
 
 ------------------------------------------------------------------
 ### Extension: Use PMU counters in your profiler
 
-For this, you'll take the assembly from part 3 and add the counters
-to the prefetch abort fault handler trampoline.  
+For this, add some PMU counters to your profiler and show that 
+they actually give sensible results.
 
 ------------------------------------------------------------------
 ### Extension: Do a hierarchical profiler
