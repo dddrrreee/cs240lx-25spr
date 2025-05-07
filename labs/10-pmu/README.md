@@ -269,11 +269,13 @@ Use the counters to figure out:
 
   6. Since the d-cache and tlb counters require virtual memory, we
      pushed a virtual memory implementation `code-vm/dcache-test.c` that
-     does a simple VM mapping and does some simple tests to validate
-     expected behavior using the PMU counters.  (E.g., the first access
-     misses in the d-cache and micro d-tlb, subeqeuent accesses hit,
-     and after invalidating the tlb and everything misses again.)
-     You can easily mess with it to do other things.
+     sets up a simple identity VM mapping and does some simple tests to
+     validate expected behavior using the PMU counters: 
+        1. That the first data access to cached memory misses in 
+           the both the d-cache and micro d-tlb (compulsory misses).
+        2. That subeqeuent accesses hit;
+        3. After invalidating the tlb,  everything misses again.
+     You can easily mess with the test to measure other things.
 
 
 ------------------------------------------------------------------
