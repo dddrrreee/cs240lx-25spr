@@ -275,6 +275,7 @@ Use the counters to figure out:
            the both the d-cache and micro d-tlb (compulsory misses).
         2. That subeqeuent accesses hit;
         3. After invalidating the tlb,  everything misses again.
+
      You can easily mess with the test to measure other things.
 
 
