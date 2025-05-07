@@ -154,9 +154,9 @@ When you are done, the following tests should run:
 
 
  2. `1-pmu-test.c`: this uses the event counters to also count
-    instructions and the number of stalls.  As you can see
-    there's a lot of repetitive code for measuring, so the
-    next test uses a template to wrap this up:
+    instructions and the number of stalls.  
+
+    Puzzle: can you rewrite this code so we get cleaner measurements?
 
 ```
     pmu_enable(0, PMU_inst_cnt);
@@ -178,10 +178,18 @@ When you are done, the following tests should run:
 
 ```
 
-    Puzzle: can you rewrite this code so we get cleaner measurements?
 
- 3. `2-pmu-test.c`:this uses the helper macro `pmu_stmt_measure` 
-    measure the code with less typing.
+ 3. `2-pmu-test.c`: as you  can see from the above code,
+    there's a lot of repetitive code for measuring.  This test uses the
+    helper macro `pmu_stmt_measure` measure the code with less typing.
+
+    The macro takes a message to print, two types of events, and then
+    a statement block that it runs.
+
+    The definition is in `rpi-pmu.h`.   You can change it if you want a
+    different output!  In fact you probably should rewrite it a bit to
+    make results cleaner (why?).
+
 ```
     pmu_stmt_measure(msg,
             inst_cnt,
@@ -200,13 +208,6 @@ When you are done, the following tests should run:
         asm volatile("nop");  // 5
     });
 ```
-
-    The macro takes a message to print, two types of events, and then
-    a statement block that it runs.
-
-    The definition is in `rpi-pmu.h`.   You can change it if you want a
-    different output!  In fact you probably should rewrite it a bit to
-    make results cleaner (why?).
 
 ### Weirdness!
 
