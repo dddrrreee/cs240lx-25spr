@@ -278,7 +278,6 @@ Use the counters to figure out:
 
      You can easily mess with the test to measure other things.
 
-
 ------------------------------------------------------------------
 #### Part 3: write tiny programs to show other counters.
 
