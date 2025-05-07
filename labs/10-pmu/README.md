@@ -33,9 +33,9 @@ happiness, they also typically give a way to work towards enlightenment,
 in that you can use them to differentially debug what is going on,
 and arrive at a better place.
 
-A big emprical motivation for this lab is that with a small amount of
+A big empirical motivation for this lab is that with a small amount of
 infrastructure and tiny measurement programs you can get into interesting
-terrotoriy in minutes.  Over the weekend, pretty much every time I tried
+territory in minutes.  Over the weekend, pretty much every time I tried
 to measure something I'd blurt out some permutation of:
  - "that's weird";
  - "that's interesting";
@@ -83,14 +83,14 @@ Incomplete set of Ways to prevent:
     smear X outside of the measurement.  We partially use compiler
     memory barriers for this, but they aren't guaranteed.  You can also
     put the code in another file (our version of gcc won't do inter-file
-    optimization).  Or, if you want to really be sure, in a seperate
+    optimization).  Or, if you want to really be sure, in a separate
     assembly file.  We provide empty files `measure-fns.c` and `measure-asm.S`
     for this.
 
-  - Alignment can have a big impact that changes each time you relink.
+  - Alignment can have a big impact that changes each time you re-link.
     Using the ".align" directive can help.
 
-  - If you have the icache on --- each access it will bring in an
+  - If you have the i-cache on --- each access it will bring in an
     entire cache blocks.  This can cause weird things (why?)
 
   - Ideally if you figure out something, cross-check it a second
@@ -100,8 +100,8 @@ Incomplete set of Ways to prevent:
 
   - As mentioned, one easy way to defeat the compiler is to write your
     own assembly. In addition when you are trying to have precise
-    control over layout it can be easier to allocat a large
-    block and jit into it.
+    control over layout it can be easier to allocate a large
+    block and JIT into it.
 
 ------------------------------------------------------------------
 #### Part 1: Implement `code/rpi-pmu.h`
@@ -120,7 +120,7 @@ how to use them.
 
 What you need:
    1. Performance monitor control register (3-133): write this to
-      select which performance counters to use (the values are in tabel
+      select which performance counters to use (the values are in table
       3-137) and to enable the PMU at all.
    2. Cycle counter register (3-137): read this to get the current
       cycle count.
@@ -234,7 +234,7 @@ lmk --- it's a good representative puzzle :)
 
 Use the counters to figure out:
 
-  1. Using cycle counters: With the icache off, the arm1176 will still
+  1. Using cycle counters: With the i-cache off, the arm1176 will still
      fetch multiple instructions in a small prefetch buffer.  Use the
      cycle counter and the align directive to figure out how alignment
      interacts with this.
@@ -243,7 +243,7 @@ Use the counters to figure out:
      buffer size?
 
   2. Chapter 3 of 1176, p 3-74 has the instruction to invalidate the
-     icache.  Implement it, and use the counters to show that your 
+     i-cache.  Implement it, and use the counters to show that your 
      implementation works.
 
      JIT some code to show that without this you get stale results,
