@@ -29,7 +29,7 @@ LIBM_INC ?=  -I$(LIBM_DIR) -I$(LIBM_DIR)/include/
 
 
 # include path: user can override
-INC += -I. -I$(LPP)/include -I$(LPP)/ -I$(LPP)/src  -I$(LPP)/libc -I$(LPP)/staff-private
+INC += -I. -I$(LPP)/include -I$(LPP)/ -I$(LPP)/src  -I$(LPP)/libc # -I$(LPP)/staff-private
 # optimization level: client can override
 OPT_LEVEL ?= -Og
 

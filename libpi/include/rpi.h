@@ -277,6 +277,12 @@ int memiszero(const void *_p, unsigned n);
 // bss.  
 void * custom_c_runtime_init(void);
 
+// set buf to the result of sprintk(fmt..).  returns buf.
+#define STR_MK(fmt...) \
+    ({ char buf[1024]; str_mk(buf, sizeof(buf), fmt); })
+
+char *str_mk(char *buf, unsigned n, const char *fmt, ...);
+
 // make a symbol weak.
 #define WEAK(fn) __attribute__((weak)) fn
 

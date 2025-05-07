@@ -2,7 +2,7 @@
 #define __EXCEPTION_FULL_REGS_H__
 // exception handlers that load all registers [r0-r15 and spsr]
 // can resume back.
-#include "vector-base.h"
+// #include "vector-base.h"
 
 // for the register definition.
 #include "switchto.h"

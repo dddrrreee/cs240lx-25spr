@@ -113,12 +113,26 @@ int vsnprintk(char *buf, unsigned n, const char *fmt, va_list ap) {
 int snprintk(char *buf, unsigned n, const char *fmt, ...) {
     va_list args;
 
-
     int ret;
     va_start(args, fmt);
        ret = vsnprintk(buf, n, fmt, args);
     va_end(args);
     return ret;
+}
+
+char *str_mk(char *buf, unsigned n, const char *fmt, ...) {
+    va_list args;
+
+    int ret;
+    va_start(args, fmt);
+       ret = vsnprintk(buf, n, fmt, args);
+    va_end(args);
+    // panic?
+    if(ret == n) {
+        panic("result of <%s> too large to fit in %d bytes.\n", fmt,ret);
+        return 0;
+    }
+    return buf;
 }
 
 #if 0
