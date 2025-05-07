@@ -288,6 +288,11 @@ Some easy ones:
      Puzzle (that I don't know): why does the `wb_drain` (0x12) also
      increase?  this doesn't make sense to me.
 
+  3. call-ret: the call (`call_cnt`) and return (`ret_hit`) counters
+     for me only seem to work with the branch prediction turned on.
+     And the return hits seem to max out at 3.  Let me know if you figure
+     out anything more than this!
+
 I'll add some suggestions (which you can ignore) as the lab goes.
 If you see this sentence do a pull!
 
