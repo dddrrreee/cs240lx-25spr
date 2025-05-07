@@ -283,7 +283,10 @@ Some easy ones:
         #define cp15_dsb cp15_dsb_set_raw
 
   2. Data accesses (`data_access`): seems to work as expected.  I
-     used `volatile` accesses to defeat the compiler.
+     used `volatile` accesses to defeat the compiler.  
+
+     Puzzle (that I don't know): why does the `wb_drain` (0x12) also
+     increase?  this doesn't make sense to me.
 
 I'll add some suggestions (which you can ignore) as the lab goes.
 If you see this sentence do a pull!
