@@ -106,6 +106,9 @@ Incomplete set of Ways to prevent:
 ------------------------------------------------------------------
 #### Part 1: Implement `code/rpi-pmu.h`
 
+***NOTE: In the interests of getting people writing the weird programs
+we actually pushed an implementation of this code/rpi-pmu.h.staff***
+
 The first thing to do is to define the PMU routines.  In the interest of
 getting to puzzle quickly we give you a bunch of the definitions and some
 helper macros --- you have to write the low-level manipulation routines.
@@ -263,6 +266,15 @@ Use the counters to figure out:
      cache attributes.
 
   5. Use the counters to figure out the branch prediction algorithm.  
+
+  6. Since the d-cache and tlb counters require virtual memory, we
+     pushed a virtual memory implementation `code-vm/dcache-test.c` that
+     does a simple VM mapping and does some simple tests to validate
+     expected behavior using the PMU counters.  (E.g., the first access
+     misses in the d-cache and micro d-tlb, subeqeuent accesses hit,
+     and after invalidating the tlb and everything misses again.)
+     You can easily mess with it to do other things.
+
 
 ------------------------------------------------------------------
 #### Part 3: write tiny programs to show other counters.
