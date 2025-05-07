@@ -80,7 +80,7 @@ Incomplete set of Ways to prevent:
     "mrc" instructions to see where things start and end.
 
   - If we want to measure X and aren't careful the compiler will
-    smears X outside of the measurement.  We partially use compiler
+    smear X outside of the measurement.  We partially use compiler
     memory barriers for this, but they aren't guaranteed.  You can also
     put the code in another file (our version of gcc won't do inter-file
     optimization).  Or, if you want to really be sure, in a seperate
