@@ -293,6 +293,9 @@ Some easy ones:
      And the return hits seem to max out at 3.  Let me know if you figure
      out anything more than this!
 
+  4. Branch: branches include at least "branch and link" (function calls).
+     The branch counters are unclear to me, tbh.
+
 I'll add some suggestions (which you can ignore) as the lab goes.
 If you see this sentence do a pull!
 
