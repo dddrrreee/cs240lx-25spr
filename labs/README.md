@@ -32,6 +32,8 @@ Many more labs TBA:
    - [9-profiler](9-profiler): use single-step debug hardware to build
      an exact instruction profiler.  Extend it with sleazy tricks
      to do cycle counting.
+   - [10-pmu](10-pmu): use the arm performance counters to figure
+     out interesting things.
 
 <p align="center">
   <img src="lab-memes/coding.jpg" width="350" />

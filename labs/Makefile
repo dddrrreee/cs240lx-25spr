@@ -9,6 +9,7 @@ SUBDIRS += 6-debug-alloc
 SUBDIRS += 7-imu-i2c
 SUBDIRS += 8-i2c
 SUBDIRS += 9-profiler
+SUBDIRS += 10-pmu
 
 .PHONY: all check clean
 all check clean: $(SUBDIRS)
