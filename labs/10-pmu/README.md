@@ -272,6 +272,19 @@ through the counters and write the smallest programs you can to shows
 off something they can measure.  You'll notice that some of them don't
 do exactly what they claim.
 
+Some easy ones:
+  1. Count the write back drained.  AFAIK, both the "dsb" and "dmb"
+     barriers increment.  We have function calls for these in libpi.
+     You can also inline them:
+
+        cp_asm_set_raw(cp15_dmb, p15, 0, c7, c10, 5)
+        cp_asm_set_raw(cp15_dsb, p15, 0, c7, c10, 4)
+        #define cp15_dmb cp15_dmb_set_raw
+        #define cp15_dsb cp15_dsb_set_raw
+
+  2. Data accesses (`data_access`): seems to work as expected.  I
+     used `volatile` accesses to defeat the compiler.
+
 I'll add some suggestions (which you can ignore) as the lab goes.
 If you see this sentence do a pull!
 
