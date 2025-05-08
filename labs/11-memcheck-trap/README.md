@@ -1,7 +1,81 @@
-## Simple memory tracing and memory checking.
+## Simple memory tracing 
+
+Today you'll use the ARMv6 domain faults and debug watchpoints to make
+your own simple memory tracing system that traps every load and store.
+This will let you build a variety of kernel level checking tools easily in
+a couple hundred lines of code.  In comparison, doing similar tools with
+dynamic binary rewriting (such as Valgrind or Pin) will take thousands
+of lines for the checker, close to a million lines for the base system,
+and generally can't run on kernel code.
+
+
+With that said, today's lab is very light on the writeup.  I had a 
+massive realization at 2pm today, and completely rewrote the approach
+to be significantly simpler.  Great for your coding, not great for
+the README contents :)
+
+On the other hand, less to read is more time to code, so: win.
+
+What to do:
+  1. Understand domain faults: for this go through the code in 
+     `example-trap` to understand what it is doing, make some
+     changes, see that you get expected results.  You'll be stealing
+     most of this code for step 3.
+  2. Understand watchpoints: go through the code in `example-watchpt`
+     to understand what it is doing, make some changes, see that you
+     get expected results.
+  3. Combine (1) and (2) into a system that can trace memory faults
+     and call a client supplied routine:
+
+        void memtrace_handler(regs_t *r, uint32_t fault_addr, int load_p);
+
+     With the fault registers `r`, the faulting address `fault_addr`
+     and whether the fault was a load or store.
+
+     I would make a copy of (1) and add the pieces of (2) that you need.
+
+  4. Write some tests that show that your code works --- it doesn't
+     miss any loads or stors to trapping memory, and the results at
+     the end of running with traps are the same as running without.
+
+From this infrastructure we'll be able to build the checkers next week.
+And it will be much much much easier.
+
+I'll be adding more writeup on domain faults etc for those that haven't
+taken 140e. The code examples are complete and work, so should give you
+what you need.
+
+Extensions:
+  - If you get motivated, it's an interesting puzzle to do it the
+    old way: use single stepping to turn off traps, jump to the memory
+    instruction in single step mode, then come back and turn traps
+    back on.
+  - You can make your own `watchpoint.c` using the debug lab code
+    you wrote in 140e.  
+  - You can use single stepping to check that the code runs the 
+    same with trapping and without.  This probably should have
+    been in the main lab!
+
+***Ignore the rest of the README for now.***
+***Ignore the rest of the README for now.***
+***Ignore the rest of the README for now.***
+***Ignore the rest of the README for now.***
+***Ignore the rest of the README for now.***
+***Ignore the rest of the README for now.***
+
+
 
 ***NOTE: Make sure you've done the [PRELAB](PRELAB.md)!***
  
+
+
+
+
+
+
+
+
+
 Today is a fetch-quest coding lab.  You're going to combine the pieces
 from several lab into a working trap-based mem-checking system.   It's
 surprisingly easy, as long as you don't make foolish mistakes (as I did).
