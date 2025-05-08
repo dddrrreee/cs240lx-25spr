@@ -142,9 +142,12 @@ static int vm_map_everything(void) {
     // kernel memory: same as device, but is only uncached.  
     pin_t kern = pin_mk_global(kern_dom, no_user, MEM_uncached);
 
-    // heap.  same as kernel except needs a different domain so
-    // will trap.
-    pin_t heap = pin_mk_global(heap_dom, no_user, MEM_uncached);
+    // heap.  different from kernel memory b/c:
+    // 1. needs a different domain so will trap.
+    // 2. user_access: since when we add single stepping 
+    //    the code will run at user level.  (alternatively
+    //    we could set <heap_dom> to manager permission)
+    pin_t heap = pin_mk_global(heap_dom, user_access, MEM_uncached);
 
     // now identity map kernel memory.
     unsigned idx = 0;
