@@ -1,4 +1,6 @@
 ## Simple memory tracing and memory checking.
+
+***NOTE: Make sure you've done the [PRELAB](PRELAB.md)!***
  
 Today is a fetch-quest coding lab.  You're going to combine the pieces
 from several lab into a working trap-based mem-checking system.   It's
