@@ -121,14 +121,9 @@ MK_FN(terminal_reg_test)
     mov r12, #12
     mov r13, #13
     mov r14, #14
-    @ bad form: r0 = 0, which = SYS_DIE 
-    swi 1
-@ swi fault pc should be equal to this location
-.globl terminal_reg_test_swi
-terminal_reg_test_swi:
-    asm_not_reached()
+    bl single_step_done
 
-MK_FN(single_step_exit)
-    mov r0, #0
-    swi 0
-    bx lr
+    @ in lab 9 we did the following instead to stop
+    @ single step execution:
+    @   swi 1
+    asm_not_reached()
