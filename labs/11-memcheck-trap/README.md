@@ -20,10 +20,10 @@ What to do:
   1. Understand domain faults: for this go through the code in 
      `example-trap` to understand what it is doing, make some
      changes, see that you get expected results.  You'll be stealing
-     most of this code for step 3.
+     most of this code for step 3.  This is the old prelab.
   2. Understand watchpoints: go through the code in `example-watchpt`
      to understand what it is doing, make some changes, see that you
-     get expected results.
+     get expected results.  This is new.
   3. Combine (1) and (2) into a system that can trace memory faults
      and call a client supplied routine:
 
@@ -32,14 +32,16 @@ What to do:
      With the fault registers `r`, the faulting address `fault_addr`
      and whether the fault was a load or store.
 
-     I would make a copy of (1) and add the pieces of (2) that you need.
+     I would make a copy of the domain fault example (1) and add the
+     pieces of the watchpoint example (2) that you need --- I think
+     about 20 lines of code in total.
 
   4. Write some tests that show that your code works --- it doesn't
      miss any loads or stors to trapping memory, and the results at
      the end of running with traps are the same as running without.
 
 From this infrastructure we'll be able to build the checkers next week.
-And it will be much much much easier.
+And it will be much, much much easier.
 
 I'll be adding more writeup on domain faults etc for those that haven't
 taken 140e. The code examples are complete and work, so should give you
@@ -50,11 +52,16 @@ Extensions:
     old way: use single stepping to turn off traps, jump to the memory
     instruction in single step mode, then come back and turn traps
     back on.
-  - You can make your own `watchpoint.c` using the debug lab code
+  - Make your own `watchpoint.c` using the debug lab code
     you wrote in 140e.  
-  - You can use single stepping to check that the code runs the 
-    same with trapping and without.  This probably should have
-    been in the main lab!
+  - Best extension: use single stepping to verifiy that the code
+    computes exactly the same results when run with trapping and without.
+
+    How: hash all registers on each single step fault, and combine it with
+    the previous hash (equivalance hashing from 140e), For deterministic
+    code, you should get the same hash with and without trapping.
+
+    This probably should have been in the main lab!
 
 ***Ignore the rest of the README for now.***
 ***Ignore the rest of the README for now.***
@@ -62,16 +69,9 @@ Extensions:
 ***Ignore the rest of the README for now.***
 ***Ignore the rest of the README for now.***
 ***Ignore the rest of the README for now.***
-
 
 
 ***NOTE: Make sure you've done the [PRELAB](PRELAB.md)!***
- 
-
-
-
-
-
 
 
 
