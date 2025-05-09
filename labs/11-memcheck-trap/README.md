@@ -27,7 +27,7 @@ What to do:
   3. Combine (1) and (2) into a system that can trace memory faults
      and call a client supplied routine:
 
-        void memtrace_handler(regs_t *r, uint32_t fault_addr, int load_p);
+            void memtrace_handler(regs_t *r, uint32_t fault_addr, int load_p);
 
      With the fault registers `r`, the faulting address `fault_addr`
      and whether the fault was a load or store.
