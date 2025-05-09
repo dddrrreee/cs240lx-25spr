@@ -48,6 +48,10 @@ taken 140e. The code examples are complete and work, so should give you
 what you need.
 
 Extensions:
+  - Change the code to look at the instruction and figure out the
+    complete set of bytes that it reads and writes. E.g., `push` can
+    push many registers (and access many words), `pop` can pop many
+
   - If you get motivated, it's an interesting puzzle to do it the
     old way: use single stepping to turn off traps, jump to the memory
     instruction in single step mode, then come back and turn traps
@@ -61,7 +65,11 @@ Extensions:
     the previous hash (equivalance hashing from 140e), For deterministic
     code, you should get the same hash with and without trapping.
 
+    You can look at `example-single-step` for how to do this (original
+    prelab).
+
     This probably should have been in the main lab!
+
 
 ***Ignore the rest of the README for now.***
 ***Ignore the rest of the README for now.***
