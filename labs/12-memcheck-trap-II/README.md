@@ -259,8 +259,8 @@ A bit more detail.
 
 In the pre-handler:
   1. Record the registers.
-  2. If the operation is a store, record the largest containing
-     memory region it could be to in a snapshot.
+  2. If the operation is a store, record the largest memory region
+     the store could be to the log.
 
 In the post handler:
   1. Record the registers.
