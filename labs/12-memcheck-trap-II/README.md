@@ -1,5 +1,17 @@
 ## Memcheck trap II: the system.
 
+### Clarifications
+
+NOTE: 
+  - You *do not* have to textually match the error messages for
+    Part 2 (the purify checker).   If you do, it's great for us for
+    grading, but you just have to get the type of operation (load,
+    store), and where the error was (before or after the block and by
+    how many bytes).
+
+### Overview
+
+
 Last time we did an ad hoc memory trapping hack so you could grab
 all loads and stores using domain tricks and watchpoint faults.
 
