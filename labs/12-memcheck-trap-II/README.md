@@ -167,14 +167,7 @@ compute how many bytes an instruction accesses.  For this you'll parse
 the machine instruction and determine how many bytes it accesses.
 You should write some test code that shows that you do this correctly.
 
-------------------------------------------------------------------------
-### Extension: run code backwards.
-
-Your memtrace code makes it easy to make code run backwards in terms of
-registers:
-  1. In the pre-handler record the registers.
-  2. In the post-handler, record the registers.
-  3. need the memory reads and writes.
+(If you are blocked on this I do have a header for it.)
 
 -------------------------------------------------------------------------------
 #### Extension: replace a bunch of our `.o` files.
@@ -246,6 +239,50 @@ How:
      "-O1", "-Ofast" etc) and rerun it against the log.  (You'll have to
      ship the log over with your binary.) If any read or write changes
      you know there is a bug.
+
+------------------------------------------------------------------------
+### Extension: run code backwards.
+
+This is based on a suggestion from Joseph Shetaye!
+
+Your memtrace code makes it not-to-bad to make code run non-device 
+backwards in terms of registers.
+
+Basic idea: 
+  1. When you run forward append the registers and changed
+     values in a log.  
+  2. At the end, iterate over the log backwards restoring
+     the registers and memory to their original values.
+  3. During step 2: make sure you check that the current
+     values of memory and registers are the same as the "post" values
+     stored in the log.  If they do not match: either your code has a
+     bug or there is some non-determinism you didn't anticipate. Or both!
+
+A bit more detail.
+
+
+In the pre-handler:
+  1. Record the registers.
+  2. If the operation is a store, record the largest containing
+     memory region it could be to in a snapshot.
+
+In the post handler:
+  1. Record the registers.
+  2. If the memory operation was a store, determine what addresses
+     changed in the pre-snapshot.  When running backwards, you will 
+     set these addresses (and no others!) to their pre-values.
+  
+To run backwards:
+ 1. run the log backwards.
+ 2. for each store, reset the memory to its original value.
+ 3. for each register, set it to its original value.  
+ 4. Before doing 2 and 3 make sure that the current values match
+    the post-values you have in the log.
+
+For devices:  you'll have to special case status checks (for UART and
+I2C "is there space") so that when you run backwards and write to the
+device memory, it will work as expected.  
+
 
 ------------------------------------------------------------------------
 ### Extensions.
