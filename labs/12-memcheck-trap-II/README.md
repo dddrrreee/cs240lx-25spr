@@ -245,18 +245,14 @@ How:
 
 This is based on a suggestion from Joseph Shetaye!
 
-Your memtrace code makes it not-to-bad to make code run non-device 
-backwards in terms of registers.
+Your memtrace code makes it not-to-bad to run code
+backwards.
 
 Basic idea: 
   1. When you run forward append the registers and changed
      values in a log.  
   2. At the end, iterate over the log backwards restoring
      the registers and memory to their original values.
-  3. During step 2: make sure you check that the current
-     values of memory and registers are the same as the "post" values
-     stored in the log.  If they do not match: either your code has a
-     bug or there is some non-determinism you didn't anticipate. Or both!
 
 A bit more detail.
 
@@ -276,8 +272,10 @@ To run backwards:
  1. run the log backwards.
  2. for each store, reset the memory to its original value.
  3. for each register, set it to its original value.  
- 4. Before doing 2 and 3 make sure that the current values match
-    the post-values you have in the log.
+ 4. Before doing 2 and 3 make sure that the current register
+    and memory values match the post-values you have in the log.
+    If they do not match: either your code has a bug or there is some
+    non-determinism you didn't anticipate. Or both!
 
 For devices:  you'll have to special case status checks (for UART and
 I2C "is there space") so that when you run backwards and write to the
