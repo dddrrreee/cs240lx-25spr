@@ -160,6 +160,94 @@ You now have a simple, clean, kernel level memory corruption checker.
 Very, very few people can say the same.
 
 ------------------------------------------------------------------------
+### Extension: compute the actual number of bytes accessed.
+
+The biggest limit of the current code is that it doesn't correctly
+compute how many bytes an instruction accesses.  For this you'll parse
+the machine instruction and determine how many bytes it accesses.
+You should write some test code that shows that you do this correctly.
+
+------------------------------------------------------------------------
+### Extension: run code backwards.
+
+Your memtrace code makes it easy to make code run backwards in terms of
+registers:
+  1. In the pre-handler record the registers.
+  2. In the post-handler, record the registers.
+  3. need the memory reads and writes.
+
+-------------------------------------------------------------------------------
+#### Extension: replace a bunch of our `.o` files.
+
+We use a bunch of code from old labs.  You should already have versions,
+so can start dropping in yours instead of ours.
+
+-------------------------------------------------------------------------------
+#### Option: add simple shadow to `check-purify.c`
+
+Here you'll do a simple shadow memory.  We'll just allocate a single 4-byte word
+to keep things easy.  There are three parts to this:
+
+  1. For each byte of heap memory, we'll have a byte of shadow memory holding
+     its state.  I put the shadow memory in the second half of the heap
+     Create and map this during your own time initialization.
+
+  2. In `purify_alloc`, turn checking off so the shadow memory can be
+     written, mark its shadow memory as `ALLOCATED`, and then turn
+     checking back off.
+
+     How this is used: The exception handler will check if the memory
+     being read or written to is `ALLOCATED` and give errors for
+     everything else.  It needs to be a system call since eventually we
+     will be protecting the shadow memory with its own domain id.
+
+  3. In `purify_free` mark the state as `FREED`.
+
+Measure how much things get sped up.  (For the slow test it should
+be significant).
+
+------------------------------------------------------------------------
+### Extension: volatile checker.
+
+A very common, nasty problem in embedded is that the code uses pointers
+to manipulate device memory, but either the programmer does not use
+`volatile` correctly or the compiler has a bug.   
+
+Device memory bugs are very nasty and also very easy to make since you
+are doing stuff to memory that the compiler thinks is redundant.  For
+example:
+  - Multiple back-to-back writes to the same location, so the compiler
+    believes it just needs to do the last write.  Examples: 
+    both the UART and i2c fifo queue.
+  - Multiple reads to the same location without an intervening
+    write (so that the compiler believes it can remove them).  This
+    came up when we did mailbox and UART "is there space" checks.
+
+As a recent example, several people had device i2c bugs because they
+were sloppy with not using `volatile`.
+
+Using your memory tracing you can write a checker for this pretty
+easily.  The key property we will exploit is that `volatile` acceses
+are invariant across optimization levels.  The compiler cannot remove,
+reorder, or add them.  
+
+How:
+  1. Modify the memtrace code so that it can do memory trapping on
+     device memory.  This shouldn't require much work, but you will
+     have to be careful for circularity problems.
+  2. Run your device driver and log the device addresses read
+     and written along with the values.
+  3. As a sanity check: Re-run the device code against this log and
+     for each read, return the value read, and for each write, check that
+     the written value matches the log.  If the code is deterministic
+     and your code doesn't have bugs, this replay should succeed no
+     matter how many times you do it.
+  4. Now recompile the code with different optimization levels ("-O0",
+     "-O1", "-Ofast" etc) and rerun it against the log.  (You'll have to
+     ship the log over with your binary.) If any read or write changes
+     you know there is a bug.
+
+------------------------------------------------------------------------
 ### Extensions.
 
-There are tons of extensions.  If you see this sentence do a pull.
+Adding more extensions.  If you see this sentence do a pull.
