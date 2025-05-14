@@ -176,7 +176,7 @@ We use a bunch of code from old labs.  You should already have versions,
 so can start dropping in yours instead of ours.
 
 -------------------------------------------------------------------------------
-#### Option: add simple shadow to `check-purify.c`
+#### Extension: add simple shadow to `check-purify.c`
 
 Here you'll do a simple shadow memory.  We'll just allocate a single 4-byte word
 to keep things easy.  There are three parts to this:
