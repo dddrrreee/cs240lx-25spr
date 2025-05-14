@@ -160,7 +160,7 @@ You now have a simple, clean, kernel level memory corruption checker.
 Very, very few people can say the same.
 
 ------------------------------------------------------------------------
-### Extension: compute the actual number of bytes accessed.
+#### Extension: compute the actual number of bytes accessed.
 
 The biggest limit of the current code is that it doesn't correctly
 compute how many bytes an instruction accesses.  For this you'll parse
@@ -200,7 +200,7 @@ Measure how much things get sped up.  (For the slow test it should
 be significant).
 
 ------------------------------------------------------------------------
-### Extension: volatile checker.
+#### Extension: volatile checker.
 
 A very common, nasty problem in embedded is that the code uses pointers
 to manipulate device memory, but either the programmer does not use
@@ -241,7 +241,7 @@ How:
      you know there is a bug.
 
 ------------------------------------------------------------------------
-### Extension: run code backwards.
+#### Extension: run code backwards.
 
 This is based on a suggestion from Joseph Shetaye!
 
@@ -283,6 +283,6 @@ device memory, it will work as expected.
 
 
 ------------------------------------------------------------------------
-### Extensions.
+#### Extensions.
 
 Adding more extensions.  If you see this sentence do a pull.
