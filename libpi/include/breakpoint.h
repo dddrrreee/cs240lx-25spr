@@ -34,4 +34,7 @@ void brkpt_match_set(uint32_t addr);
 // turn off matching (disable bcr1)
 void brkpt_match_stop(void);
 
+void brkpt_match_init(void) ;
+
+
 #endif
