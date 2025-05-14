@@ -1,0 +1,6 @@
+TRACE:notmain:should detect use after free
+TRACE:notmain:corrupting 
+TRACE:purify_handler:: store to address 0x105165
+TRACE:purify_error:ERROR: illegal store to to FREED block at  is 3 bytes after legal mem (block size=171)
+TRACE:hdr_print:	logical block id=5,  nbytes=171
+TRACE:hdr_print:	Block allocated at: tests-purify/4-purify-bug.c:notmain:17

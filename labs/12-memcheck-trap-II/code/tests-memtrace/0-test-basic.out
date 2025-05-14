@@ -1,0 +1,4 @@
+TRACE:notmain:about to turn on tracing
+TRACE:foo:about to write to 0x104000
+TRACE:foo:done writing to 0x104000: value=0x4040404
+TRACE:notmain:trace faults = 10

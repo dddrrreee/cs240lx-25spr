@@ -1,0 +1,5 @@
+TRACE:notmain:should detect use after free bug (store at offset 3)
+TRACE:purify_handler:: store to address 0x1040ab
+TRACE:purify_error:ERROR: use after free at  within freed block
+TRACE:hdr_print:	logical block id=1,  nbytes=4
+TRACE:hdr_print:	Block allocated at: tests-purify/3-purify-free-bug.c:notmain:9

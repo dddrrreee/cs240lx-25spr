@@ -1,0 +1,7 @@
+TRACE:notmain:should detect memory overflow at 1 byte past block end
+TRACE:notmain:allocated : about to store
+TRACE:purify_handler:: store to address 0x1040a8
+TRACE:purify_handler:: store to address 0x1040ac
+TRACE:purify_error:ERROR: illegal store to to allocated block at  is 1 bytes after legal mem (block size=4)
+TRACE:hdr_print:	logical block id=1,  nbytes=4
+TRACE:hdr_print:	Block allocated at: tests-purify/1-purify-bug.c:notmain:9

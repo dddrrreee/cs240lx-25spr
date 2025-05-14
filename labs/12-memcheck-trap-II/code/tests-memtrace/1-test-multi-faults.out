@@ -1,0 +1,3 @@
+TRACE:notmain:memcheck tracing
+TRACE:notmain:about to trace: expect 33792 faults
+TRACE:notmain:SUCCESS: total faults = 33792
