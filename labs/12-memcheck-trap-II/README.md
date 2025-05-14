@@ -293,6 +293,29 @@ For devices:  you'll have to special case status checks (for UART and
 I2C "is there space") so that when you run backwards and write to the
 device memory, it will work as expected.  
 
+------------------------------------------------------------------------
+#### Extensions: protect system memory.
+
+Right now, the client code --- which is presumably buggy or we wouldn't
+be running a bug finder on it --- can corrupt our checker memory.
+We can extend our uses of domains to protect checker memory similarly
+to how we trap on heap:
+  1. Tag all checker memory with its own private domain ID.
+  2. By default, disable access to this domain.
+  3. When running the checker code, re-enable access to this domain.
+     When done running the checker code, disable it.
+  4. Any wild read or writes done by the client code will cause a fault.
+
+You can extend this to protecting one peer subsystem from another.
+(E.g., the virtual memory system from the file system and vice versa).
+
+There are different lengths you can push this, up to the extreme of
+protecting the stack, code and data and then running the untrusted code
+at a lower privilege so that it can't arbitrarily give itself access.
+Starts to look like a OS with user code :).  There are some linker script
+tricks you can play to keep different subsystems isolated from each other.
+Interesting exercise if you push it far.
+
 
 ------------------------------------------------------------------------
 #### Extensions.
