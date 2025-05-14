@@ -212,7 +212,40 @@ Measure how much things get sped up.  (For the slow test it should
 be significant).
 
 ------------------------------------------------------------------------
-#### Extension: volatile checker.
+#### Extension: simple device memory checker.
+
+Device memory should only be written with a str instruction and only
+loaded with a ldr instrution --- no `push`, `pop`, load byte store byte
+etc.  This is a pretty  simple checker that gets you used to messing
+around with domains.
+
+  1. Put the device memory in its own domain.
+  2. Pass this domain ID to the memtrace checker.
+  3. Check every device access to make sure it uses the right
+     instructions.
+  4. Run a bunch of device code and flag errors. 
+  5. To catch compiler bugs, you can redefine `put32`, `get32` etc
+     in the `rpi.h` header to be inline functions that take volatile
+     32-bit pointers and perform the assignment (put32) or dereference
+     (get32).  This will give many more opportunities for the compiler
+     to cause problems.
+  6. Even more fancy: you can extend the checker to detect when we read
+     or write one device A and then read or write a second device
+     B without performing a memory barrier.  You'd just need to 
+     add code that detects when you call the memory barrier code.
+     (You could override the routine, rewrite it using your JIT 
+     knowledge, or possibly add single-stepping to look for the 
+     barrier instruction.)
+
+You will probably want to modify `memmap-default.c` so that it tags
+BCM memory better.  You may need to put these in domain 0 since we map
+device memory (BCM) using 16MB memory supersections and the arm1176 doc
+states supersections have a domain 0.  (Note, I haven't tested if this
+is true for pinned mappings or only true for page tables.)
+
+
+------------------------------------------------------------------------
+#### Extension: fancier device memory checker
 
 A very common, nasty problem in embedded is that the code uses pointers
 to manipulate device memory, but either the programmer does not use
@@ -251,47 +284,6 @@ How:
      "-O1", "-Ofast" etc) and rerun it against the log.  (You'll have to
      ship the log over with your binary.) If any read or write changes
      you know there is a bug.
-
-------------------------------------------------------------------------
-#### Extension: run code backwards.
-
-This is based on a suggestion from Joseph Shetaye!
-
-Your memtrace code makes it not-to-bad to run code
-backwards.
-
-Basic idea: 
-  1. When you run forward append the registers and changed
-     values in a log.  
-  2. At the end, iterate over the log backwards restoring
-     the registers and memory to their original values.
-
-A bit more detail.
-
-
-In the pre-handler:
-  1. Record the registers.
-  2. If the operation is a store, record the largest memory region
-     the store could be to the log.
-
-In the post handler:
-  1. Record the registers.
-  2. If the memory operation was a store, determine what addresses
-     changed in the pre-snapshot.  When running backwards, you will 
-     set these addresses (and no others!) to their pre-values.
-  
-To run backwards:
- 1. run the log backwards.
- 2. for each store, reset the memory to its original value.
- 3. for each register, set it to its original value.  
- 4. Before doing 2 and 3 make sure that the current register
-    and memory values match the post-values you have in the log.
-    If they do not match: either your code has a bug or there is some
-    non-determinism you didn't anticipate. Or both!
-
-For devices:  you'll have to special case status checks (for UART and
-I2C "is there space") so that when you run backwards and write to the
-device memory, it will work as expected.  
 
 ------------------------------------------------------------------------
 #### Extensions: protect system memory.
