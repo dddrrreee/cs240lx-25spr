@@ -52,7 +52,7 @@ Common mistakes:
 
 ### Check-off
 
-If you're lazier, you'll implement several pieces of code:
+Regular checkoff:
 
   1. Implement `code/WS2812.h`.  These should pass the timing
      tests run by `code/0-timing-check.c`.   Since part of this class
@@ -65,8 +65,18 @@ If you're lazier, you'll implement several pieces of code:
      The program `2-neopix.c` should work as expected.
 
   2. Do something novel/cute with the light using your interface.
-     For example, hook it up to your accel and gyro.  Or use the remote
-     control to control it.
+      1. use your IR remote to control the strip.
+      2. use your accel/gyro to control the strip.
+      3. control more than one strip at a time.  ideally where you
+         merge the writes for each into a single set updates (recall
+         we can set and clear many pins at once with a single store).
+      4. do the 2d light arrays we have and display words, funny faces,
+         etc.  Compose with (1)-(4).
+      5. if you have your nrf code working from 140e: use one pi to control
+         another over RF.  using the accel/gyro to control a remote strip
+         will blow your friends' minds.
+      6. for a more technical approach: Max suggested using PWM  to control
+         the strip.  Or, if you're ambitious, DMA.
 
 Daniel mode:
   - If you want to Daniel style and write all the code from scratch, the
@@ -74,21 +84,10 @@ Daniel mode:
     `WS2812b.h` header.   Note: you'll have to do your own timings and
     show that your primitives have accurate timings.
 
-Extensions:
-  1. use your IR remote to control the strip.
-  2. use your accel/gyro to control the strip.
-  3. control more than one strip at a time.  ideally where you
-     merge the writes for each into a single set updates (recall
-     we can set and clear many pins at once with a single store).
-  4. do the 2d light arrays we have and display words, funny faces,
-     etc.  Compose with (1)-(4).
-  5. if you have your nrf code working from 140e: use one pi to control
-     another over RF.  using the accel/gyro to control a remote strip
-     will blow your friends' minds.
-  6. for a more technical approach: Max suggested using PWM  to control
-     the strip.  Or, if you're ambitious, DMA.
 
-  7. An interesting speed extension that I wish I had done before class
+Extensions:
+
+  1. An interesting speed extension that I wish I had done before class
      is to speed up the GPIO stores.  Currently these use large constants
      that the compiler will store in the code segment and then load ---
      this load is a expensive data cache miss (see `puzzles/1-const-problems.c`).
