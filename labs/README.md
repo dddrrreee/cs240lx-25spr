@@ -34,6 +34,13 @@ Many more labs TBA:
      to do cycle counting.
    - [10-pmu](10-pmu): use the arm performance counters to figure
      out interesting things.
+   - [11-memcheck-trap](11-memcheck-trap): use domain protection and 
+     debugging hardware to automatically trap every memory access.
+   - [12-memcheck-trap-II](12-memcheck-trap-II): use the memory tracer
+     you built and your debug allocator to make a simple purify-style 
+     memory checker in a couple hundred lines of code.
+   - [13-ws2812b](13-ws2812b): use the timing knowledge you gained from 
+     the lab 10 (PMU) to write a addressable light array driver.
 
 <p align="center">
   <img src="lab-memes/coding.jpg" width="350" />
