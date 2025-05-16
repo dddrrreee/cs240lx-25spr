@@ -93,7 +93,7 @@ that was 32 byte aligned took less time than a non-32-byte aligned block.
 There's a couple puzzles in the `puzzle` directory to look at.
 
 -------------------------------------------------------------------------
-###  First step: hook up your hardware.
+###  Part 0: hook up your hardware.
 
 
 To hook up the light strings wire up the:
@@ -120,7 +120,7 @@ we play fast and lose with electricity: since we can't see it, presumably
 nothing can go wrong!
 
 -------------------------------------------------------------------------
-### Part 0: implement the timing routines
+### Part 1: implement the timing routines
 
 The header `code/WS2812b.h` defines routines to call to write a 0, write a 1,
 write a pixel to the light array.  It also defines timing constants.
@@ -153,8 +153,24 @@ needed nanosecond in the timings in `WS2812B.h`:
 You will also need to implement inlined versions of your `gpio_set_on`
 and `gpio_set_off` (also defined in `WS2812B.h`).
 
+Note: 
+  1. We want accurate timings.  That is not the same as fast timings.
+  2. HOWEVER: the less instructions our underlying primitives take,
+     the less that can go wrong.  Each instruction is a coin toss that
+     can go awry (cache miss or conflict, prefetch buffer misalignment,
+     register pressure that leads to more loads stores, etc).  
+  3. One of the easiest way to cut down instructions is to inline the
+     `gpio_set_on` and `gpio_set_off` routines, including getting rid
+     of their use of `PUT32` and error checking.  For this you'll just
+     write to the GPIO addresses directly --- though make sure you
+     mark the memory as `volatile`!  
 
-After your code works, the three tests (such as they are) should work.
+     After you write these, I would try using them to blink an LED since
+     if they are wrong, it will be hard to figure stuff out given the
+     extra complexity of the ws2812b.
+
+After your code works, the three tests in the code directory should run
+and do what they claim.
 
   1. Make sure `1-blink.c` works with your code and then
      test your understanding by changing it to turn on different colors

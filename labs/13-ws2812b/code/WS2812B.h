@@ -85,7 +85,7 @@
 //      delays to the lowest that seem to consistently work.  for a long
 //      light strip this can add up.
 enum { 
-// #   error "you need to define these enums using the datasheet."
+#   error "you need to define these enums using the datasheet."
 
         // to send a 1: set pin high for T1H ns, then low for T0H ns.
         T1H = ns_to_cycles(0),        // Width of a 1 bit in cycles
