@@ -10,6 +10,9 @@ SUBDIRS += 7-imu-i2c
 SUBDIRS += 8-i2c
 SUBDIRS += 9-profiler
 SUBDIRS += 10-pmu
+SUBDIRS += 11-memcheck-trap
+SUBDIRS += 12-memcheck-trap-II
+SUBDIRS += 13-ws2812b
 
 .PHONY: all check clean
 all check clean: $(SUBDIRS)
