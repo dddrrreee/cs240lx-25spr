@@ -85,19 +85,6 @@ Daniel mode:
     show that your primitives have accurate timings.
 
 
-Extensions:
-
-  1. An interesting speed extension that I wish I had done before class
-     is to speed up the GPIO stores.  Currently these use large constants
-     that the compiler will store in the code segment and then load ---
-     this load is a expensive data cache miss (see `puzzles/1-const-problems.c`).
-     Options:
-       1. Put the constants in the scratch registers we used in the pixie 
-          lab.
-       2. Use VM to remap the GPIO memory to addresses that can be loaded 
-          in a single instruction.
-       3. Use VM and turn on the data cache (the least sexy option, but works :).
-
 -------------------------------------------------------------------------
 ### Some timing puzzles `puzzles`
 
@@ -208,10 +195,20 @@ something cute using you code.
 
 ***There are a bunch of extensions: if you see this do a pull***
 
-
 To make it more interesting:
   1. Trim as many nanoseconds off of the timings as possible and see that the 
      code still works.
+
+  2. An interesting speed extension that I wish I had done before class
+     is to speed up the GPIO stores.  Currently these use large constants
+     that the compiler will store in the code segment and then load ---
+     this load is a expensive data cache miss (see `puzzles/1-const-problems.c`).
+     Options:
+       1. Put the constants in the scratch registers we used in the pixie 
+          lab.
+       2. Use VM to remap the GPIO memory to addresses that can be loaded 
+          in a single instruction.
+       3. Use VM and turn on the data cache (the least sexy option, but works :).
 
 -------------------------------------------------------------------------
 #### Additional reading.
