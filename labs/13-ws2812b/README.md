@@ -74,14 +74,30 @@ Daniel mode:
     `WS2812b.h` header.   Note: you'll have to do your own timings and
     show that your primitives have accurate timings.
 
-I'm writing some additional extensions. An interesting one that I wish
-I had done before class is to speed up the GPIO stores.  Currently
-these use large constants that the compiler will store in the code segment
-and then load --- this load is a expensive data cache miss.  Options:
-  1. Put the constants in the scratch registers we used in the pixie lab.
-  2. Use VM to remap the GPIO memory to addresses that can be loaded in a single 
-     instruction.
-  3. Use VM and turn on the data cache (the least sexy option, but works :).
+Extensions:
+  1. use your IR remote to control the strip.
+  2. use your accel/gyro to control the strip.
+  3. control more than one strip at a time.  ideally where you
+     merge the writes for each into a single set updates (recall
+     we can set and clear many pins at once with a single store).
+  4. do the 2d light arrays we have and display words, funny faces,
+     etc.  Compose with (1)-(4).
+  5. if you have your nrf code working from 140e: use one pi to control
+     another over RF.  using the accel/gyro to control a remote strip
+     will blow your friends' minds.
+  6. for a more technical approach: Max suggested using PWM  to control
+     the strip.  Or, if you're ambitious, DMA.
+
+  7. An interesting speed extension that I wish I had done before class
+     is to speed up the GPIO stores.  Currently these use large constants
+     that the compiler will store in the code segment and then load ---
+     this load is a expensive data cache miss (see `puzzles/1-const-problems.c`).
+     Options:
+       1. Put the constants in the scratch registers we used in the pixie 
+          lab.
+       2. Use VM to remap the GPIO memory to addresses that can be loaded 
+          in a single instruction.
+       3. Use VM and turn on the data cache (the least sexy option, but works :).
 
 -------------------------------------------------------------------------
 ### Some timing puzzles `puzzles`
