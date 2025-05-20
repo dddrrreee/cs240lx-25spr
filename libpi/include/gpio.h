@@ -104,4 +104,12 @@ int gpio_event_detected(unsigned pin);
 // p96: have to write a 1 to the pin to clear the event.
 void gpio_event_clear(unsigned pin);
 
+void gpio_int_async_falling_edge(unsigned pin);
+void gpio_int_async_rising_edge(unsigned pin) ;
+
+void gpio_fiq_async_falling_edge(unsigned pin);
+void gpio_fiq_async_rising_edge(unsigned pin);
+void gpio_fiq_falling_edge(unsigned pin);
+void gpio_fiq_rising_edge(unsigned pin);
+
 #endif
