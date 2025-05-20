@@ -1,4 +1,4 @@
-#include "rpi.h" // this doesn't imply static linking
+#include "rpi.h"
 
 static int bss_var;
 
