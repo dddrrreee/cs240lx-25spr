@@ -385,10 +385,10 @@ Here's a little ASCII diagram to sum it up:
     | .plt section:            | entry_asm  | GOT[2]
     |                          +------------+
     |   <@plt> <----------+    |            | ...
-    |     bl GOT[2]       |    +------------+ 
+    |     b GOT[2]        |    +------------+ 
     |   ...               |    |   <@plt>   | GOT[i + 3]
     +-> <printk@plt>:     |    +------------+
-          bl GOT[i+3] ----+
+          b GOT[i+3] -----+
 
 
 
@@ -405,10 +405,10 @@ Here's a little ASCII diagram to sum it up:
     | .plt section:            | entry_asm  | GOT[2]
     |                          +------------+
     |   <@plt>                 |            | ...
-    |     bl GOT[2]            +------------+ 
+    |     b GOT[2]             +------------+ 
     |   ...                    |   printk   | GOT[i + 3]
     +-> <printk@plt>:          +------------+
-          bl GOT[i+3] ---+
+          b GOT[i+3] ----+
                          |
                          +---> actual prink
 
