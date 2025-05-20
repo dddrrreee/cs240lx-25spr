@@ -1,0 +1,9 @@
+#include "rpi.h" // this doesn't imply static linking
+
+static int bss_var;
+
+void notmain() {
+    printk("BSS var: %d\n", bss_var);
+    printk("Hello, world!\n");
+    clean_reboot();
+}
