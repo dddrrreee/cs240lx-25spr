@@ -1,0 +1,6 @@
+*.a
+*.so
+*.hexdump
+*.list
+*.readelf
+.DS_Store
