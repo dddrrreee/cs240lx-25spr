@@ -1,5 +1,7 @@
 ## Making a fast interrupt-based digital analyzer.
 
+***NOTE: I'm still editing this so the formatting/grammar is a mess***
+
 For this lab, we give you a slow, trivial interrupt-based logic analyzer
 --- a tool that records when the output from a pi  or sensor transitions
 from 1-to-0 or 0-to-1 --- and you make it as fast as possible.  Being able
@@ -585,7 +587,7 @@ So `notmain` becomes:
         gpio_fiq_falling_edge(in_pin);
 
         fiq_init();
-
+```
 
 To initialize the FIQ registers I used the "cps" instruction to switch
 into `FIQ_MODE` and setup the FIQ registers to hold the pointers and
@@ -601,6 +603,7 @@ registers "variable names" so I didn't do any stupid mistakes.
     #define event0_val  r9
     #define cur_time    r10
     #define cur_cycle   r11
+
 
 ```
 int cost = 326 [149 from gpio write until cycle_cnt_read()]
@@ -624,8 +627,6 @@ int cost = 294 [154 from gpio write until cycle_cnt_read()]
 int cost = 321 [145 from gpio write until cycle_cnt_read()]
 int cost = 294 [154 from gpio write until cycle_cnt_read()]
 ```
-
-
 
 The variance was weird, so I looked into the code and
 somehow I'd deleted the align 5 in the test gen code.
