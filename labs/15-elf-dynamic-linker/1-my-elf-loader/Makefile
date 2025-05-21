@@ -32,7 +32,8 @@ ASM_SRCS += $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.S))
 # Object files
 C_OBJS := $(patsubst %.c,$(OBJDIR)/%.o,$(notdir $(C_SRCS)))
 ASM_OBJS := $(patsubst %.S,$(OBJDIR)/%.o,$(notdir $(ASM_SRCS)))
-OBJS := $(C_OBJS) $(ASM_OBJS)
+STAFF_OBJS := $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.o))
+OBJS := $(C_OBJS) $(ASM_OBJS) $(STAFF_OBJS)
 
 # Lookup paths
 vpath %.c $(SRCDIRS)

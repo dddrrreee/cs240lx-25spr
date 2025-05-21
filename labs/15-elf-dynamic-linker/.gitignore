@@ -4,3 +4,4 @@
 *.list
 *.readelf
 .DS_Store
+static-deps-src/
