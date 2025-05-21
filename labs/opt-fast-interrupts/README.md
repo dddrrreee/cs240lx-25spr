@@ -701,6 +701,17 @@ read variance --- interesting!  Worth looking into.
 ----------------------------------------------------------------------
 ### Now what?
 
+We are currently at about 23x performance improvement (3500/147) and
+about 7x improvement of accuracy (529/75), which is a great improvement.
+This is one of the reasons I really like the bare metal code we do:
+  1. It would be hopeless to do this lab in Linux or MacOS.  The 
+     time, the constant fight, the complexity.  Big NFW.
+  2. Since the code is small, and written by us it's easy to quickly get
+     into a flow state, directly touching hardware reality, doing
+     interesting things.  That's not the norm.
+
+Fair enough, so now what.
+
 There's still some obvious stuff we can do or at least try:
   1. Overclock the pi.  We can push the CPU higher and also the 
      BCM speed (IIRC), though we then have to adjust the UART or
@@ -714,8 +725,12 @@ There's still some obvious stuff we can do or at least try:
      runs at 250mhz).  We could alias the GPIO memory at a different
      offset so we can just write to it without having to play domain
      tricks.
+  4. We could get a cleaner test signal by using the clock to generate
+     it.  This would require checking when we have too many samples.
+     A hack to do this without an if statement is to set a watchpoint
+     on the end of the queue.
 
-  4. We'll give a major extension if you make a significant improvement
+  5. We'll give a major extension if you make a significant improvement
      using some alternative method!
 
 Note: I did try to not use the interrupt vector and copy the interrupt
