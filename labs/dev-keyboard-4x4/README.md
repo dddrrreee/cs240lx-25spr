@@ -4,6 +4,14 @@ In the interests of giving people final project building blocks, this
 is a quick lab for a standard 4x4 (16 button) matrix keyboard.  It has
 4 rows, and 4 columns --- labeled R1-R4 and C1-C4 on the pcb.
 
+
+<p float="left">
+  <img src="images/keyboard.jpg" width="230" />
+  <img src="images/keyboard-top.jpg" width="230" />
+  <img src="images/keyboard-side.jpg" width="230" />
+</p>
+
+
 A positive of this device is that it is cheap and plentiful.  A downside
 is that you'll need 8 jumpers (4 for each row, 4 for each column),
 which is can be annoying since it's 16 coin tosses (one for each end)
