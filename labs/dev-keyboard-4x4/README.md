@@ -6,9 +6,9 @@ is a quick lab for a standard 4x4 (16 button) matrix keyboard.  It has
 
 
 <p float="left">
-  <img src="images/keyboard.jpg" width="230" />
-  <img src="images/keyboard-top.jpg" width="230" />
-  <img src="images/keyboard-side.jpg" width="230" />
+  <img src="images/keyboard.jpg" width="260" />
+  <img src="images/keyboard-top.jpg" width="260" />
+  <img src="images/keyboard-side.jpg" width="260" />
 </p>
 
 
