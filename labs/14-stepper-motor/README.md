@@ -6,7 +6,7 @@ Today we're going to use a `A4988` board to drive a nema 17 stepper.
     almost all is about dimensions and other stuff you can skip.
 
 This is a pretty open-ended lab.   It's based on the lab written by Alex
-Fu for the first cs340lx: [Alex README](README-Alex.md).  Feel free to
+Fu for the first cs340lx: [Alex README](alex-README.md).  Feel free to
 just use his lab and code (`alex-code`) --- it's much more thorough :).
 Certainly read through it for extension ideas!
 
