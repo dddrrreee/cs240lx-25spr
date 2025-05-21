@@ -49,6 +49,12 @@ Some extra device labs:
    - [dev-keyboard-4x4](dev-keyboard-4x4): quick lab for a standard 4x4 
      (16 button) matrix keyboard.  
 
+Since spring quarter is rough, we'll provide some extra optional labs
+that people can do instead of a final project.
+
+   - [opt-keyboard-4x4](dev-keyboard-4x4): quick lab for a standard 4x4 
+     (16 button) matrix keyboard.  
+
 <p align="center">
   <img src="lab-memes/coding.jpg" width="350" />
 </p>
