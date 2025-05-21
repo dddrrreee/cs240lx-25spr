@@ -41,6 +41,13 @@ Many more labs TBA:
      memory checker in a couple hundred lines of code.
    - [13-ws2812b](13-ws2812b): use the timing knowledge you gained from 
      the lab 10 (PMU) to write a addressable light array driver.
+   - [14-stepper-motor](14-stepper-motor):  write a driver for
+     the A4988 board and use it to drive a nema 17 stepper motor.  You
+     can use this to build robots and stuff.
+
+Some extra device labs:
+   - [dev-keyboard-4x4](dev-keyboard-4x4): quick lab for a standard 4x4 
+     (16 button) matrix keyboard.  
 
 <p align="center">
   <img src="lab-memes/coding.jpg" width="350" />
