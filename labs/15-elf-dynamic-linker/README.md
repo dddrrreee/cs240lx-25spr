@@ -1,4 +1,4 @@
-# Executable and Linkable Format (ELF) and Dynamic Linker
+# Executable and Linkable Format (ELF) and Dynamic Linker (*Lab by Stuart Sul*)
 
 ![Cute banner image](./images/ELF-factory.png)
 
