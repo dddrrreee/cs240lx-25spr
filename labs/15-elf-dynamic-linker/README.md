@@ -235,7 +235,7 @@ DONE!!!
 ## Part 2: Runtime Symbol Resolution for Shared Libraries
 
 **Check-off:**
-- Fill in `get_dynamic_sections(...)` and `resolve_symbol(...)` in `my-dynamic-linker.c`
+- Fill in `get_dynamic_sections(...)` and `resolve_symbol(...)` in `my-dynamic-linker.c` (make sure to add the base address)
 - Run `make` and show that it can correctly resolve and jump to `printk`
 
 **TL;DR: Read through `notmain.c` to understand the program flow. Fill in the `todo`s in `my-dynamic-linker.c`**
