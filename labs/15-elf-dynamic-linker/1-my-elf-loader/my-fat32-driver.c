@@ -47,12 +47,3 @@ int my_fat32_read(char *name, char *buffer) {
     memcpy(buffer, file->data, file->n_data);
     return file->n_data;
 }
-
-// Helper function; list the names of files at the root directory
-// Useful since the name representation on FAT32 might be different from the one we use
-void my_fat32_ls() {
-    if (!my_fat32_initialized) {
-        my_fat32_init();
-    }
-    fat32_ls(&my_fat32.fs, &my_fat32.root);
-}

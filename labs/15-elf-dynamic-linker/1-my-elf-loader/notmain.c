@@ -15,12 +15,6 @@ static char *exec_base = (char *)0x0;  // Must load the ELF file to 0x0, as it i
 
 void notmain() {
 
-    // Use this helper function to list the filenames on the SD card
-    // Note that FAT32 will create alias dirents for our files (ex. _0-DY~37.ELF).
-    // We can ignore them and just use the original file names
-    // Remember to keep the filenames in all caps (ex. 1-STATIC.ELF, not 1-static.elf)
-    // my_fat32_ls();
-
     // Extension: all of the below can be done on the pi-side bootloader
 
     // Load the ELF file from the SD card to memory

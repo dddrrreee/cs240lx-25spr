@@ -16,8 +16,4 @@ void my_fat32_init();
 // the physical address pointed to by `buffer`, and return the number of bytes written.
 int my_fat32_read(char *name, char *buffer);
 
-// Helper function; list the names of files at the root directory
-// Useful since the name representation on FAT32 might be different from the one we use
-void my_fat32_ls();
-
 #endif
