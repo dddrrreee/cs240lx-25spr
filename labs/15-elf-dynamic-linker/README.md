@@ -9,6 +9,7 @@ Today, we are going to build a program that parses ELF files, loads it into the 
 ## Live Notes
 
 - If you are getting multiple definitions error on `1-my-elf-loader`, `git pull` and try again (`fat32_ls` is now gone. Sorry 😥)
+- Make sure you add the base address when locating dynamic sections!
 
 ## Background 1: How we ran programs on Raspberry Pi so far
 
