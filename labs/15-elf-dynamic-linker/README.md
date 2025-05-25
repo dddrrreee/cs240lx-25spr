@@ -437,6 +437,13 @@ So how exactly should our dynamic linker function behave? The recipe:
 
 Part of this is already done for you in `my-legit-dynamic-linker-asm.S`. Your job is to fill in `dynamic_linker_entry_c(...)` in `my-legit-dynamic-linker.c`.
 
+Before you start working on this, perhaps a good question to check your understanding is why we need to call `resolve_symbol` if in step 2 we have already found a `.dynsym` index. 
+
+The answer to this question is
+  that the executable and libpi have different `.dynsym` sections. We need to lookup the symbol that the *executable* needs in *libpi* in order to link it in. The overall flow is to go from `exec_e` rel.dyn entry -> `exec_e` dynsym entry -> `exec_e` dynstr entry(to find the name of the symbol) -> `libpi_e` symbol address with `resolve`.
+
+
+
 When you are all done, you should see something like the following when you run `make` with `0-dyn.elf`:
 
 ```bash
