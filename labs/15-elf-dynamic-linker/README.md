@@ -391,7 +391,7 @@ Here's a little ASCII diagram to sum it up:
     |                          +------------+
     |   <@plt> <----------+    |            | ...
     |     b GOT[2]        |    +------------+ 
-    |   ...               |    |   <@plt>   | GOT[i + 3]
+    |   ...               |    |    @plt    | GOT[i + 3]
     +-> <printk@plt>:     |    +------------+
           b GOT[i+3] -----+
 
