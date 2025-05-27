@@ -100,6 +100,7 @@ The fact you can just change directories and run the checkpoint with a
 simple "make" is much much much better than trying to figure out some
 git commit log.
 
+push these down and then summarize.
 
 Everytime we do something:
   1. Measure it.  People who don't know how to code are notorious
@@ -112,7 +113,72 @@ Everytime we do something:
      times where the compiler has done something dumb, you're not
      looking often enough.
 
+    don't do 3 things and measure.  sometimes one (or more) of the three
+    had no effect.  don't do it.  (but also don't forget it: as you
+    shave more and more cycles, an optimization that removed a fixed
+    number of cycles will have more and more relative impact, all else
+    being equal)
+
+    a secondary reason to do less and measure: the smaller the steps
+    you take more more you can notice when you do something that
+    has more of an impact than you expected (part 7 below).  on modern
+    hardware, seemingly incidental changes can make a real difference.
+
+            expose your naive view.
+
+    one example is pulling the gpio store up: if pushed down, adds 30%
+
+  4. if two things are perfectly correlated: redundant and can remove
+    one.  if often correlated may well be able to rewrite so becomes
+    redundant.
+
+  - game is like god's book of proofs: instead of finding th4e 
+    simplest proof, we are trying to find the least amount you have
+    to do to compute a result.  as you speed things up, you typically
+    get a deeper and deeper understanding.
+
+    this works in reverse: the deeper your understanding the more
+    you can speed things up  --- we use a broad set of tricks,
+    spanning a huge set of things.
+    alternatively, 
+    
+as you get older, flow state harder.  making stuff fast is an
+easy way --- wrote code after class til 3am, woke up started
+writing code, etc.  doesn't really happen when older.
+
+if you get stuck, start writing it up.  you may have untrue facts
+in head floating around but then when you assert them in prose 
+"is this true" or when you try to say true b/c X,Y,Z realize
+its not.
+
 Do a single change and measure.  Don't do 10 or even 2.
+
+principles and tactics
+    - keep it correct.
+    - keep your code simple. simple code is much easier to make fast 
+      versus complex.  (just like anything else.)
+    - 
+    
+tactics:
+
+----------------------------------------------------------------------
+outlining
+
+we saw that the more code you give the compiler the faster it can 
+make it.  but outlining also works:
+the obverse is true: the more code that doesn't 
+atter that you 
+
+mention:
+    - should have compacted the code.
+    - should have also messed with the vector table [can use for above]
+
+other fast:
+    - do fast exception and compare to unix.
+    - do fast SS exception and see how much better can make things
+    - do fast fork and see how many can do 
+
+        its
 
 ----------------------------------------------------------------------
 ### Step 1: do the easy stuff.
@@ -352,8 +418,8 @@ int cost = 594 [279 from gpio write until cycle_cnt_read()]
 int cost = 583 [300 from gpio write until cycle_cnt_read()]
 ```
 
-If you look at the interrupt handler code (our favorite theme song)
-you can see this one changed removed the two loads we wanted, but as
+If you look at the interrupt handler code (our theme song)
+you can see this one change removed the two loads we wanted, but as
 a extravagant bonus removed alot more (this is not uncommon):
   1. B/c we use less registers, the compiler could eliminate the
      push and pop (dcache miss) of the lr register.
@@ -376,40 +442,56 @@ a extravagant bonus removed alot more (this is not uncommon):
 
 Now that we reduced our timings down so much, we do some basic housekeeping
 so that we don't get spurious speedups and slowdowns because of changing
-alignment.  Recall that the instruction prefetch buffer is 32-bytes.  If 
-our code can be read in a single prefetch it will run noticably faster
-than if it takes two.  Unfortunately if we don't force alignment, random
-changes in the code can change the alignment of unrelated locations leading
-to big timing swings.  (We should have done this sooner, but I forgot and
-am too lazy to remeasure.)
+alignment.  Recall that the instruction prefetch buffer is 32-bytes,
+where the first instruction address in each fetch is 32-byte aligned.
+If our code can be read in a single prefetch it will run noticably
+faster than if it takes two.  Unfortunately if we don't force alignment,
+random changes in the one part of the code can cause cascading alignment
+changes in all subsequent (unrelated) code locations leading to big
+timing swings.  (We should have done this sooner, but I forgot and am
+too lazy to remeasure.)
 
 We care about:
-  1. The interrupt trampoline.
-  2. The interrupt handler itself.
-  3. And, the two locations in the test gen where we write to the GPIO
-     and read the cycle counter.
+  1. The interrupt trampoline: we want this 32-byte aligned so the
+     initial jump to it loads all useful instructions.  We add an
+     `.align 32` directive before the interrupt trampoline in the
+     `interrupt-asm.S` assembly file:
 
-We force alignment by:
-  1. In the assembly add an ".align 32" before the interrupt trampoline
-     `interrupt`.
-     
-  2. In the C code before the interrupt handler:
+                .align 5
+                interrupt:
 
-        __attribute__((aligned(32))) void int_vector(uint32_t pc) {
+  2. The interrupt handler itself: as with the interrupt trampoline
+     we want all prefetched instructions to be useful.  We add a GCC
+     attribute directive before the start of the interrupt code in the
+     `scope.c` file:
 
-  3. In the tst gen, add a `asm volatile(".align 5")` before both
-     cycle count reads in `test_gen`:
+            __attribute__((aligned(32))) void int_vector(uint32_t pc) 
+            {
+                ....
 
-        asm volatile(".align 5");
-        s = cycle_cnt_read();
-        gpio_set_on_raw(pin);
+  3. Finally, in the two locations in the test generation code where
+     we write to the GPIO and read the cycle counter.  We do so because
+     our overhead measurements are at the mercy of how accurate this
+     initial cycle count read is: if the read is the last instruction
+     in the prefetch buffer, and the write to GPIO is the first 
+     in the next one, there will be a big lag before it executes,
+     falsely making us think our interrupt overhead is higher. 
+
+
+            // expands to: <asm volatile(".align 5")>
+            asm_align(5);
+            s = cycle_cnt_read();
+            gpio_set_on_raw(pin);
 
 You can check that all of these worked by looking for the addresses of
 each and making sure that they are divisible by 32.
 
-I'm a bit surprised, but it didn't seem to make much difference
-for me.  But on the positive side, it does reduce fluctuations
-when we cut more cycles.
+As you can see below, alignment didn't make much difference for us in our
+current state.  I'm honestly a bit surprised --- this isn't the common
+empirical result!  With that said, it does reduce fluctuations when we
+cut more cycles later.  (And as foreshadowing: at some point I dropped (3)
+above, and when it gets added back, it significantly reduces variance.)
+
 
 ```
 int cost = 731 [308 from gpio write until cycle_cnt_read()]
@@ -434,28 +516,37 @@ int cost = 601 [282 from gpio write until cycle_cnt_read()]
 int cost = 591 [308 from gpio write until cycle_cnt_read()]
 ```
 
-
 ----------------------------------------------------------------------
 ### Step 4: accurate cycle counter reads
 
-We still have a big source of error for the cycle counter.  We will again
-use a trick from our pixie lab and read the cycle counter on the first
-instruction of the assembly trampoline.    As with pixie, since we are
-in the interrupt handler we only have a single private register (`sp`) so:
+We still have a big source of error for the cycle counter in that it only
+gets read after multple jumps, and after the trampoline sets up the stack,
+saves registers and jumps.  Each of these can introduce variance.  So we
+will again use a trick from our pixie lab and read the cycle counter on
+the first instruction of the assembly trampoline.    As with pixie, since
+we are in the interrupt handler we only have a single private register
+(the stack pointer, SP) so:
 
   1. We read the cycle counter into SP.
-  2. We then move SP into the third scratch register.  (This works
-     because the machine has three scratch registers and we only 
-     used two so far.)
+  2. We then move SP into the third co-processor scratch register.
+     (This works because the machine has three scratch registers and we
+     only used two so far.)
   3. The trampoline works as before, except instead of 
      passing the PC as the first argument, we pass in the 
      cycle count value (by reading it from the scratch register).
-  4. Change the interrupt handler to remove the cycle count read.
-  
-This removes about 1/3 of the overhead of our initial read.  It also
-makes the variance go almost to 0 except for the first read (I'm not
-sure what is going on, since the cache is disabled.)  This was
-a great result for such a simple change:
+  4. Obviously: Change the interrupt handler to remove the cycle count
+     read.
+
+This removes about 1/3 of the overhead of our initial read: a great
+result for such a simple change!  It also makes the variance go almost
+to 0 except for the first read.
+
+  - NOTE: I'm not sure where the variance is coming from since both
+    the i-cache and d-cache are currently disabled.  If we didn't have
+    ideas of what to do next, we would normally drill down using the PMU
+    to see what the cause was.  However, since there's still a bunch
+    of stuff to cut we keep doing so.  We'll likely return to this
+    weirdness later.
 
 ```
 int cost = 756 [254 from gpio write until cycle_cnt_read()]
@@ -480,17 +571,35 @@ int cost = 585 [198 from gpio write until cycle_cnt_read()]
 int cost = 585 [198 from gpio write until cycle_cnt_read()]
 ```
 
+Over 2x improvement in the initial read from where we started, and
+almost a 7x improvement in the interrupt handling overhead.
+
 ----------------------------------------------------------------------
 ### Step 5: do it all in assembly
 
-
 One nice thing about trimming so many instructions is that now the
 interrupt handler machine code is tiny, which means we can easily just
-write it directly in assembly code.  This will eliminate:
-  1. Most of the overhead the trampoline has of saving and restoring the
-     registers before calling the C code.
+write it directly in assembly code.  (This dynamic is not uncommon!) 
 
-My current interrupt handler looks like:
+The reason for doing so here is not that assembly isn't necesarily magic,
+
+but in this case it lets us:
+  1. Inline the C interrupt handler into the assembly trampoline and then
+     optimize across the boundaries.  We've already seen how this 
+     helps the compiler, but it also helps hand optimization.
+  2. Once we've done step 1, we can then play games with the registers
+     that the C compiler can't necessarily.  
+
+        - NOTE: the `arm-none-eabi-gcc` compiler does let you tag
+          exception routines with an attribute specifying what exception
+          they are for.  In the general case this may provide some
+          automatic optimization (try it and let me know!).  However,
+          in this case,  we're playing games with the SP that make
+          this impossible (afaik, but I didn't ponder long).
+
+
+Before doing the change, the disasembly of my entire C interrupt handler
+looks like:
 
 ```
     80a0:   ee1d3f70    mrc 15, 0, r3, cr13, cr0, {3}
@@ -502,12 +611,14 @@ My current interrupt handler looks like:
     80b8:   e12fff1e    bx  lr
 ```
 
-So I took most of this code (not the "bx lr") and inlined it into
-`interrupt-asm.S`.  After doing so, I could whittle down the code to
-only use two registers (in addition to sp).
+To do the change, I took most of this code and:
+  1. Put it all in the assembly trampoline (not the "bx lr").
+  2. Messed around with the instructions to cut some out and 
+     to do everything only using two registers in addition to 
+     SP.
+  3. After (2): Only saved and restored the two registers.
 
-
-Removing the memory operations makes a big difference!
+As you can see, removing the memory operations makes a big difference!
 
 ```
 int cost = 560 [314 from gpio write until cycle_cnt_read()]
@@ -532,9 +643,16 @@ int cost = 380 [196 from gpio write until cycle_cnt_read()]
 int cost = 388 [198 from gpio write until cycle_cnt_read()]
 ```
 
-(Note one easy fix we could have done earlier was only save the
-caller-saved registers in the trampoline.)  
-
+NOTE:
+  - One easy change we could have done earlier but didn't
+    was to change the trampoline to only save and restore the caller-saved
+    registers --- currently it saves a bunch of callee as well.
+  - A second sleazy change would be to get rid of the initial 
+    jump to the interrupt trampoline.  Since we do not have any
+    other exceptions or interrupts, just inline the trampoline
+    right into the vector table, ignoring the subsequent 
+    slots (in our case, since the interrupt is the last entry
+    in the table before FIQ)  xxx.
 
 ----------------------------------------------------------------------
 ### Step 6: do it as a "fast interrupt" (FIQ)
@@ -605,6 +723,18 @@ registers "variable names" so I didn't do any stupid mistakes.
     #define cur_cycle   r11
 
 
+After rewriting the code to exploit the FIQ registers, I got it down
+to 5 instructions:
+  1. cycle count read.
+  2. one store to clear the event interrupt
+  3. one store to write out the current cycle time.
+  4. one write of the co-processor scratch register to write back
+     a pointer to the next timer reading (more on this later).
+  5. a jump back to the interrupted code.
+
+This gives us a decent but not fantastic performance bump given the
+massive surgery:
+
 ```
 int cost = 326 [149 from gpio write until cycle_cnt_read()]
 int cost = 294 [154 from gpio write until cycle_cnt_read()]
@@ -628,14 +758,13 @@ int cost = 321 [145 from gpio write until cycle_cnt_read()]
 int cost = 294 [154 from gpio write until cycle_cnt_read()]
 ```
 
-The variance was weird, so I looked into the code and
-somehow I'd deleted the align 5 in the test gen code.
-(The great thing about using perforance counters is that
-there is no room to hide.  Also, the more details you see,
-the more you have a chance to see "that's weird").
+The variance in costs was weird, so I looked into the code and somehow
+I'd deleted the align 5 in the test gen code.  (The great thing about
+using perforance counters is that there is no room to hide.  Also, the
+more details you see, the more you have a chance to see "that's weird").
 
-When I fixed this, the variance went very flat, justifying
-why we intended to do it in the first place :)
+When I fixed this, the variance went very flat after the first couple
+readings, justifying why we intended to do it in the first place :)
 
 ```
 int cost = 295 [154 from gpio write until cycle_cnt_read()]
@@ -660,6 +789,13 @@ int cost = 297 [156 from gpio write until cycle_cnt_read()]
 int cost = 297 [157 from gpio write until cycle_cnt_read()]
 ```
 
+NOTE:
+  - we still have the initial jitter, will look at pretty
+    soon after we run out of stuff to do.
+
+OH: guess: the initial bump is b/c of random cache replacement.
+once you get a second shot it settles down?   use the performance
+counters to narrow down.
 
 We are now at more than 10x a performance improvement.  And, crucially
 for a digital scope, almost always 1 cycle or less in variance (I'm
@@ -701,14 +837,31 @@ read variance --- interesting!  Worth looking into.
 ----------------------------------------------------------------------
 ### Now what?
 
-We are currently at about 23x performance improvement (3500/147) and
-about 7x improvement of accuracy (529/75), which is a great improvement.
+We are currently at about 23x performance improvement (3500/147 = 23.8) and
+about 7x improvement of accuracy (529/75 = 7.05), which is a great improvement.
+It gives almost 5M samples / second:
+
+        (700M cycles / sec)  / (147 cycles per sample)
+    =   4,929,577 samples per second.
+
+
+we should be using performance counters to narrow things down, but 
+currently we are on a "just cut things out" warpath that is working
+well.  when we get stuck we will pull in the PMU code  so we can see
+what is going on.
+
+
 This is one of the reasons I really like the bare metal code we do:
   1. It would be hopeless to do this lab in Linux or MacOS.  The 
-     time, the constant fight, the complexity.  Big NFW.
-  2. Since the code is small, and written by us it's easy to quickly get
+     time, the constant fight, the complexity.  And in the end, it just
+     wouldn't work.  Big NFW.
+  2. Since the code is small, and written by us, it's easy to quickly get
      into a flow state, directly touching hardware reality, doing
      interesting things.  That's not the norm.
+        
+        don't have to wrry: will this change break other code?  there
+        is no other code.
+
 
 Fair enough, so now what.
 
@@ -718,13 +871,17 @@ There's still some obvious stuff we can do or at least try:
      we won't see anything.
   2. We could possibly use the DMA to clear the event and write the
      cycle count out.   Given some prep work I think we can do this with
-     a single store. 
+     a single store.   A nice thing about this approach is that we could
+     then efficiently extend it to multiple pins: use DMA to read and then
+     write out the GPIO level register.
+
   3. One potential method: turn on VM and do traps of the GPIO memory.
      This *might* be faster + lower variance for getting the initial
      cycle count read since it doesn't go through the bcm at all, which
      runs at 250mhz).  We could alias the GPIO memory at a different
      offset so we can just write to it without having to play domain
      tricks.
+
   4. We could get a cleaner test signal by using the clock to generate
      it.  This would require checking when we have too many samples.
      A hack to do this without an if statement is to set a watchpoint
@@ -736,8 +893,104 @@ There's still some obvious stuff we can do or at least try:
 Note: I did try to not use the interrupt vector and copy the interrupt
 code but it didn't seem to improve anything.
 
+----------------------------------------------------------------------
+### Step 8: don't do redundant stuff.
+
+When optimizing it's easy to get fixated on making the exact algorithm
+run faster with tricks.  Nothing wrong with that necessarily.  It's fun.
+However, when the easy tricks start running out and the gains get smaller
+it's good to step back and figure out if you have to play the same game
+with the same rules or if you can step back and change them.
+
+In our case, if we look at our data structure, we have an array of
+times, and a pointer to the next entry to write in a scratch register.
+Reading this pointer takes an instruction, and writing it takes another.
+
+One way to eliminate these updates and just keep it in an FIQ register:
+   1. Initialize the `times` array to 0.
+   2. Have the test generation figure out when a rading has happened by 
+      waiting until an element goes from 0 to non-zero.
+
+This will work great as long as the cycle counter is never 0.
+Unfortunately it could be rarely when the 32-bit value wraps around
+(which occurs a bit less often than every 6 seconds).
+
+At this point we might seem to be stuck.  However, if you look at the PMU
+chapter (page 3-139), there's an instruction to write the cycle counter
+register.  If we use that, as long as the test generator writes the GPIO
+pin within 6 seconds (which it does) we can just use the raw value.
+So we do that.
+
+
+
+
+Easy!  Of cour
+
+. Invariant: 
+Have the test generation 
+of coure,
+
+We have two options:
+
+ 1. Keep it in an FIQ register.  The problem here is that the non-FIQ code
+    can't access it.  At least as currently structured, changing to FIQ
+    to read and back will add overhead to the test generation and generally
+
+Update
+
+
+This 
+
+
+Fairly obvious insight.  I got 
+
+
+
+"At this point i was stuck.  so slept."  This is major suggestion.
+Had multiple ideas in the shower.
+
+the redundant: 
+    - can move the clearing into the interrupt handler if you were going
+      to monitor external hardware.
+
+    - we have the 
+
+Slept on, couple easy ones:
+  - get rid of the redundant computation of the tail.
+  - clean up the test generation using outlining (eventually clock)
+  - turn on VM and mess with the device memory rules.
+    
+Ah:
+  - can clean up the test gen by using a clock.
+  - use watchpoints to put a limit on the number of entries.
+  - can't do ws2812b: so do virtual time to correct.
+  - make a utility --- change your registers entirely and keep
+     everything in them.
+  - maybe do dma as a generator?  nice since can do uneven.
+    can also do pwm.  "all the different ways to precisely
+    write gpio pins" is equiv to all the different ways to 
+    blink led i think
+
+  - for output: can do virtual.  if need output: buffer everything 
+      (no interrupt) replay when done.
+
+  - for a utility: can entirely twist things around and have the
+    user just have 1 register and the interrupt have all the others.
+
+  use of this lab:
+    can we make a record replay?  do this for external devices.
+    should be able to cause the code to emit exactly the same output.
+
 --------------------------------------------------------------------
 --------------------------------------------------------------------
+all the stuff we used:
+ 1. interrupts.
+ 2. FIQ interrupts
+ 3. scratch registers.
+ 4. looking at machine code.
+ 5. understanding the machine 
+ 6. virtual memory.
+ 7.
 --------------------------------------------------------------------
 --------------------------------------------------------------------
 --------------------------------------------------------------------

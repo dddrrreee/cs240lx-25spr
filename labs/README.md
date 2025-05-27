@@ -45,6 +45,15 @@ Many more labs TBA:
      the A4988 board and use it to drive a nema 17 stepper motor.  You
      can use this to build stuff all the way from robots to music.
 
+As an unual step we're closing out with three student-made labs!
+
+   - [15-elf-dynamic-linker](15-elf-dynamic-linker):  Stuart Sul's lab
+     on building a ELF dynamic linker.
+   - [16-gpu](16-gpu): Rohan Chanani and Asanshay Gupta's lab 
+     on using the pi's GPU (videocore IV) bare metal.
+   - [17-pico-2](17-pico-2): Max Cura's lab on bare metal booting 
+     the pico 2 in riscv mode.
+
 Some extra device labs:
    - [dev-keyboard-4x4](dev-keyboard-4x4): quick lab for a standard 4x4 
      (16 button) matrix keyboard.  
