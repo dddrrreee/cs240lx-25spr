@@ -7,7 +7,8 @@
 mov     r0,     unif           # r0 ← src address
 mov     r1,     unif           # r1 ← dst address
 
-# note: if we delete this <vdr_setup_1> doesn't work.
+# note: if we delete <vdr_setup_1> doesn't work --- only copies
+# 16 entries, despite a bunch of different attempts.
 mov     vr_setup, vdr_setup_1(64)
 mov     vr_setup, vdr_setup_0(0, 16, 4, vdr_h32(1, 0,0))
 mov     vr_addr,  r0           # launch DMA LOAD
