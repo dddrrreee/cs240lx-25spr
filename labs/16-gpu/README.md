@@ -4,7 +4,9 @@
 
 ## Errata and Notes
 
-The QPU Assembler has a weird bug where it executes 3 instructions after any branch instruction. We like to leave these as `nop`s, but if you can do something more clever with them, feel free to do so.
+- The QPU Assembler has a weird bug where it executes 3 instructions after any branch instruction. We like to leave these as `nop`s, but if you can do something more clever with them, feel free to do so.
+- You can't read and write from the same register file (`ra`, `rb`) at the same time. Ideally, you can use accumulators like `r1`, etc to do things that may require that.
+
 
 Make sure to use `bash run.sh` instead of `make` for this lab, as we have to compile the QASM shaders as well!
 
