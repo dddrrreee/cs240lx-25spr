@@ -19,6 +19,7 @@ Make sure to use `bash run.sh` instead of `make` for this lab, as we have to com
   - [Assembler Usage](https://maazl.de/project/vc4asm/doc/index.html#vc4asm)
   - [Expressions and Operators](https://www.maazl.de/project/vc4asm/doc/expressions.html)
   - [Macros (SUPER USEFUL)](https://maazl.de/project/vc4asm/doc/vc4.qinc.html)
+  - [Extensions (CONDITIONS)](https://maazl.de/project/vc4asm/doc/extensions.html)
 - [Mandelbrot Wikipedia Page](https://en.wikipedia.org/wiki/Mandelbrot_set)
 
 
