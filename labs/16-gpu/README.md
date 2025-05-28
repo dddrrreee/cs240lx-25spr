@@ -7,6 +7,7 @@
 - The QPU Assembler has a weird bug where it executes 3 instructions after any branch instruction. We like to leave these as `nop`s, but if you can do something more clever with them, feel free to do so.
 - You can't read and write from the same register file (`ra`, `rb`) at the same time. Ideally, you can use accumulators like `r1`, etc to do things that may require that.
 - Make sure to install VC4ASM! `brew install vc4asm` on Mac or [Build Instructions](https://maazl.de/project/vc4asm/doc/index.html#build) on Linux
+- THE VALUE h_32 for vpm_setup should actually be h32
 
 Make sure to use `bash run.sh` instead of `make` for this lab, as we have to compile the QASM shaders as well!
 
