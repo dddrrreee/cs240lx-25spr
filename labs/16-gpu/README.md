@@ -273,7 +273,7 @@ We have included `staffaddshader.h` which contains a correctly compiled `staff-p
 
 Your kernel should calculate the same values as the CPU implementation, with a meaningful speedup (we had a 3-4x speedup on 1 QPU and 8x speedup with 8 QPUs, better should be possible although a vector add is generally memory-bound).
 
-## Part 2: Mandelbrot
+## Extension: Mandelbrot
 
 <figure>
 <img src="./images/mandelbrot.png" width="70%">
