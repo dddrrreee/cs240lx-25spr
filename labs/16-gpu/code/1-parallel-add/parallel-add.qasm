@@ -15,7 +15,7 @@ mov   ra2, unif #C
     # TODO: DMA READ A
     mov vr_setup, vdr_setup_0(SOMETHING) # USE vdr_setup_0 MACRO
                                          # How will you do the read?
-    mov vr_addr, ra1            # USE YOUR UNIFORM ADDRESS FOR A 
+    mov vr_addr, ra0            # USE YOUR UNIFORM ADDRESS FOR A 
                                 # (will probably need to change with the loop)
     mov -, vr_wait              # KICK OFF THE READ
 
@@ -39,7 +39,7 @@ mov   ra2, unif #C
     # TODO: DMA WRITE FROM VPM TO PHYSICAL MEMORY
     mov vw_setup, vdw_setup_0(SOMETHING HERE) # USE vdw_setup_0 MACRO TO 
                                               # DEFINE HOW YOU'LL DO THE READ
-    mov vw_addr, ra3            # USE YOUR UNIFORM ADDRESS FOR C
+    mov vw_addr, ra2            # USE YOUR UNIFORM ADDRESS FOR C
     mov -, vw_wait              # KICK OFF THE WRITE
 
 
