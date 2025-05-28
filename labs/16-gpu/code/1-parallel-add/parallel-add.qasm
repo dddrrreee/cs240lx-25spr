@@ -45,9 +45,9 @@ mov   ra2, unif #C
 
     
     # FIGURE OUT WHETHER TO CONTINUE THE LOOP
-    # THE FOLLOWING IS EQUIVALENT TO: for (int i=<initial ra4 value>, i > 0; i--)
+    # THE FOLLOWING IS EQUIVALENT TO: for (int i=<initial ra3 value>, i > 0; i--)
 
-    sub.setf ra10, ra10, 1
+    sub.setf ra3, ra3, 1
     brr.anynz -, :loop
 
     # DO NOT REMOVE DO NOT REMOVE DO NOT REMOVE
