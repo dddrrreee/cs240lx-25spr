@@ -1,6 +1,6 @@
 # The wonderful world of the VideoCore IV (Raspberry Pi GPU) 
 
-*Lab by: Rohan Chanani Asanshay Gupta*
+**Lab by: Rohan Chanani and Asanshay Gupta**
 
 ![Image](./images/videocore.png)
 
