@@ -32,7 +32,7 @@ lib.o: ../lib/core.c $(HEADERS)
 part1.elf: part1.o staff-uart.o $(COMMON_OBJS) | $(MEMMAP)
 	$(LD) $(LDFLAGS) $^ -o $@
 
-part2.elf: part2.o uart.o $(COMMON_OBJS) | $(MEMMAP)
+part2.elf: part2.o staff-uart.o $(COMMON_OBJS) | $(MEMMAP)
 	$(LD) $(LDFLAGS) $^ -o $@
 
 part3.elf: part2.o uart.o $(COMMON_OBJS) | $(MEMMAP)

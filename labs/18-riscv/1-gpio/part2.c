@@ -5,6 +5,10 @@ void notmain()
 
     enum { LED_PIN = 25 };
 
+    resets->reset |= RESET_UART0;
+    while (!(resets->reset_done & RESET_UART0))
+        ;
+
     uart_init(uart0, 115200, 150'000'000);
 
     // First, check that 'uart_putc' works.
