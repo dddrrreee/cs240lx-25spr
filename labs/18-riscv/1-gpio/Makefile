@@ -1,7 +1,12 @@
 .SUFFIXES:
 .DEFAULT_GOAL := run
 
-INSTALL := ../bin/pi-install
+FLASH_MOUNT := /Volumes/RP2350
+# FLASH_MOUNT := /mnt/pico
+
+INSTALL := pi-install
+ENGRAVE_UF2 := ../bin/engrave-uf2.macos
+
 COMMON_SRC := gpio.c
 COMMON_SRC += printk.c
 
@@ -38,6 +43,9 @@ part2.elf: part2.o staff-uart.o $(COMMON_OBJS) | $(MEMMAP)
 part3.elf: part2.o uart.o $(COMMON_OBJS) | $(MEMMAP)
 	$(LD) $(LDFLAGS) $^ -o $@
 
+part3.uf2: part3.elf
+	$(ENGRAVE_UF2) $< -o $@
+
 %.bin: %.elf
 	$(OBJCOPY) $< -O binary $@
 
@@ -51,5 +59,5 @@ part1: part1.bin
 	$(INSTALL) $<
 part2: part2.bin
 	$(INSTALL) $<
-part3: part3.bin
-	$(INSTALL) $<
+part3: part3.uf2
+	cp $< $(FLASH_MOUNT)

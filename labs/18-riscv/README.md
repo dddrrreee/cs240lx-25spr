@@ -144,6 +144,7 @@ For information on block loops, check 5.5 and 5.9 in `rp2350-datasheet.pdf`. Bas
 IMPORTANT: Look at Erratum RP2350-E10 on page 1350 in `rp2350-datasheet.pdf`.
 
 `make part3` will create a `part3.uf2` file that you can then flash to the Pico.
+Note that before running `part3`, you will need to set the `ENGRAVE_UF2` variable in the makefile, as well as the `FLASH_MOUNT` variable, correctly for your system.
 
 Since we're not using pi-install, we need a different way to read the UART output; we can use the venerable `socat`:
 ```
