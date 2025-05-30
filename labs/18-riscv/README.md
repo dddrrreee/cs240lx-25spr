@@ -143,13 +143,13 @@ IMPORTANT: Look at Erratum RP2350-E10 on page 1350 in `rp2350-datasheet.pdf`.
 `make part3` will create a `part3.uf2` file that you can then flash to the Pico.
 
 Since we're not using pi-install, we need a different way to read the UART output; we can use the venerable `socat`:
-
 ```
 # macOS
 socat - /dev/<the tty device>,ospeed=115200,ispeed=115200,rawer
 # Linux
 socat - /dev/<the tty device>,b115200,rawer
 ```
+Since the UART-to-USB converter is now on a separate power source, even if we power cycle the Pico, the UART connection won't be broken, so you can just keep a `socat` session open (though note that if`socat` is open, the `okboot` UART bootloader won't work).
 
 ### Side note: Installing socat
 
