@@ -198,17 +198,24 @@ void uart_puts(hw_uart_t* uart, const char* str);
 
 [[noreturn]]
 static inline void
-pico2_reboot()
+pico2_reboot_immediate()
 {
-    uart_puts(uart0, "\nDone. Rebooting.\n");
-    uart_flush(uart0);
-    
     wdog->ctrl &= !WDOG_CTRL_ENABLE_BITS;
     psm->wdsel = PSM_WDSEL_BITS & ~(PSM_WDSEL_ROSC_BITS | PSM_WDSEL_XOSC_BITS);
     wdog->ctrl |= WDOG_CTRL_TRIGGER_BITS;
 
     while (1)
         __asm__ volatile("");
+}
+
+[[noreturn]]
+static inline void
+pico2_reboot()
+{
+    uart_puts(uart0, "\nDone. Rebooting.\n");
+    uart_flush(uart0);
+
+    pico2_reboot_immediate();
 }
 
 #define panic(msg, args...)                            \

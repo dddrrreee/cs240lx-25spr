@@ -32,7 +32,7 @@ lib.o: ../lib/core.c $(HEADERS)
 part1.elf: part1.o staff-uart.o $(COMMON_OBJS) | $(MEMMAP)
 	$(LD) $(LDFLAGS) $^ -o $@
 
-part2.elf: part2.o uart.o $(COMMON_OBJS) | $(MEMMAP)
+part2.elf: part2.o staff-uart.o $(COMMON_OBJS) | $(MEMMAP)
 	$(LD) $(LDFLAGS) $^ -o $@
 
 %.bin: %.elf
@@ -41,7 +41,7 @@ part2.elf: part2.o uart.o $(COMMON_OBJS) | $(MEMMAP)
 # Indicate to make that `clean` is not an actual file on the FS
 .PHONY: clean
 clean:
-	rm -f main.{o,elf,bin} lib.o gpio.o uart.o printk.o
+	rm -f {part1,part2}.{o,elf,bin} lib.o $(COMMON_OBJS)
 
 .PHONY: part1 part2
 part1: part1.bin
