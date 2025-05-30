@@ -34,20 +34,7 @@ void uart_flush(hw_uart_t* uart)
 // register (at some point).
 static void set_baud_rate_internal(hw_uart_t* uart, uint32_t baud_rate, uint32_t clk_peri_freq)
 {
-    uint32_t baud_rate_div = ((clk_peri_freq / baud_rate) * 8) + 1;
-    uint32_t baud_rate_int = baud_rate_div >> 7;
-    uint16_t ibrd;
-    uint8_t fbrd;
-
-    if (baud_rate_int == 0) {
-        ibrd = 1, fbrd = 0;
-    } else if (baud_rate_int >= UINT16_MAX) {
-        ibrd = UINT16_MAX, fbrd = 0;
-    } else {
-        ibrd = (uint16_t)baud_rate_int;
-        fbrd = (uint8_t)((baud_rate_div & 0x7f) >> 1);
-    }
-
+    // See 12.1.3.2.1 for the baud rate calculations
     todo("set uartibrd and uartfbrd");
 }
 
