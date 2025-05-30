@@ -140,6 +140,29 @@ For information on block loops, check 5.5 and 5.9 in `rp2350-datasheet.pdf`. Bas
 
 IMPORTANT: Look at Erratum RP2350-E10 on page 1350 in `rp2350-datasheet.pdf`.
 
+`make part3` will create a `part3.uf2` file that you can then flash to the Pico.
+
+Since we're not using pi-install, we need a different way to read the UART output; we can use the venerable `socat`:
+
+```
+# macOS
+socat - /dev/<the tty device>,ospeed=115200,ispeed=115200,rawer
+# Linux
+socat - /dev/<the tty device>,b115200,rawer
+```
+
+### Side note: Installing socat
+
+```
+# macOS
+brew install socat
+# Debian
+sudo apt install socat
+```
+
+### Checkoff:
+
+
 # Major differences with the BCM
 
 - We don't need `dsb`'s; their presence in the BCM was a result of the way the BCM's bus worked, but the rp2350 doesn't have those issues.
