@@ -9,7 +9,7 @@
 
 #define WIDTH 64
 #define HEIGHT 32
-#define NUM_QPUS 8
+#define NUM_QPUS 16
 
 //TODO: CHANGE THE NUMBER OF UNIFS TO MATCH YOUR KERNEL. OURS HAS 6, yours doesn't have to
 #define NUM_UNIFS 5
