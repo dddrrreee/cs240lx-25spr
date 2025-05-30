@@ -76,6 +76,9 @@ We'll only need to do this once: once the bootloader has been flashed, we can us
 
 We need two USB connections here; the USB port on the Pico doesn't speak UART like the one on the parthiv-board, so we need to find something to take the place of the parthiv-board. In this case, that's a USB-UART converter (the small red or blue boards). These will allow us to use the UART bootloader we just flashed onto the Pico.
 
+Pinout:
+![Pico 2 pinout](https://datasheets.raspberrypi.com/pico/Pico-2-Pinout.pdf)
+
 Attach your UART FTDI converter to the PICO like so:
 ```
 PICO TX (GP0) <-> FTDI RX
