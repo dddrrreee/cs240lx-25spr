@@ -1,4 +1,4 @@
-# Introduction
+# Raspberry pi pico 2 (Lab by Max Cura)
 
 In this lab, we'll be getting started with the Raspberry Pi Pico 2. It's a dual-mode processor, which basically means that it has both ARM and RISC-V CPUs that we can decide to use. For this lab, we'll be using the RISC-V one, which is called the Hazard3.
 
