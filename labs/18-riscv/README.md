@@ -133,6 +133,13 @@ We want to see that your UART code can print, nothing more.
 
 For a final step, we want to (be able to) remove our dependence on the `okboot` bootloader. To do this, we'll build a very minimal bootable flash image in `part3.c`.
 
+Basically, we'll want to create an `IMAGE_DEF` block in what's called a "block loop" in the first 4K of the flash image.
+We can do this by creating a static array in a C file, and putting it into a special `.text.boot_header` section that we force to be early in the image.
+
+For information on block loops, check 5.5 and 5.9 in `rp2350-datasheet.pdf`. Basically, they're magic-number-delimited structures that are spread across flash; when the Pico boots, it'll search the first 4K for an block with the special `IMAGE_DEF` type, which will allow us to specify how we want the image we've written to flash to be treated.
+
+IMPORTANT: Look at Erratum RP2350-E10 on page 1350 in `rp2350-datasheet.pdf`.
+
 # Major differences with the BCM
 
 - We don't need `dsb`'s; their presence in the BCM was a result of the way the BCM's bus worked, but the rp2350 doesn't have those issues.

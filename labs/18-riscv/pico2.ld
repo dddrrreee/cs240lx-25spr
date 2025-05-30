@@ -11,6 +11,7 @@ SECTIONS {
   .text : {
     . = ALIGN(4);
     KEEP(*(.text.boot))
+    KEEP(*(.text.boot_header))
     *(.text*)
     . = ALIGN(4);
   } >RAM
