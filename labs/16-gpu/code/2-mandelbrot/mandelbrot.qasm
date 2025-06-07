@@ -33,7 +33,7 @@ fadd rb9, r1, r2    #y = -1 + i*1/resolution
     mov r0, ra11            # j_base 
     add r0, r0, elem_num    # j = j_base + elem_num
 
-    itof r1, r1         #(float) j
+    itof r1, r0         #(float) j
     itof r2, -1         #(float) -1
     fmul r1, r1, ra1    #x = j*1/RESOLUTION
     fadd rb8, r1, r2    #x = -1 + j*1/RESOLUTION
