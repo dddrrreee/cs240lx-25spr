@@ -1,0 +1,26 @@
+FOUND: </dev/ttyUSB0>
+opened tty port </dev/ttyUSB0>.
+pi-install: tty-usb=</dev/ttyUSB0> program=<./tests-eraser/0-eraser-test1.bin> about to boot
+TRACE:simple_boot: sending 31416 bytes, crc32=d807d27
+waiting for a start
+putting code
+bootloader: Done.
+listening on ttyusb=</dev/ttyUSB0>
+redzone checking: init
+checker-eraser.c:eraser_lock:210:DEBUG:TRACE:ERASER:tid=1:thread id=1: acquired lock <0xfab8>
+checker-eraser.c:eraser_mark_alloc:191:DEBUG:TRACE:ERASER:tid=1:in mark_alloc: addr=0x104000, nbytes=4
+pc=0x803c: domain fault on addr=0x104000, load=0
+checker-eraser.c:eraser_handler:161:DEBUG:TRACE:ERASER:tid=1:ERASER: [pc=0x803c]: store to address 0x104000
+checker-eraser.c:shadow_check_st:126:DEBUG:TRACE:ERASER:tid=1:store at pc=0x803c, addr=0x104000 checked out
+fault pc=0x803c, fault addr=0x104000
+pc=0x8044: domain fault on addr=0x104000, load=1
+checker-eraser.c:eraser_handler:161:DEBUG:TRACE:ERASER:tid=1:ERASER: [pc=0x8044]: load from address 0x104000
+checker-eraser.c:shadow_check_ld:140:DEBUG:TRACE:ERASER:tid=1:load at pc=0x8044, addr=0x104000 checked out
+fault pc=0x8044, fault addr=0x104000
+checker-eraser.c:eraser_unlock:221:DEBUG:TRACE:ERASER:tid=1:thread id=1: released lock <0xfab8>
+TRACE:notmain:success!!
+DONE!!!
+
+Saw done
+
+bootloader: pi exited.  cleaning up
